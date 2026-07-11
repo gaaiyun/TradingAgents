@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "generated_at": "2026-07-11T23:59:59+08:00",
+  "generated_at": "2026-07-12T00:13:23+08:00",
   "trade_date": "2026-07-10",
   "provider": "openai_compatible",
   "analysts": [
@@ -17,23 +17,24 @@
   ],
   "results": [
     {
-      "ticker": "600519.SS",
-      "rating": "Hold",
-      "report": "reports/600519.SS/2026-07-10/complete_report.md",
+      "ticker": "SPY",
+      "rating": "Underweight",
+      "report": "reports/SPY/2026-07-10/complete_report.md",
       "files": {
-        "fundamentals": "reports/600519.SS/2026-07-10/1_analysts/fundamentals.md",
-        "market": "reports/600519.SS/2026-07-10/1_analysts/market.md",
-        "bear": "reports/600519.SS/2026-07-10/2_research/bear.md",
-        "bull": "reports/600519.SS/2026-07-10/2_research/bull.md",
-        "manager": "reports/600519.SS/2026-07-10/2_research/manager.md",
-        "trader": "reports/600519.SS/2026-07-10/3_trading/trader.md",
-        "aggressive": "reports/600519.SS/2026-07-10/4_risk/aggressive.md",
-        "conservative": "reports/600519.SS/2026-07-10/4_risk/conservative.md",
-        "neutral": "reports/600519.SS/2026-07-10/4_risk/neutral.md",
-        "decision": "reports/600519.SS/2026-07-10/5_portfolio/decision.md",
-        "complete_report": "reports/600519.SS/2026-07-10/complete_report.md"
+        "fundamentals": "reports/SPY/2026-07-10/1_analysts/fundamentals.md",
+        "market": "reports/SPY/2026-07-10/1_analysts/market.md",
+        "news": "reports/SPY/2026-07-10/1_analysts/news.md",
+        "bear": "reports/SPY/2026-07-10/2_research/bear.md",
+        "bull": "reports/SPY/2026-07-10/2_research/bull.md",
+        "manager": "reports/SPY/2026-07-10/2_research/manager.md",
+        "trader": "reports/SPY/2026-07-10/3_trading/trader.md",
+        "aggressive": "reports/SPY/2026-07-10/4_risk/aggressive.md",
+        "conservative": "reports/SPY/2026-07-10/4_risk/conservative.md",
+        "neutral": "reports/SPY/2026-07-10/4_risk/neutral.md",
+        "decision": "reports/SPY/2026-07-10/5_portfolio/decision.md",
+        "complete_report": "reports/SPY/2026-07-10/complete_report.md"
       },
-      "decision_excerpt": "**Rating**: Hold\n\n**Executive Summary**: 维持 `600519.SS`（贵州茅台）现有仓位不变，当前价 ¥1204.98。多空证据处于真正均衡状态：基本面\"堡垒级\"资产负债表（现金1779.68亿、债务权益比0.086）与历史低位估值（远期P/E 16.07倍、股息率4.31%）提供强劲下行保护，但Q1营业成本同比暴增35.9%导致净利润增速仅1.48%的成本端恶化信号未逆转，且技术面200日均线（¥1359）仍在当前价上方11.4%处呈经典空头排列。止损设在 ¥1145（2倍ATR），上方放量突破 ¥1245-1255 共振阻力区并连续2-3日站稳后方可首笔加仓（不超过计划增仓量50%）。建议持有期3-6个月，以Q2/Q3财报成本增速变化为关键观察窗口。\n\n**Investment Thesis**: 综合三位风险分析师的辩论，Hold评级是基于多",
+      "decision_excerpt": "**Rating**: Underweight\n\n**Executive Summary**: 对SPY执行Underweight评级，建议减持现有多头仓位的40%-45%，锁定利润以应对Q2财报季前的不确定性。止损位设在740附近（50日均线739.91与布林带中轨743.33之间），较激进派的743更紧、较保守派的748更合理，约为1.6倍ATR，避免被噪音扫出。回补采用条件触发机制而非纯价格触发：价格回调至739-745区间时，需MACD柱状图维持正值或RSI出现底抬高模式方可逐步回补20%-25%。对保留的核心仓位，建议采用735/720看跌期权价差结构替代裸put，以更低成本覆盖735-720区间的下行保护。时间窗口聚焦Q2财报季（1-3个月），若财报超预期且放量突破760可回补仓位，若指引疲软则加速减仓。\n\n**Investment Thesis**: 综合三位分析师的辩论，最",
       "error": null
     }
   ]
