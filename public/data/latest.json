@@ -1,0 +1,8 @@
+{
+  "status": "unconfigured",
+  "generated_at": "2026-07-11T19:05:26+08:00",
+  "trade_date": "2026-07-10",
+  "provider": "openai",
+  "hint": "未检测到 openai 的 API key。请在仓库 Settings → Secrets 配置对应密钥（如 DEEPSEEK_API_KEY / OPENAI_COMPATIBLE_API_KEY），并可用仓库变量 TRADINGAGENTS_LLM_PROVIDER / TRADINGAGENTS_LLM_BACKEND_URL 切换后端。",
+  "results": []
+}

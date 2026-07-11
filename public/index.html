@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TradingAgents 每日多智能体决策</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f12; --panel: #141a1f; --panel-2: #18232a; --line: #28343d;
+      --text: #e4e8ec; --muted: #8b98a5; --cyan: #4fc3f7; --amber: #f2b84b;
+      --green: #45d18a; --red: #ff626f; --lime: #9ccc65; --orange: #ff8a65;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 1080px; margin: 0 auto; padding: 28px 18px 42px; }
+    header { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end;
+      border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 18px; }
+    h1 { margin: 0 0 8px; font-size: 28px; font-weight: 720; }
+    .sub { color: var(--muted); margin: 0; font-size: 14px; }
+    .pill { border: 1px solid var(--line); background: #10161a; border-radius: 999px;
+      padding: 5px 10px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+    .card { background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line); border-left: 3px solid var(--line);
+      border-radius: 6px; padding: 16px; }
+    .tk { font-size: 13px; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+    .rating { font-size: 26px; font-weight: 720; }
+    .excerpt { color: var(--muted); font-size: 12px; margin-top: 8px; line-height: 1.5;
+      max-height: 72px; overflow: hidden; }
+    .card a { display: inline-block; margin-top: 10px; color: var(--cyan);
+      font-size: 13px; text-decoration: none; }
+    .card a:hover { text-decoration: underline; }
+    .banner { background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line); border-radius: 6px; padding: 18px;
+      color: var(--amber); font-size: 14px; line-height: 1.7; }
+    #viewer { display: none; margin-top: 18px; background: var(--panel);
+      border: 1px solid var(--line); border-radius: 6px; padding: 20px; }
+    #viewer h2 { margin-top: 0; font-size: 16px; color: var(--cyan); }
+    #viewer pre { white-space: pre-wrap; word-break: break-word; font-size: 13px;
+      line-height: 1.65; color: var(--text); font-family: ui-monospace, Consolas, monospace; }
+    .foot { margin-top: 20px; color: var(--muted); font-size: 12px; text-align: right;
+      border-top: 1px solid var(--line); padding-top: 10px; }
+    .close { float: right; cursor: pointer; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>TradingAgents 决策看板</h1>
+        <p class="sub">多智能体 LLM 交易研究框架 · 分析师团队 → 多空辩论 → 交易员 → 风控 → 基金经理</p>
+      </div>
+      <div><span id="meta" class="pill">loading…</span></div>
+    </header>
+
+    <div id="content"><div class="banner">正在读取最新决策快照…</div></div>
+    <section id="viewer">
+      <span class="close" onclick="document.getElementById('viewer').style.display='none'">✕ 关闭</span>
+      <h2 id="viewer-title"></h2>
+      <pre id="viewer-body"></pre>
+    </section>
+
+    <div class="foot">TradingAgents (Tauric Research, Apache-2.0) · fork: gaaiyun · 仅供研究，不构成投资建议</div>
+  </main>
+
+  <script>
+    const TIER_COLOR = { "Buy": "var(--green)", "Overweight": "var(--lime)", "Hold": "var(--amber)",
+                         "Underweight": "var(--orange)", "Sell": "var(--red)" };
+    async function openReport(path, ticker) {
+      const v = document.getElementById("viewer");
+      document.getElementById("viewer-title").textContent = ticker + " 完整报告";
+      document.getElementById("viewer-body").textContent = "加载中…";
+      v.style.display = "block";
+      try {
+        const res = await fetch(path, { cache: "no-store" });
+        document.getElementById("viewer-body").textContent = await res.text();
+      } catch (e) {
+        document.getElementById("viewer-body").textContent = "报告加载失败: " + e.message;
+      }
+      v.scrollIntoView({ behavior: "smooth" });
+    }
+    async function load() {
+      const content = document.getElementById("content");
+      try {
+        const res = await fetch(`data/latest.json?ts=${Date.now()}`, { cache: "no-store" });
+        const data = await res.json();
+        document.getElementById("meta").textContent =
+          `${data.trade_date || "--"} · ${data.provider || "?"} · ${data.generated_at || ""}`;
+        if (data.status === "unconfigured") {
+          content.innerHTML = `<div class="banner">⚙️ 流水线已就绪，等待 LLM API key。<br>${data.hint || ""}</div>`;
+          return;
+        }
+        if (!data.results || !data.results.length) {
+          content.innerHTML = `<div class="banner">暂无分析结果。</div>`;
+          return;
+        }
+        content.innerHTML = `<section class="grid">` + data.results.map(r => {
+          const color = TIER_COLOR[r.rating] || "var(--muted)";
+          if (r.error) {
+            return `<div class="card" style="border-left-color:var(--red)">
+              <div class="tk">${r.ticker}</div>
+              <div class="rating" style="color:var(--red);font-size:15px">运行失败</div>
+              <div class="excerpt">${r.error}</div></div>`;
+          }
+          const link = r.report ? `<a href="javascript:void(0)" onclick="openReport('${r.report}','${r.ticker}')">查看完整报告 →</a>` : "";
+          return `<div class="card" style="border-left-color:${color}">
+            <div class="tk">${r.ticker}</div>
+            <div class="rating" style="color:${color}">${r.rating || "--"}</div>
+            <div class="excerpt">${(r.decision_excerpt || "").replace(/[#*`]/g, "")}</div>${link}</div>`;
+        }).join("") + `</section>`;
+      } catch (e) {
+        content.innerHTML = `<div class="banner">快照加载失败: ${e.message}</div>`;
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
