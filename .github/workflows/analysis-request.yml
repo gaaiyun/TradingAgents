@@ -1,0 +1,174 @@
+name: analysis-request
+
+# 手机/电脑随时点名分析：开一个标题为「分析: NVDA,600519」的 Issue 即触发。
+# 仅仓库主人的 Issue 会被执行（防止陌生人烧 LLM 配额）。
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  analyze-request:
+    if: >-
+      github.event.issue.user.login == github.repository_owner &&
+      (startsWith(github.event.issue.title, '分析') ||
+       startsWith(github.event.issue.title, 'analyze') ||
+       startsWith(github.event.issue.title, 'Analyze'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      PYTHONIOENCODING: utf-8
+      TRADINGAGENTS_LLM_PROVIDER: ${{ vars.TRADINGAGENTS_LLM_PROVIDER || 'deepseek' }}
+      TRADINGAGENTS_DEEP_THINK_LLM: ${{ vars.TRADINGAGENTS_DEEP_THINK_LLM || 'deepseek-v4-pro' }}
+      TRADINGAGENTS_QUICK_THINK_LLM: ${{ vars.TRADINGAGENTS_QUICK_THINK_LLM || 'deepseek-v4-flash' }}
+      TRADINGAGENTS_LLM_BACKEND_URL: ${{ vars.TRADINGAGENTS_LLM_BACKEND_URL }}
+      TRADINGAGENTS_OUTPUT_LANGUAGE: ${{ vars.TRADINGAGENTS_OUTPUT_LANGUAGE || '中文' }}
+      TRADINGAGENTS_ANALYSTS: ${{ vars.TRADINGAGENTS_ANALYSTS || 'market,news,fundamentals' }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+      OPENAI_COMPATIBLE_API_KEY: ${{ secrets.OPENAI_COMPATIBLE_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
+      DASHSCOPE_CN_API_KEY: ${{ secrets.DASHSCOPE_CN_API_KEY }}
+      ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+      ZHIPU_CN_API_KEY: ${{ secrets.ZHIPU_CN_API_KEY }}
+      MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+      PAGES_URL: https://gaaiyun.github.io/TradingAgents/
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || vars.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT || 'tradingagents-board' }}
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      ISSUE_TITLE: ${{ github.event.issue.title }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse tickers from issue
+        id: parse
+        shell: python
+        run: |
+          import os, re
+          text = (os.environ.get("ISSUE_TITLE", "") + "\n" + os.environ.get("ISSUE_BODY", ""))
+          text = re.sub(r"^\s*(分析|analyze)[:：]?", "", text, flags=re.I).strip()
+          # 美股字母代码（可带 .SS/.SZ/.HK 等后缀）或 6 位数字
+          tokens = re.findall(r"\b([A-Za-z]{1,6}(?:\.[A-Za-z]{1,3})?|\d{6}(?:\.S[SZ])?)\b", text)
+          drop = {"THE", "AND", "FOR", "ETF", "LLM", "API", "GIT", "HTTP", "HTTPS"}
+          seen, tickers = set(), []
+          for t in tokens:
+              t = t.upper()
+              if t in drop or t in seen:
+                  continue
+              seen.add(t)
+              tickers.append(t)
+          tickers = tickers[:5]  # 单次最多 5 个，防配额失控
+          out = ",".join(tickers)
+          print(f"parsed tickers: {out or '(none)'}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"tickers={out}\n")
+
+      - name: Reply parse failure
+        if: steps.parse.outputs.tickers == ''
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body \
+            "未能从标题/正文解析出标的代码。示例：标题写「分析: NVDA, 600519」。"
+          exit 1
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install TradingAgents
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: Acknowledge issue
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body \
+            "🤖 已受理：\`${{ steps.parse.outputs.tickers }}\`。多智能体分析运行中（约 5–20 分钟），完成后本楼回复结果并推送微信。[运行日志]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+
+      - name: Run multi-agent analysis
+        run: |
+          python scripts/run_daily.py --tickers "${{ steps.parse.outputs.tickers }}"
+
+      - name: Persist reports to main
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data public/reports
+          if git diff --cached --quiet; then
+            echo "no report changes"
+          else
+            git commit -m "chore(data): Issue #${ISSUE_NUMBER} 点名分析报告 [skip ci]"
+            git pull --rebase origin main
+            git push origin main
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Deploy CN mirror to Cloudflare Pages
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' }}
+        run: |
+          npm install -g wrangler
+          wrangler pages deploy public --project-name "$CLOUDFLARE_PAGES_PROJECT" --branch main
+
+      - name: Comment results and close issue
+        if: always()
+        shell: python
+        run: |
+          import json, os, subprocess, sys
+          repo = os.environ["GITHUB_REPOSITORY"]
+          issue = os.environ["ISSUE_NUMBER"]
+          site = os.environ.get("PAGES_URL", "").rstrip("/")
+          try:
+              data = json.loads(open("public/data/latest.json", encoding="utf-8").read())
+          except Exception as exc:
+              data = {"results": [], "status": f"latest.json 读取失败: {exc}"}
+          lines = [f"## 分析结果（{data.get('trade_date', '?')}）", ""]
+          ok = 0
+          for r in data.get("results", []):
+              if r.get("error"):
+                  lines.append(f"- **{r['ticker']}** ❌ {str(r['error'])[:120]}")
+              else:
+                  ok += 1
+                  link = f"{site}/{r['report']}" if r.get("report") else site
+                  lines.append(f"- **{r['ticker']}** → **{r.get('rating', '?')}** · [完整报告]({link})")
+          lines += ["", f"[📊 决策看板]({site}/) · provider: {data.get('provider', '?')}"]
+          body = "\n".join(lines)
+          subprocess.run(["gh", "issue", "comment", issue, "--repo", repo, "--body", body], check=False)
+          if ok:
+              subprocess.run(["gh", "issue", "close", issue, "--repo", repo, "--reason", "completed"], check=False)
