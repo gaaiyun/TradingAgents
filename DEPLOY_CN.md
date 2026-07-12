@@ -41,6 +41,11 @@ GitHub Actions（分析计算层）
 
 **问答**：底部输入框，就当前打开的报告分卷向 glm-5.2 提问（需访问码）。
 
+**期权监控**（刊头切换或直达 `/#options`）：嵌入 [VolGuard](https://github.com/gaaiyun/SH_50_Index_Option_Trading_Signals)
+的上证50ETF期权风控快照——信号横幅（BSADF 泡沫检测）、VaR95 双向防线、HV30/IV、GEX/DEX/Max Pain、
+近 80 日价格走势与期权链样例，5 分钟自动刷新；该视图下问答上下文自动切换为期权快照。
+快照由 VolGuard 自己的定时工作流每 2–3 小时更新，盘中实时请用其 Streamlit 主站。
+
 **定时**：每个美股交易日收盘后（北京时间清晨 ~05:35）自动分析
 `TRADINGAGENTS_TICKERS` 变量清单（现为 `NVDA,SPY,600519.SS`）。
 
