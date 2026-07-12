@@ -166,6 +166,42 @@
   .foot { font-size: 11px; color: #565349; padding: 26px 0 8px; line-height: 1.8; }
   .foot a { color: var(--paper-dim); }
 
+  /* ── 视图切换 ───────────────────────────── */
+  .head-left { display: flex; align-items: baseline; gap: 26px; min-width: 0; flex-wrap: wrap; }
+  .views { display: flex; gap: 18px; }
+  .views span { font-size: 12px; color: var(--paper-dim); cursor: pointer; letter-spacing: .14em;
+    padding: 2px 1px 4px; border-bottom: 2px solid transparent; -webkit-tap-highlight-color: transparent; }
+  .views span:hover { color: var(--paper); }
+  .views span.on { color: var(--amber); border-bottom-color: var(--amber); }
+
+  /* ── 期权监控面板 ───────────────────────── */
+  .sig { border: 1px solid var(--hair); border-left: 3px solid var(--paper-dim);
+    padding: 12px 16px; margin: 14px 0 0; font-size: 13px; line-height: 1.8; }
+  .sig.hot { border-left-color: var(--sell); }
+  .sig .s-title { font-family: var(--serif); font-size: 17px; }
+  .stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+    border: 1px solid var(--hair); border-right: 0; margin-top: 14px; }
+  .stat { border-right: 1px solid var(--hair); padding: 10px 12px 9px; min-width: 0;
+    border-bottom: 1px solid var(--hair); margin-bottom: -1px; }
+  .stat .k { font-size: 10px; color: var(--paper-dim); letter-spacing: .16em; text-transform: uppercase; }
+  .stat .v { font-size: 16px; margin-top: 3px; white-space: nowrap; }
+  .stat .s { font-size: 10px; color: var(--paper-dim); margin-top: 2px; white-space: nowrap; }
+  .spark-box { border: 1px solid var(--hair); margin-top: 14px; padding: 12px 14px 8px; }
+  .spark-box .k { font-size: 10px; color: var(--paper-dim); letter-spacing: .16em; }
+  .spark-box svg { width: 100%; height: 120px; display: block; margin-top: 6px; }
+  .chain { margin-top: 14px; border: 1px solid var(--hair); overflow-x: auto; }
+  .chain table { border-collapse: collapse; width: 100%; font-size: 12px; }
+  .chain th, .chain td { border-bottom: 1px solid #24231e; padding: 6px 10px; text-align: right;
+    white-space: nowrap; }
+  .chain th:first-child, .chain td:first-child,
+  .chain th:nth-child(2), .chain td:nth-child(2) { text-align: left; }
+  .chain th { color: var(--paper-dim); font-weight: 400; letter-spacing: .08em; font-size: 10px;
+    text-transform: uppercase; background: var(--ink-2); position: sticky; top: 0; }
+  .chain tr:last-child td { border-bottom: 0; }
+  .vg-meta { font-size: 11px; color: var(--paper-dim); margin-top: 10px; line-height: 1.8; }
+  .vg-meta a { color: var(--amber); text-decoration: none; }
+  .vg-meta a:hover { text-decoration: underline; }
+
   /* ── 移动端 ────────────────────────────── */
   @media (max-width: 920px) {
     .frame { grid-template-columns: 1fr; }
@@ -182,7 +218,13 @@
 <body>
 
 <div class="masthead">
-  <div class="wordmark">Trading<i>Agents</i><small>多智能体研究终端</small></div>
+  <div class="head-left">
+    <div class="wordmark">Trading<i>Agents</i><small>多智能体研究终端</small></div>
+    <nav class="views">
+      <span id="v-research" class="on">研究</span>
+      <span id="v-options">期权监控</span>
+    </nav>
+  </div>
   <div class="meta"><span id="live-dot" class="dot"></span><span id="masthead-meta">载入中</span></div>
 </div>
 
@@ -214,12 +256,27 @@
   </aside>
 
   <main class="main">
-    <div class="dateline"><span id="d-date">—</span><small id="d-meta"></small></div>
-    <div class="tickers" id="tickers"></div>
-    <div class="tabs" id="tabs"></div>
-    <article class="article" id="article">
-      <div class="placeholder">选择标的与报告分卷。</div>
-    </article>
+    <div id="view-research">
+      <div class="dateline"><span id="d-date">—</span><small id="d-meta"></small></div>
+      <div class="tickers" id="tickers"></div>
+      <div class="tabs" id="tabs"></div>
+      <article class="article" id="article">
+        <div class="placeholder">选择标的与报告分卷。</div>
+      </article>
+    </div>
+
+    <div id="view-options" hidden>
+      <div class="dateline"><span>上证50ETF 期权风控</span><small id="vg-date"></small></div>
+      <div class="sig" id="vg-sig">载入 VolGuard 快照…</div>
+      <div class="stat-strip" id="vg-stats"></div>
+      <div class="spark-box">
+        <span class="k" id="vg-spark-label">510050.SS · 近 80 交易日收盘</span>
+        <svg id="vg-spark" viewBox="0 0 600 120" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="chain" id="vg-chain"></div>
+      <div class="vg-meta" id="vg-meta"></div>
+    </div>
+
     <div class="foot">
       TradingAgents · Tauric Research（Apache-2.0）· fork
       <a href="https://github.com/gaaiyun/TradingAgents" target="_blank" rel="noopener">gaaiyun/TradingAgents</a>
@@ -268,7 +325,7 @@ function mdRender(src) {
   src = String(src).replace(/\r\n/g, "\n");
   const fences = [];
   src = src.replace(/```([\s\S]*?)```/g, (_, c) =>
-    (fences.push(`<pre><code>${esc(c.replace(/^\w*\n/, ""))}</code></pre>`), `  F${fences.length-1}  `));
+    (fences.push(`<pre><code>${esc(c.replace(/^\w*\n/, ""))}</code></pre>`), ` \uE000F${fences.length-1}\uE000 `));
   src = esc(src);
   const inline = t => t
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, "")
@@ -281,7 +338,7 @@ function mdRender(src) {
   const fl = () => { if (list) { out.push(`</${list}>`); list = null; } };
   while (i < lines.length) {
     const L = lines[i];
-    const f = L.match(/ F(\d+) /);
+    const f = L.match(/\uE000F(\d+)\uE000/);
     if (f) { fp(); fl(); out.push(fences[+f[1]]); i++; continue; }
     if (/^\s*$/.test(L)) { fp(); fl(); i++; continue; }
     const h = L.match(/^(#{1,4})\s+(.*)/);
@@ -310,7 +367,7 @@ function mdRender(src) {
 }
 
 /* ── 状态 ─────────────────────────────────── */
-const S = { latest: null, history: [], entry: null, ticker: null, file: null, chat: [] };
+const S = { latest: null, history: [], entry: null, ticker: null, file: null, chat: [], view: "research", vg: null };
 $("f-code").value = localStorage.getItem("ta_code") || "";
 
 /* ── 结果渲染 ─────────────────────────────── */
@@ -352,7 +409,9 @@ function selectTicker(idx) {
 async function openFile(path, tabEl) {
   document.querySelectorAll(".tab").forEach(el => el.classList.toggle("on", el === tabEl));
   S.file = path;
-  $("dock-ctx").textContent = `对话上下文 → ${S.ticker || ""} · ${path.split("/").pop()}`;
+  if (S.view === "research") {
+    $("dock-ctx").textContent = `对话上下文 → ${S.ticker || ""} · ${path.split("/").pop()}`;
+  }
   $("article").innerHTML = `<div class="placeholder">读取 ${esc(path)} …</div>`;
   try {
     const md = await fetchData(`/api/report?path=${encodeURIComponent(path)}`, `./${path}`);
@@ -454,7 +513,8 @@ $("dock-form").addEventListener("submit", async (ev) => {
   try {
     const r = await fetch("/api/chat", { method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ question: q, code, report: S.file || "", history: S.chat.slice(0, -1) }) });
+      body: JSON.stringify({ question: q, code, report: S.file || "",
+        volguard: S.view === "options", history: S.chat.slice(0, -1) }) });
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
     holder.querySelector(".body").textContent = data.answer || "（空回复）";
@@ -486,8 +546,112 @@ async function loadData() {
     renderArchive();
   } catch (e) { /* 可选 */ }
 }
+/* ── 期权监控（VolGuard）───────────────────── */
+const fmtN = (x, d = 2) => (Number.isFinite(Number(x)) ? Number(x).toFixed(d) : "—");
+let vgTimer = null;
+
+function vgStat(k, v, s, cls) {
+  return `<div class="stat"><div class="k">${k}</div><div class="v ${cls || ""}">${v}</div>${s ? `<div class="s">${s}</div>` : ""}</div>`;
+}
+
+function renderVolguard(d) {
+  S.vg = d;
+  const m = d.market || {}, r = d.risk || {}, e = d.exposure || {};
+  $("vg-date").textContent = `快照 ${(d.generated_at || "").slice(0, 16)} · 行情截至 ${(m.data_asof || "").slice(0, 10)}`;
+
+  const hot = !!r.bsadf_triggered;
+  $("vg-sig").className = "sig" + (hot ? " hot" : "");
+  $("vg-sig").innerHTML =
+    `<span class="s-title">${esc(r.signal || "—")}</span> &nbsp; ${esc(r.action || "")}` +
+    `<div class="s" style="color:var(--paper-dim);font-size:11px;margin-top:4px">` +
+    `BSADF ${fmtN(r.bsadf_stat)} / 临界值 ${fmtN(r.bsadf_cv)} · ${hot ? "泡沫窗口触发" : "未触发"}</div>`;
+
+  const chg = Number(m.change_pct || 0);
+  const chgCls = chg >= 0 ? "r-buy" : "r-sell";
+  $("vg-stats").innerHTML = [
+    vgStat("现价 510050", fmtN(m.spot, 3), `${chg >= 0 ? "+" : ""}${fmtN(chg)}%`, chgCls),
+    vgStat("VaR95 认沽", `↓${fmtN(r.var_95_put)}%`, "双向刚性防线", "r-sell"),
+    vgStat("VaR95 认购", `↑${fmtN(r.var_95_call)}%`, "虚值低于即止损", "r-sell"),
+    vgStat("HV30", `${fmtN(r.hv30, 1)}%`, "已实现波动"),
+    vgStat("平均 IV", `${fmtN(r.iv_avg, 1)}%`, Number(r.iv_avg) > Number(r.hv30) ? "IV>HV 吃权" : "HV>IV 溢价"),
+    vgStat("净 GEX", `${fmtN(e.gex_net)}B`, "Gamma 暴露", Number(e.gex_net) >= 0 ? "r-buy" : "r-sell"),
+    vgStat("净 DEX", `${fmtN(e.dex_net)}B`, "Delta 暴露"),
+    vgStat("Max Pain", fmtN(e.max_pain, 3), m.spot ? `偏离 ${fmtN((e.max_pain / m.spot - 1) * 100)}%` : ""),
+  ].join("");
+
+  // 价格 sparkline
+  const closes = (d.price_series || []).map(p => Number(p.close)).filter(Number.isFinite);
+  const svg = $("vg-spark");
+  if (closes.length > 1) {
+    const min = Math.min(...closes), max = Math.max(...closes), span = Math.max(1e-6, max - min);
+    const pts = closes.map((c, i) =>
+      `${(i / (closes.length - 1)) * 600},${112 - ((c - min) / span) * 100}`).join(" ");
+    const last = closes[closes.length - 1];
+    const lx = 600, ly = 112 - ((last - min) / span) * 100;
+    svg.innerHTML =
+      `<polyline points="${pts}" fill="none" stroke="#d9a441" stroke-width="1.6"/>` +
+      `<circle cx="${lx}" cy="${ly}" r="3" fill="#d9a441"/>` +
+      `<text x="4" y="12" fill="#8d887a" font-size="10" font-family="monospace">高 ${fmtN(max, 3)}</text>` +
+      `<text x="4" y="116" fill="#8d887a" font-size="10" font-family="monospace">低 ${fmtN(min, 3)}</text>`;
+    $("vg-spark-label").textContent =
+      `510050.SS · 近 ${closes.length} 交易日收盘 · 现价 ${fmtN(last, 3)}`;
+  }
+
+  // 期权链样例
+  const rows = (d.options || []).slice(0, 24);
+  if (rows.length) {
+    $("vg-chain").innerHTML = `<table><thead><tr>
+      <th>代码</th><th>名称</th><th>最新价</th><th>行权价</th><th>IV%</th><th>持仓量</th></tr></thead><tbody>` +
+      rows.map(o => `<tr>
+        <td>${esc(o["代码"] || "—")}</td><td>${esc(o["名称"] || "—")}</td>
+        <td>${fmtN(o["最新价"], 4)}</td><td>${fmtN(o["行权价"], 3)}</td>
+        <td>${fmtN(o["隐含波动率"], 1)}</td><td>${fmtN(o["持仓量"], 0)}</td></tr>`).join("") +
+      `</tbody></table>`;
+  } else {
+    $("vg-chain").innerHTML = `<div class="hint" style="padding:12px">快照中暂无期权链样例。</div>`;
+  }
+
+  $("vg-meta").innerHTML =
+    `数据源: ETF ${esc((m.data_status || {}).etf || "?")} · 期权 ${esc((m.data_status || {}).options || "?")}` +
+    ` · 快照由 VolGuard 定时工作流生成（约 2–3 小时/次）<br>` +
+    `深入工具: <a href="https://sh50-option-trading-signals-gaaiyun.streamlit.app/" target="_blank" rel="noopener">Streamlit 实时风控主站</a> · ` +
+    `<a href="https://sh50-volguard.pages.dev/" target="_blank" rel="noopener">VolGuard 快照站</a> · ` +
+    `<a href="https://github.com/gaaiyun/SH_50_Index_Option_Trading_Signals" target="_blank" rel="noopener">仓库</a>`;
+}
+
+async function loadVolguard() {
+  try {
+    const d = await fetchData("/api/volguard", "/api/volguard");
+    renderVolguard(d);
+  } catch (e) {
+    $("vg-sig").className = "sig";
+    $("vg-sig").textContent = "VolGuard 快照不可用：" + e.message;
+  }
+}
+
+/* ── 视图切换 ─────────────────────────────── */
+function switchView(view) {
+  S.view = view;
+  $("view-research").hidden = view !== "research";
+  $("view-options").hidden = view !== "options";
+  $("v-research").classList.toggle("on", view === "research");
+  $("v-options").classList.toggle("on", view === "options");
+  location.hash = view === "options" ? "#options" : "";
+  clearInterval(vgTimer); vgTimer = null;
+  if (view === "options") {
+    $("dock-ctx").textContent = "对话上下文 → 上证50ETF 期权风控快照";
+    if (!S.vg) loadVolguard();
+    vgTimer = setInterval(loadVolguard, 300000);   // 5 分钟自动刷新
+  } else {
+    $("dock-ctx").textContent = S.file ? `对话上下文 → ${S.ticker || ""} · ${S.file.split("/").pop()}` : "";
+  }
+}
+$("v-research").addEventListener("click", () => switchView("research"));
+$("v-options").addEventListener("click", () => switchView("options"));
+
 loadData();
 refreshRuns();
+if (location.hash === "#options") switchView("options");
 </script>
 </body>
 </html>

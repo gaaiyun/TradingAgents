@@ -15,11 +15,19 @@ export async function onRequestPost({ request, env }) {
   const question = String(body.question || "").trim().slice(0, MAX_QUESTION_CHARS);
   if (!question) return json({ error: "问题为空" }, 400);
 
-  // 上下文材料：优先取指定报告，否则取最新决策 JSON
+  // 上下文材料：期权面板 > 指定报告 > 最新决策 JSON
   let context = "";
   let contextLabel = "";
+  if (body.volguard === true) {
+    const r = await fetch("https://sh50-volguard.pages.dev/data/latest.json",
+      { cf: { cacheTtl: 120, cacheEverything: true } });
+    if (r.ok) {
+      context = (await r.text()).slice(0, MAX_CONTEXT_CHARS);
+      contextLabel = "上证50ETF期权风控快照(VolGuard)";
+    }
+  }
   const reportPath = String(body.report || "");
-  if (/^reports\/[A-Za-z0-9._\-\/]+\.md$/.test(reportPath) && !reportPath.includes("..")) {
+  if (!context && /^reports\/[A-Za-z0-9._\-\/]+\.md$/.test(reportPath) && !reportPath.includes("..")) {
     const r = await fetch(`${RAW_BASE}/${reportPath}`, { cf: { cacheTtl: 300, cacheEverything: true } });
     if (r.ok) {
       context = (await r.text()).slice(0, MAX_CONTEXT_CHARS);
