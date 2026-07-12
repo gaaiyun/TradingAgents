@@ -1,6 +1,19 @@
 [
   {
     "trade_date": "2026-07-10",
+    "generated_at": "2026-07-12T12:47:13+08:00",
+    "provider": "openai_compatible",
+    "results": [
+      {
+        "ticker": "000001.SZ",
+        "rating": "Underweight",
+        "report": "reports/000001.SZ/2026-07-10/complete_report.md",
+        "error": false
+      }
+    ]
+  },
+  {
+    "trade_date": "2026-07-10",
     "generated_at": "2026-07-12T00:13:23+08:00",
     "provider": "openai_compatible",
     "results": [
