@@ -1,7 +1,7 @@
 {
   "status": "ok",
-  "generated_at": "2026-07-14T06:29:28+08:00",
-  "trade_date": "2026-07-13",
+  "generated_at": "2026-07-14T10:42:43+08:00",
+  "trade_date": "2026-07-14",
   "provider": "openai_compatible",
   "analysts": [
     "market",
@@ -17,66 +17,24 @@
   ],
   "results": [
     {
-      "ticker": "NVDA",
-      "rating": "Overweight",
-      "report": "reports/NVDA/2026-07-13/complete_report.md",
+      "ticker": "ORCL",
+      "rating": "Hold",
+      "report": "reports/ORCL/2026-07-14/complete_report.md",
       "files": {
-        "fundamentals": "reports/NVDA/2026-07-13/1_analysts/fundamentals.md",
-        "market": "reports/NVDA/2026-07-13/1_analysts/market.md",
-        "news": "reports/NVDA/2026-07-13/1_analysts/news.md",
-        "bear": "reports/NVDA/2026-07-13/2_research/bear.md",
-        "bull": "reports/NVDA/2026-07-13/2_research/bull.md",
-        "manager": "reports/NVDA/2026-07-13/2_research/manager.md",
-        "trader": "reports/NVDA/2026-07-13/3_trading/trader.md",
-        "aggressive": "reports/NVDA/2026-07-13/4_risk/aggressive.md",
-        "conservative": "reports/NVDA/2026-07-13/4_risk/conservative.md",
-        "neutral": "reports/NVDA/2026-07-13/4_risk/neutral.md",
-        "decision": "reports/NVDA/2026-07-13/5_portfolio/decision.md",
-        "complete_report": "reports/NVDA/2026-07-13/complete_report.md"
+        "fundamentals": "reports/ORCL/2026-07-14/1_analysts/fundamentals.md",
+        "market": "reports/ORCL/2026-07-14/1_analysts/market.md",
+        "news": "reports/ORCL/2026-07-14/1_analysts/news.md",
+        "bear": "reports/ORCL/2026-07-14/2_research/bear.md",
+        "bull": "reports/ORCL/2026-07-14/2_research/bull.md",
+        "manager": "reports/ORCL/2026-07-14/2_research/manager.md",
+        "trader": "reports/ORCL/2026-07-14/3_trading/trader.md",
+        "aggressive": "reports/ORCL/2026-07-14/4_risk/aggressive.md",
+        "conservative": "reports/ORCL/2026-07-14/4_risk/conservative.md",
+        "neutral": "reports/ORCL/2026-07-14/4_risk/neutral.md",
+        "decision": "reports/ORCL/2026-07-14/5_portfolio/decision.md",
+        "complete_report": "reports/ORCL/2026-07-14/complete_report.md"
       },
-      "decision_excerpt": "**Rating**: Overweight\n\n**Executive Summary**: 采纳中性分析师的修正建议，将首批建仓比例从40%降至30%，止损位从$191.6下移至$188-190区间并采用收盘价触发机制以规避量化猎杀。当前在$203-205区间建立初始30%仓位，第二批30%待价格回踩200日均线企稳后加仓，第三批40%待MACD突破零轴且价格站上50日均线（$208.96）连续两日收盘确认后加仓。总仓位上限控制在组合的8-10%，适用6-9个月投资周期，FY27 Q2财报为关键验证节点。\n\n**Investment Thesis**: 综合三位风险分析师的辩论，核心结论如下：\n\n**一、基本面多头逻辑坚实但短期风险真实存在，评级定为Overweight而非Buy。** NVDA FY27 Q1营收816.2亿美元（+85.2%）、净利润+210.8%、自由现金流485.",
-      "error": null
-    },
-    {
-      "ticker": "SPY",
-      "rating": "Underweight",
-      "report": "reports/SPY/2026-07-13/complete_report.md",
-      "files": {
-        "fundamentals": "reports/SPY/2026-07-13/1_analysts/fundamentals.md",
-        "market": "reports/SPY/2026-07-13/1_analysts/market.md",
-        "news": "reports/SPY/2026-07-13/1_analysts/news.md",
-        "bear": "reports/SPY/2026-07-13/2_research/bear.md",
-        "bull": "reports/SPY/2026-07-13/2_research/bull.md",
-        "manager": "reports/SPY/2026-07-13/2_research/manager.md",
-        "trader": "reports/SPY/2026-07-13/3_trading/trader.md",
-        "aggressive": "reports/SPY/2026-07-13/4_risk/aggressive.md",
-        "conservative": "reports/SPY/2026-07-13/4_risk/conservative.md",
-        "neutral": "reports/SPY/2026-07-13/4_risk/neutral.md",
-        "decision": "reports/SPY/2026-07-13/5_portfolio/decision.md",
-        "complete_report": "reports/SPY/2026-07-13/complete_report.md"
-      },
-      "decision_excerpt": "**Rating**: Underweight\n\n**Executive Summary**: 在754-757阻力区间分批减持30-40%仓位，保留60%核心底仓，剩余仓位以738为参考防守位，但建议采用期权保护或动态减仓机制替代纯硬止损，以应对地缘事件驱动的跳空风险。若MACD柱状图转负或SPY日线收盘跌破740，则加速清仓剩余头寸。时间窗口为3-6个月，重点关注油价、黄金价格及银行财报季三大催化剂的演变。\n\n**Investment Thesis**: 综合三方分析师的辩论，核心共识是当前SPY的风险收益比已严重恶化，降低权益敞口是审慎之举，但在具体执行力度和逻辑上存在分歧。最终评级定为Underweight而非Sell，理由如下：\n\n**一、减持的必要性——三方共识且证据充分**\n\n1. **估值无安全边际**：26.95倍TTM P/E远超历史均值（15-20倍），激进分析师正确",
-      "error": null
-    },
-    {
-      "ticker": "600519.SS",
-      "rating": "Overweight",
-      "report": "reports/600519.SS/2026-07-13/complete_report.md",
-      "files": {
-        "fundamentals": "reports/600519.SS/2026-07-13/1_analysts/fundamentals.md",
-        "market": "reports/600519.SS/2026-07-13/1_analysts/market.md",
-        "news": "reports/600519.SS/2026-07-13/1_analysts/news.md",
-        "bear": "reports/600519.SS/2026-07-13/2_research/bear.md",
-        "bull": "reports/600519.SS/2026-07-13/2_research/bull.md",
-        "manager": "reports/600519.SS/2026-07-13/2_research/manager.md",
-        "trader": "reports/600519.SS/2026-07-13/3_trading/trader.md",
-        "aggressive": "reports/600519.SS/2026-07-13/4_risk/aggressive.md",
-        "conservative": "reports/600519.SS/2026-07-13/4_risk/conservative.md",
-        "neutral": "reports/600519.SS/2026-07-13/4_risk/neutral.md",
-        "decision": "reports/600519.SS/2026-07-13/5_portfolio/decision.md",
-        "complete_report": "reports/600519.SS/2026-07-13/complete_report.md"
-      },
-      "decision_excerpt": "**Rating**: Overweight\n\n**Executive Summary**: 在当前1,210.99元价位以缩量左侧方式启动600519.SS建仓，首批仓位控制在目标仓位的25%（组合权重约3-4%），而非交易员提议的40%，以对冲7月16日GDP数据这一近端二元事件风险。硬止损维持1,155元（下行约4.6%），待GDP落地及中报发布后视基本面边际变化分批补仓至目标仓位的100%。整体定位为组合核心防御持仓，目标仓位上限为基准权重的1.2-1.3倍，时间窗口3-6个月。\n\n**Investment Thesis**: 综合三方分析师辩论，最终评级定为Overweight，核心逻辑如下：\n\n**一、估值层面多头占优，但不可忽视估值中枢的结构性下移。** 当前TTM PE 18.34倍、远期PE 16.15倍、股息率4.29%，远低于历史25-35倍中枢，叠加89.9%毛利率",
+      "decision_excerpt": "**Rating**: Hold\n\n**Executive Summary**: 维持ORCL现有仓位不变，评级Hold。核心逻辑在于多方（远期P/E 12.04、经营现金流同比飙升137.5%、营业利润率提升至36.3%）与空方（总债务1561亿美元、TTM自由现金流负245亿、毛利率从70.2%滑至65.3%、技术面三线完美空头排列）证据高度平衡，既不应在52周低点131.35美元附近恐慌抛售，也不应逆势重仓抄底。建议设置分层止损：126美元为第一道防线（减仓一半），布林带下轨118美元附近为第二道防线（清仓剩余）。单一个股仓位上限控制在投资组合的5%以内，等待下季度财报验证毛利率走向与AI变现能力这一决定性催化剂后再行方向选择。\n\n**Investment Thesis**: 综合三位风险分析师的辩论，Hold是当前最审慎且最有据可依的评级，理由如下：\n\n**一、估值与增长的吸引力真",
       "error": null
     }
   ]

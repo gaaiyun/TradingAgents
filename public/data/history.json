@@ -1,5 +1,18 @@
 [
   {
+    "trade_date": "2026-07-14",
+    "generated_at": "2026-07-14T10:42:43+08:00",
+    "provider": "openai_compatible",
+    "results": [
+      {
+        "ticker": "ORCL",
+        "rating": "Hold",
+        "report": "reports/ORCL/2026-07-14/complete_report.md",
+        "error": false
+      }
+    ]
+  },
+  {
     "trade_date": "2026-07-13",
     "generated_at": "2026-07-14T06:29:28+08:00",
     "provider": "openai_compatible",
