@@ -1,9 +1,873 @@
 {
   "version": 1,
-  "status": "unavailable",
-  "generated_at": null,
-  "trade_date": null,
-  "global": null,
-  "tickers": {},
-  "items": []
+  "status": "partial",
+  "generated_at": "2026-07-24T06:32:14+08:00",
+  "trade_date": "2026-07-23",
+  "global": {
+    "status": "ok",
+    "query_type": "global",
+    "ticker": null,
+    "start_date": "2026-07-16",
+    "end_date": "2026-07-23",
+    "fetched_at": "2026-07-23T22:32:15Z",
+    "items": [
+      {
+        "title": "Crypto Market Today, July 23: Bitcoin Slides as Odds of Passing Clarity Act Fall",
+        "summary": "",
+        "url": "https://finance.yahoo.com/m/e2aae19e-dfe8-3762-96c4-59b9e396d767/crypto-market-today%2C-july-23%3A.html",
+        "source": "Motley Fool",
+        "published_at": "2026-07-23T22:17:24Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Dow Jones Futures: Market Sells Off On Oil Prices, Google, Tesla; Intel Rises Late, SpaceX Starship Launch Due",
+        "summary": "",
+        "url": "https://finance.yahoo.com/m/96fdd7c6-3e7b-334a-a08e-b91b60ced4b6/dow-jones-futures%3A-market.html",
+        "source": "Investor's Business Daily",
+        "published_at": "2026-07-23T22:16:33Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "World’s quietest metal just dropped a huge bullish signal",
+        "summary": "",
+        "url": "https://finance.yahoo.com/m/663f67c9-e881-3102-980f-106de479bcd1/world%E2%80%99s-quietest-metal-just.html",
+        "source": "TheStreet",
+        "published_at": "2026-07-23T22:11:18Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "JAKKS Pacific Q2 Earnings Call Highlights",
+        "summary": "",
+        "url": "https://finance.yahoo.com/m/4887a0a2-5820-3767-80d7-16ead306b6be/jakks-pacific-q2-earnings.html",
+        "source": "MarketBeat",
+        "published_at": "2026-07-23T22:06:18Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "CoTec to Host July 2026 Business Update Webinar",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/cotec-host-july-2026-business-220000978.html",
+        "source": "ACCESS Newswire",
+        "published_at": "2026-07-23T22:00:00Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "U.S. Stocks Slide as Oil Hits $100, While Tech Selloff Deepens",
+        "summary": "",
+        "url": "https://finance.yahoo.com/m/7bf99898-3926-3d66-8fed-e435813bbf57/u.s.-stocks-slide-as-oil-hits.html",
+        "source": "The Wall Street Journal",
+        "published_at": "2026-07-23T21:25:00Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Imperial Metals Reports Lower Q2 Copper, Gold Production at Red Chris Mine",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/commodities/articles/imperial-metals-reports-lower-q2-211918372.html",
+        "source": "MT Newswires",
+        "published_at": "2026-07-23T21:19:18Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Imperial Reports Production Update for Red Chris Mine 2026 Second Quarter",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/commodities/articles/imperial-reports-production-red-chris-210700303.html",
+        "source": "GlobeNewswire",
+        "published_at": "2026-07-23T21:07:00Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Freeport-McMoRan Inc (FCX) Q2 2026 Earnings Call Highlights: Strong Income Growth and Strategic ...",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/freeport-mcmoran-inc-fcx-q2-210446739.html",
+        "source": "GuruFocus.com",
+        "published_at": "2026-07-23T21:04:46Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Update: US Equity Indexes Slump, Crude Oil Soars as Trump Warns of Big Iran Attack",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/us-equity-indexes-slump-crude-210304104.html",
+        "source": "MT Newswires",
+        "published_at": "2026-07-23T21:03:04Z",
+        "fetched_at": "2026-07-23T22:32:15Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      }
+    ],
+    "source_statuses": [
+      {
+        "source": "Yahoo Finance",
+        "status": "ok",
+        "item_count": 39
+      },
+      {
+        "source": "Federal Reserve",
+        "status": "ok",
+        "item_count": 2
+      }
+    ]
+  },
+  "tickers": {
+    "NVDA": {
+      "status": "partial",
+      "query_type": "ticker",
+      "ticker": "NVDA",
+      "start_date": "2026-07-23",
+      "end_date": "2026-07-23",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "items": [
+        {
+          "title": "Amkor Technology surges 16% on $1.5B Nvidia deal",
+          "summary": "",
+          "url": "https://finance.yahoo.com/technology/ai/articles/amkor-technology-surges-16-1-215534452.html",
+          "source": "Investing.com",
+          "published_at": "2026-07-23T21:55:34Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA (NASDAQ:NVDA) Shares Down 1.6% - What's Next?",
+          "summary": "NVIDIA (NASDAQ:NVDA) Shares Down 1.6% - What's Next? MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPVWVLbWREZTJSU0FzRWI4dENBLVExMFlOOTFtNEdYdWt2dHM1eFpJWmF5Ujdlb29SYTlvTEhtQldHTVNpXzVtWXdJOWZGZTZsWnM1eExQbEExVDhOTTd4eWp4YzVWejNOSENndkpPSXMzYjN0bHNFaENERlBFTGZ3bUJ2N1hja0FFXzhhSkVoZE1pOGhHZFBpdkhFM3djZw?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-07-23T21:47:08Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Nvidia's Stock Hasn't Been This Cheap Since 2019. Here's Why It's the Best Buy in the Market Now.",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/ca3f11f8-d256-35ed-806e-c9f08f2d2e76/nvidia%27s-stock-hasn%27t-been.html",
+          "source": "Motley Fool",
+          "published_at": "2026-07-23T21:41:00Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Better-Buy Chip Stock: Taiwan Semiconductor vs. Nvidia",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/cd674d28-6b66-3cb0-bcb0-16aa2ba2a3e1/better-buy-chip-stock%3A-taiwan.html",
+          "source": "Motley Fool",
+          "published_at": "2026-07-23T20:44:00Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Why Nvidia Stock Isn’t Rallying as It Should After Alphabet Earnings",
+          "summary": "Why Nvidia Stock Isn’t Rallying as It Should After Alphabet Earnings Barron's Why Nvidia (NVDA) Stock Faces Sell-the-News Risk Following Its Q2 Earnings Report Barchart.com Nvidia Tests Key Level After Alphabet's Earnings Beat; Is Nvidia A Buy Or Sell Now? Investor's Business Daily",
+          "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNeW8xUU5xOWFXYWRkNzcwalBIRUtRUkN4Q1JlbkpveXlMaE1aLVNNdlR1REJDNFZHUUtna1RJanpYUTk3YXk0TU1PRWVrZG9PYjZHQVRqUU9WY29yMnBYeTVWaUptQlpuWndoNE5iUlAxLVRMZlpRYlljNDRObXYwWlU5RlhuaEU?oc=5",
+          "source": "Google News / Barron's",
+          "published_at": "2026-07-23T20:39:00Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Missed NVIDIA? This AI Memory Stock Could Be the Next Big Winner",
+          "summary": "",
+          "url": "https://finance.yahoo.com/technology/ai/articles/missed-nvidia-ai-memory-stock-190000412.html",
+          "source": "Zacks",
+          "published_at": "2026-07-23T19:00:00Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Bank of America targets Nvidia's next $170 billion growth engine",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/d7385c2e-caad-37b8-b6e9-51b1944085bf/bank-of-america-targets.html",
+          "source": "TheStreet",
+          "published_at": "2026-07-23T16:47:00Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Why Nvidia (NVDA) Stock Faces Sell-the-News Risk Following Its Q2 Earnings Report",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/1bc3e640-478d-3b36-99da-a7c20a2b0b1d/why-nvidia-%28nvda%29-stock-faces.html",
+          "source": "Barchart",
+          "published_at": "2026-07-23T13:47:29Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Nebius validates first Vera Rubin NVL72 rack in Finland days after NVDA stake",
+          "summary": "",
+          "url": "https://finance.yahoo.com/technology/ai/articles/nebius-validates-first-vera-rubin-133423487.html",
+          "source": "Investing.com",
+          "published_at": "2026-07-23T13:34:23Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Nvidia (NVDA) Recently Broke Out Above the 50-Day Moving Average",
+          "summary": "",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/nvidia-nvda-recently-broke-above-133002280.html",
+          "source": "Zacks",
+          "published_at": "2026-07-23T13:30:02Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA (NVDA) Expands Texas AI Production, Is The Stock Still 38% Undervalued?",
+          "summary": "NVIDIA (NVDA) Expands Texas AI Production, Is The Stock Still 38% Undervalued? simplywall.st",
+          "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPOC1mSnlOZDBDSDZVdDFyLXo5NFNlQzI3LVhNaXctYm9tM05kQzdoVFlrUllEQ0Y1dEhWdnB4bzYtaDFVWHVwTElkdzlSeEdWQU0wdWdFZzh4VnhidTFhQWVLUi1pWjlPTFNjSzUxNFQ2Mk9hclIyVGZMTGlCWTEyUVhGazEyZ0dSSnU1d0wtY0RFMVJtR0pqS25GRExBZEVXUTNaVFlJdDFhZ1NDUThLYWJBazVEczlDTE9wSmRPR25GLTdfaExkdEI2RdIB0AFBVV95cUxPb2ptU1FzTVc5VzFQdXh6SDQtSzQ1OHRsWnlFMUJkdjhyd3o1WXYxRF9NSlY3WHhpaU5SQ19BQWlLSWp2ZXVRTVNncHFBZUZxY1N6aUk5cmFqc1BEVUVpdDhnR1Z1T0dRM05kT2sxXzMyTnEyaGIwcWw5ZjZON0Z5SnFvY1BpSXZrczkxeHR1NmVMNDE4czBIcDFqejZTV2NiYzdrMEJSTHh5WXJ4bGlOaUNLMWI4R1VEazBhTl9GejUwRW5oZEF0NDFwMHhPY3Jw?oc=5",
+          "source": "Google News / simplywall.st",
+          "published_at": "2026-07-23T13:03:35Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA Corp (NASDAQ:NVDA) is a Quality Stock with a 125% ROIC and Strong Growth Profile",
+          "summary": "NVIDIA Corp (NASDAQ:NVDA) is a Quality Stock with a 125% ROIC and Strong Growth Profile ChartMill",
+          "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNRjN6dFVEYl9qM3JDVFVsXzlOSXktYU11ZHUyTFg2Nlg5UUNMQzdxVlZFVHZ5ZDBaUVRrdnB3cGRkYndxZ2FRRE05VVBwZVh0NGZpYnhUYkFiVDNKY09LMi1ibkxxZ2sxM2NuenBVNHN6bzZmQXBSYjRRdkRjVjVXX1k1SXRPNXdFV2pSZkVWc0dvMFB4UHJTaklXUjhrMUIyWDZneXhYSlFaZ2oxLXAyekFCcHlsUE1WVWpXRlNpMXM1aVhUWXhzWVZLZUtMZ3FK?oc=5",
+          "source": "Google News / ChartMill",
+          "published_at": "2026-07-23T10:50:34Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA Corporation $NVDA Stock Holdings Increased by UNIVEST FINANCIAL Corp",
+          "summary": "NVIDIA Corporation $NVDA Stock Holdings Increased by UNIVEST FINANCIAL Corp MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQTllQXzd3bFRLQXJPNXlyeUg4NmFVZExFdUJqOENmWi1DNmkxODNFVkRRSlh0d3JES240aXZQQ19yN0hkNEFmVEFDclVBN1U1SV8zZms2ajhDb1IyMHI5b29sb2RMVEctU0pUZW5vSWtQT2Z3VWQwb0lGQW1ONDBBUFdvZmpENHplVnVnN2thNkY2TTZFckNUS2g1LVhENUs3eUpnSWlMSFZtRUF0d1dWbFhMQjRzRlF5NVNHb28ybHktVUR0bW5JNjlkQWxiaG5P?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-07-23T09:26:45Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Luminvest Wealth Management LLC Has $290,000 Stock Position in NVIDIA Corporation $NVDA",
+          "summary": "Luminvest Wealth Management LLC Has $290,000 Stock Position in NVIDIA Corporation $NVDA MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxNRVh5ZWJZeXJ6aDNxUnlRRGw1akpieVZqTzI3UVFSRnFuMV9HSVdPakdCam9OWlVVQnVkZVZVRU1SbWROVERNdm1nUHVtaXZZenA3VXVCZGwzRV9SZzdFVjJCVlRIaVNfVk5mTjhtNUV5UFgxZk1oNGo4MEFKV3VSVFdpaHpDMlY4NExqejRQbXdOUWxyelFLeUszY0xnVjhnczZneFlRWUtVSDZvZkpTNDduR0laUllMRlNkcklKV0JNMHFXblRpbm9NRTNDVW9lZ3AtLVVzQWNyeDVadnc?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-07-23T09:26:43Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Pittenger & Anderson Inc. Purchases 11,378 Shares of NVIDIA Corporation $NVDA",
+          "summary": "Pittenger & Anderson Inc. Purchases 11,378 Shares of NVIDIA Corporation $NVDA MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPNnlzRVJzbDBVZC1iVklMYW9lNVlpQkN2WXlRRXptdHV0M0J4Wml6Qy1HVlU3eDNNd2RackFRdjQ3S0tld0RydjVsLW4zR3VuMFFVb0xkYmxPWGh5OFYzVnVCQWlZa2Y2N3Y1Z3Q0eU5rUjlPZHRyYlVhU0NvamVyRzJidEE1Z0p6NnRweHhpT0RMZERJWjl5TW1RS2VjTHFZUnVjXzdLVkdXWVBFRXJHTE5YQl9PRDExTG96OThoNUNZN25Va1M4T3pqeFQydw?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-07-23T09:03:09Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA Corporation $NVDA Shares Sold by Midwest Trust Co",
+          "summary": "NVIDIA Corporation $NVDA Shares Sold by Midwest Trust Co MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQdTU5cllNWlBvZzZXNjR2VEVSR3JIOXNqd3lOb1EtaTBYT1FXQW9WQjg0Z3pPZnlzTXhpR2k1THVKeElHRW85eG9EcU05RWdydHdQXzBXNEpMQkF6eXdFN3RUcHhKOWtEdzRpUDJhUm1NcnVTX0NjcExtc05MYTIwTTlQbEZSVFdXaDBWRm1DRVdtN09sajg3M0dCZ3ZRc0lkS1VnTlJGaTlzbDRzRlpaam1UaHUwdTA?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-07-23T08:58:30Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVDA Stock Looks 'Remarkably Cheap', Says Wall Street After Beat-And-Raise Q1 — Analyst Sees Nvidia Market Cap Soaring Past $10 Trillion",
+          "summary": "NVDA Stock Looks 'Remarkably Cheap', Says Wall Street After Beat-And-Raise Q1 — Analyst Sees Nvidia Market Cap Soaring Past $10 Trillion Stocktwits",
+          "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNa0FheVlBTThLMGlhbGNzdGdUSnQtSEY5cmh0U1JQa01DbTlscWx4eTJUWWxqd0hMejlpOEtiU2o3OGdZa2lta3FZN19BZFk0TnlZOFFFbWUwNXRzMUd5OUNWalZmVnMzQUlfWmI3UUtLYV83WlI3VTFQUC1LUEVtUDVHX08xRmljRHJJLUM5b1pPbUp2bzdsa05HN0FKY1JaSWFpOVFFZ21JaVVhOUdZLTNaV1BFejAzZlRzTGRkbHU2NUtUMUtOWUNyTjktaTZoUXc?oc=5",
+          "source": "Google News / Stocktwits",
+          "published_at": "2026-07-23T08:16:45Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Cullinan Associates Inc. Decreases Stake in NVIDIA Corporation $NVDA",
+          "summary": "Cullinan Associates Inc. Decreases Stake in NVIDIA Corporation $NVDA MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQcXRScWhGcHpDOW9RMEhsM0lLbmhpMW5yOEU5R0ZMU0xVRk1lYzlwcjBwakVvR0hhNExjODFFYTA1NlpZbVh5dXJFSGk5dTVYWXBfWFA4a0swbkJUekwwS3B6dXdFc2gxZ3pZdnpPU1REckFaaFpSX29lUElrMDJHSVdvRFdxcTFQdlBqOWRuWjRKR3NVaEh3RURwRHpEVHk5cFUyYnpONkE3UnNUTVRYcWhQWkZkUjk3eFR1b2x4VmlkRkV6amc?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-07-23T07:36:20Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "ARQ Wealth Advisors LLC Grows Position in NVIDIA Corporation $NVDA",
+          "summary": "ARQ Wealth Advisors LLC Grows Position in NVIDIA Corporation $NVDA MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQT29XZEJlY1ZjT2FDTjJPMzVNd19KUHk4cHM3WWZXV2xlUUg0RHlQWXEwTUZ2SlZ4aU96MHN1Y3B3Xy1lZERuUWgyWGZmNWMxQWRtZVV6ZHJTZE5jS3BmQ2pMMTlsUmhUcVBDLWJfRmlINEVrNG9xdFY2UGNfN2lEcGR1UUE1QjJjYmRzbzdNVlBLaGtPMC12c1I5WjhLYmNrLXJmOTMxa2l3eWxldVdTSWhoVjhlZ2ltNGVvdkhhMU5lcWtn?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-07-23T07:28:20Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVDA 260722 210.00C (NVDA260722C210000) Stock Options Chain | Quotes & News",
+          "summary": "NVDA 260722 210.00C (NVDA260722C210000) Stock Options Chain | Quotes & News Moomoo",
+          "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE5Vc1dtalczV2ZPbVlvLThmZzB2aXpoX2RodjVhdm04d01VbmFBN0EtbTJZZEJMejhYUDB1dkoyQ2NTNHRmeEVsbzF3NVdOM1VJaTktNHpmdFZrSDFaTGc?oc=5",
+          "source": "Google News / Moomoo",
+          "published_at": "2026-07-23T05:26:36Z",
+          "fetched_at": "2026-07-23T22:32:16Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        }
+      ],
+      "source_statuses": [
+        {
+          "source": "Yahoo Finance",
+          "status": "ok",
+          "item_count": 8
+        },
+        {
+          "source": "Google News RSS",
+          "status": "ok",
+          "item_count": 12
+        },
+        {
+          "source": "SEC EDGAR",
+          "status": "failed",
+          "item_count": 0
+        }
+      ]
+    },
+    "SPY": {
+      "status": "partial",
+      "query_type": "ticker",
+      "ticker": "SPY",
+      "start_date": "2026-07-23",
+      "end_date": "2026-07-23",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "items": [
+        {
+          "title": "First Trust Launches DGJL, a New Buffer ETF With a Fixed 9.37% Return",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/63d5a6a5-1e13-3bad-9d68-5460f23ffc03/first-trust-launches-dgjl%2C-a.html",
+          "source": "24/7 Wall St.",
+          "published_at": "2026-07-23T21:46:51Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "HDV Delivers 3.1% Yield While Beating SPY Year to Date by 9 Points",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/a792a8e1-3a37-3ce8-ae4b-5ed10b880f46/hdv-delivers-3.1%25-yield-while.html",
+          "source": "24/7 Wall St.",
+          "published_at": "2026-07-23T19:35:08Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "History says sell: Rare stock-oil divergence flashes red for bulls (SPY:NYSEARCA)",
+          "summary": "History says sell: Rare stock-oil divergence flashes red for bulls (SPY:NYSEARCA) Seeking Alpha",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOb1Q1SjZtZG9xUkhraU1vV2FKV3pyOEhRdG5HcVRtSjI3V3NET2hhdjJDSWxjYXRSbVZfQnlsTkNrenBpN2trQXFVeW5MRURMb1NaMTlUb19tbTdSS0lBbl9QUFFMUC1iVDBiYi1hZkpCblVGaW9ERWFxb2dfdFc4WU5BM1NhdmlHbWdTY3RzSU5TRWRQMW1fV2c2Q2p2SHBXYVF0Mkhn?oc=5",
+          "source": "Google News / Seeking Alpha",
+          "published_at": "2026-07-23T17:16:27Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "SPY is down 1.3% today, on TSLA stock price movement",
+          "summary": "SPY is down 1.3% today, on TSLA stock price movement Quiver Quantitative",
+          "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxONHpybmRzelN2cEpEZXJ4N3JwdkFFaEk1Q1F3SlZpakVNUTRWMVBLWXdHanZ2Z3d0YkN3MGxJWDVLUkhKUlVHV2c3RWQ4Qy1ZSGR4ZWs1OFRicElDclE5Q2FSeklQQ0p6Qmgxd3hpajBlaWVhNnBiT0dsZHN2a1FLTzRLVlhKNGZWaDVRcVRwSmI2Q0k?oc=5",
+          "source": "Google News / Quiver Quantitative",
+          "published_at": "2026-07-23T16:15:00Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "What Does SPY’s Price Tag Buy You Today?",
+          "summary": "What Does SPY’s Price Tag Buy You Today? Trefis",
+          "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxORHpNeVpidjRyWHg1aWVFVjhETHRRZG9PZmQxZkdpMU5yWmRuN3Vhdk43YnZrbmd1X3RlLXc1R3dnTzVFcy1ISWFWTnF6YkFYeTJySnktV1ZWanZkeExBX09hTWRoRHI1aWJLQVlMLUtVdjViYTJfWmtPV2pCak0yUWVEUmRfS2huZzI5Q08wSnRDTERzVkNGNUVJOHgtY2c?oc=5",
+          "source": "Google News / Trefis",
+          "published_at": "2026-07-23T16:08:04Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "SPY: Key Pivot Points Indicate Market Sentiment",
+          "summary": "SPY: Key Pivot Points Indicate Market Sentiment GuruFocus",
+          "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQQ2V1Wld3TmFrR3JnRk4zM01Yb1hGc0NqWnVuOEM4RGIxUnFRUU1UZUQxMHp6UFFzclZwcmpKWUhwMzNVODk5dXhiMkdYMk1Hak9BRmU4QmtxWU13M3Z3V0NhRkFTQ0RfYVhyNUhNTFVHZ0p5Tm1MWExlWTlwMzJ6YV9EeG5Lb3pxNVRzNG5B?oc=5",
+          "source": "Google News / GuruFocus",
+          "published_at": "2026-07-23T13:35:09Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Exchange-Traded Funds, Equity Futures Lower Pre-Bell Thursday Amid Major Tech Stocks Sell-Off",
+          "summary": "",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/exchange-traded-funds-equity-futures-130626891.html",
+          "source": "MT Newswires",
+          "published_at": "2026-07-23T13:06:26Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        }
+      ],
+      "source_statuses": [
+        {
+          "source": "Yahoo Finance",
+          "status": "ok",
+          "item_count": 4
+        },
+        {
+          "source": "Google News RSS",
+          "status": "ok",
+          "item_count": 4
+        },
+        {
+          "source": "SEC EDGAR",
+          "status": "failed",
+          "item_count": 0
+        }
+      ]
+    },
+    "600519.SS": {
+      "status": "ok",
+      "query_type": "ticker",
+      "ticker": "600519.SS",
+      "start_date": "2026-07-23",
+      "end_date": "2026-07-23",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "items": [
+        {
+          "title": "股票行情快报：贵州茅台（600519）7月23日主力资金净卖出1870.70万元_主力研究",
+          "summary": "股票行情快报：贵州茅台（600519）7月23日主力资金净卖出1870.70万元_主力研究 证券之星",
+          "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1URF9DMzl3U2JaWVhEWlRVZGRnTjU1OWRYVmpBbmlVc2poNk1lMHBpVW9leWVpcVMxOFVidmxIajI4OTA0eDM5S01VWk9qc2VGQjJvMk94ZXgzLWQxcXZrM2t3?oc=5",
+          "source": "Google News / 证券之星",
+          "published_at": "2026-07-23T11:04:51Z",
+          "fetched_at": "2026-07-23T22:32:17Z",
+          "ticker": "600519.SS",
+          "source_tier": "aggregator"
+        }
+      ],
+      "source_statuses": [
+        {
+          "source": "Yahoo Finance",
+          "status": "empty",
+          "item_count": 0
+        },
+        {
+          "source": "Google News RSS",
+          "status": "ok",
+          "item_count": 1
+        },
+        {
+          "source": "SEC EDGAR",
+          "status": "empty",
+          "item_count": 0
+        }
+      ]
+    }
+  },
+  "items": [
+    {
+      "title": "Crypto Market Today, July 23: Bitcoin Slides as Odds of Passing Clarity Act Fall",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/e2aae19e-dfe8-3762-96c4-59b9e396d767/crypto-market-today%2C-july-23%3A.html",
+      "source": "Motley Fool",
+      "published_at": "2026-07-23T22:17:24Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Dow Jones Futures: Market Sells Off On Oil Prices, Google, Tesla; Intel Rises Late, SpaceX Starship Launch Due",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/96fdd7c6-3e7b-334a-a08e-b91b60ced4b6/dow-jones-futures%3A-market.html",
+      "source": "Investor's Business Daily",
+      "published_at": "2026-07-23T22:16:33Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "World’s quietest metal just dropped a huge bullish signal",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/663f67c9-e881-3102-980f-106de479bcd1/world%E2%80%99s-quietest-metal-just.html",
+      "source": "TheStreet",
+      "published_at": "2026-07-23T22:11:18Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "JAKKS Pacific Q2 Earnings Call Highlights",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/4887a0a2-5820-3767-80d7-16ead306b6be/jakks-pacific-q2-earnings.html",
+      "source": "MarketBeat",
+      "published_at": "2026-07-23T22:06:18Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "CoTec to Host July 2026 Business Update Webinar",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/cotec-host-july-2026-business-220000978.html",
+      "source": "ACCESS Newswire",
+      "published_at": "2026-07-23T22:00:00Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Amkor Technology surges 16% on $1.5B Nvidia deal",
+      "summary": "",
+      "url": "https://finance.yahoo.com/technology/ai/articles/amkor-technology-surges-16-1-215534452.html",
+      "source": "Investing.com",
+      "published_at": "2026-07-23T21:55:34Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA (NASDAQ:NVDA) Shares Down 1.6% - What's Next?",
+      "summary": "NVIDIA (NASDAQ:NVDA) Shares Down 1.6% - What's Next? MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPVWVLbWREZTJSU0FzRWI4dENBLVExMFlOOTFtNEdYdWt2dHM1eFpJWmF5Ujdlb29SYTlvTEhtQldHTVNpXzVtWXdJOWZGZTZsWnM1eExQbEExVDhOTTd4eWp4YzVWejNOSENndkpPSXMzYjN0bHNFaENERlBFTGZ3bUJ2N1hja0FFXzhhSkVoZE1pOGhHZFBpdkhFM3djZw?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-07-23T21:47:08Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "First Trust Launches DGJL, a New Buffer ETF With a Fixed 9.37% Return",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/63d5a6a5-1e13-3bad-9d68-5460f23ffc03/first-trust-launches-dgjl%2C-a.html",
+      "source": "24/7 Wall St.",
+      "published_at": "2026-07-23T21:46:51Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Nvidia's Stock Hasn't Been This Cheap Since 2019. Here's Why It's the Best Buy in the Market Now.",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/ca3f11f8-d256-35ed-806e-c9f08f2d2e76/nvidia%27s-stock-hasn%27t-been.html",
+      "source": "Motley Fool",
+      "published_at": "2026-07-23T21:41:00Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "U.S. Stocks Slide as Oil Hits $100, While Tech Selloff Deepens",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/7bf99898-3926-3d66-8fed-e435813bbf57/u.s.-stocks-slide-as-oil-hits.html",
+      "source": "The Wall Street Journal",
+      "published_at": "2026-07-23T21:25:00Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Imperial Metals Reports Lower Q2 Copper, Gold Production at Red Chris Mine",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/commodities/articles/imperial-metals-reports-lower-q2-211918372.html",
+      "source": "MT Newswires",
+      "published_at": "2026-07-23T21:19:18Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Imperial Reports Production Update for Red Chris Mine 2026 Second Quarter",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/commodities/articles/imperial-reports-production-red-chris-210700303.html",
+      "source": "GlobeNewswire",
+      "published_at": "2026-07-23T21:07:00Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Freeport-McMoRan Inc (FCX) Q2 2026 Earnings Call Highlights: Strong Income Growth and Strategic ...",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/freeport-mcmoran-inc-fcx-q2-210446739.html",
+      "source": "GuruFocus.com",
+      "published_at": "2026-07-23T21:04:46Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Update: US Equity Indexes Slump, Crude Oil Soars as Trump Warns of Big Iran Attack",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/us-equity-indexes-slump-crude-210304104.html",
+      "source": "MT Newswires",
+      "published_at": "2026-07-23T21:03:04Z",
+      "fetched_at": "2026-07-23T22:32:15Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Better-Buy Chip Stock: Taiwan Semiconductor vs. Nvidia",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/cd674d28-6b66-3cb0-bcb0-16aa2ba2a3e1/better-buy-chip-stock%3A-taiwan.html",
+      "source": "Motley Fool",
+      "published_at": "2026-07-23T20:44:00Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Why Nvidia Stock Isn’t Rallying as It Should After Alphabet Earnings",
+      "summary": "Why Nvidia Stock Isn’t Rallying as It Should After Alphabet Earnings Barron's Why Nvidia (NVDA) Stock Faces Sell-the-News Risk Following Its Q2 Earnings Report Barchart.com Nvidia Tests Key Level After Alphabet's Earnings Beat; Is Nvidia A Buy Or Sell Now? Investor's Business Daily",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNeW8xUU5xOWFXYWRkNzcwalBIRUtRUkN4Q1JlbkpveXlMaE1aLVNNdlR1REJDNFZHUUtna1RJanpYUTk3YXk0TU1PRWVrZG9PYjZHQVRqUU9WY29yMnBYeTVWaUptQlpuWndoNE5iUlAxLVRMZlpRYlljNDRObXYwWlU5RlhuaEU?oc=5",
+      "source": "Google News / Barron's",
+      "published_at": "2026-07-23T20:39:00Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "HDV Delivers 3.1% Yield While Beating SPY Year to Date by 9 Points",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/a792a8e1-3a37-3ce8-ae4b-5ed10b880f46/hdv-delivers-3.1%25-yield-while.html",
+      "source": "24/7 Wall St.",
+      "published_at": "2026-07-23T19:35:08Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Missed NVIDIA? This AI Memory Stock Could Be the Next Big Winner",
+      "summary": "",
+      "url": "https://finance.yahoo.com/technology/ai/articles/missed-nvidia-ai-memory-stock-190000412.html",
+      "source": "Zacks",
+      "published_at": "2026-07-23T19:00:00Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "History says sell: Rare stock-oil divergence flashes red for bulls (SPY:NYSEARCA)",
+      "summary": "History says sell: Rare stock-oil divergence flashes red for bulls (SPY:NYSEARCA) Seeking Alpha",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOb1Q1SjZtZG9xUkhraU1vV2FKV3pyOEhRdG5HcVRtSjI3V3NET2hhdjJDSWxjYXRSbVZfQnlsTkNrenBpN2trQXFVeW5MRURMb1NaMTlUb19tbTdSS0lBbl9QUFFMUC1iVDBiYi1hZkpCblVGaW9ERWFxb2dfdFc4WU5BM1NhdmlHbWdTY3RzSU5TRWRQMW1fV2c2Q2p2SHBXYVF0Mkhn?oc=5",
+      "source": "Google News / Seeking Alpha",
+      "published_at": "2026-07-23T17:16:27Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Bank of America targets Nvidia's next $170 billion growth engine",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/d7385c2e-caad-37b8-b6e9-51b1944085bf/bank-of-america-targets.html",
+      "source": "TheStreet",
+      "published_at": "2026-07-23T16:47:00Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "SPY is down 1.3% today, on TSLA stock price movement",
+      "summary": "SPY is down 1.3% today, on TSLA stock price movement Quiver Quantitative",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxONHpybmRzelN2cEpEZXJ4N3JwdkFFaEk1Q1F3SlZpakVNUTRWMVBLWXdHanZ2Z3d0YkN3MGxJWDVLUkhKUlVHV2c3RWQ4Qy1ZSGR4ZWs1OFRicElDclE5Q2FSeklQQ0p6Qmgxd3hpajBlaWVhNnBiT0dsZHN2a1FLTzRLVlhKNGZWaDVRcVRwSmI2Q0k?oc=5",
+      "source": "Google News / Quiver Quantitative",
+      "published_at": "2026-07-23T16:15:00Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "What Does SPY’s Price Tag Buy You Today?",
+      "summary": "What Does SPY’s Price Tag Buy You Today? Trefis",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxORHpNeVpidjRyWHg1aWVFVjhETHRRZG9PZmQxZkdpMU5yWmRuN3Vhdk43YnZrbmd1X3RlLXc1R3dnTzVFcy1ISWFWTnF6YkFYeTJySnktV1ZWanZkeExBX09hTWRoRHI1aWJLQVlMLUtVdjViYTJfWmtPV2pCak0yUWVEUmRfS2huZzI5Q08wSnRDTERzVkNGNUVJOHgtY2c?oc=5",
+      "source": "Google News / Trefis",
+      "published_at": "2026-07-23T16:08:04Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Why Nvidia (NVDA) Stock Faces Sell-the-News Risk Following Its Q2 Earnings Report",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/1bc3e640-478d-3b36-99da-a7c20a2b0b1d/why-nvidia-%28nvda%29-stock-faces.html",
+      "source": "Barchart",
+      "published_at": "2026-07-23T13:47:29Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "SPY: Key Pivot Points Indicate Market Sentiment",
+      "summary": "SPY: Key Pivot Points Indicate Market Sentiment GuruFocus",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQQ2V1Wld3TmFrR3JnRk4zM01Yb1hGc0NqWnVuOEM4RGIxUnFRUU1UZUQxMHp6UFFzclZwcmpKWUhwMzNVODk5dXhiMkdYMk1Hak9BRmU4QmtxWU13M3Z3V0NhRkFTQ0RfYVhyNUhNTFVHZ0p5Tm1MWExlWTlwMzJ6YV9EeG5Lb3pxNVRzNG5B?oc=5",
+      "source": "Google News / GuruFocus",
+      "published_at": "2026-07-23T13:35:09Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Nebius validates first Vera Rubin NVL72 rack in Finland days after NVDA stake",
+      "summary": "",
+      "url": "https://finance.yahoo.com/technology/ai/articles/nebius-validates-first-vera-rubin-133423487.html",
+      "source": "Investing.com",
+      "published_at": "2026-07-23T13:34:23Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Nvidia (NVDA) Recently Broke Out Above the 50-Day Moving Average",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/nvidia-nvda-recently-broke-above-133002280.html",
+      "source": "Zacks",
+      "published_at": "2026-07-23T13:30:02Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Exchange-Traded Funds, Equity Futures Lower Pre-Bell Thursday Amid Major Tech Stocks Sell-Off",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/exchange-traded-funds-equity-futures-130626891.html",
+      "source": "MT Newswires",
+      "published_at": "2026-07-23T13:06:26Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA (NVDA) Expands Texas AI Production, Is The Stock Still 38% Undervalued?",
+      "summary": "NVIDIA (NVDA) Expands Texas AI Production, Is The Stock Still 38% Undervalued? simplywall.st",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPOC1mSnlOZDBDSDZVdDFyLXo5NFNlQzI3LVhNaXctYm9tM05kQzdoVFlrUllEQ0Y1dEhWdnB4bzYtaDFVWHVwTElkdzlSeEdWQU0wdWdFZzh4VnhidTFhQWVLUi1pWjlPTFNjSzUxNFQ2Mk9hclIyVGZMTGlCWTEyUVhGazEyZ0dSSnU1d0wtY0RFMVJtR0pqS25GRExBZEVXUTNaVFlJdDFhZ1NDUThLYWJBazVEczlDTE9wSmRPR25GLTdfaExkdEI2RdIB0AFBVV95cUxPb2ptU1FzTVc5VzFQdXh6SDQtSzQ1OHRsWnlFMUJkdjhyd3o1WXYxRF9NSlY3WHhpaU5SQ19BQWlLSWp2ZXVRTVNncHFBZUZxY1N6aUk5cmFqc1BEVUVpdDhnR1Z1T0dRM05kT2sxXzMyTnEyaGIwcWw5ZjZON0Z5SnFvY1BpSXZrczkxeHR1NmVMNDE4czBIcDFqejZTV2NiYzdrMEJSTHh5WXJ4bGlOaUNLMWI4R1VEazBhTl9GejUwRW5oZEF0NDFwMHhPY3Jw?oc=5",
+      "source": "Google News / simplywall.st",
+      "published_at": "2026-07-23T13:03:35Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "股票行情快报：贵州茅台（600519）7月23日主力资金净卖出1870.70万元_主力研究",
+      "summary": "股票行情快报：贵州茅台（600519）7月23日主力资金净卖出1870.70万元_主力研究 证券之星",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE1URF9DMzl3U2JaWVhEWlRVZGRnTjU1OWRYVmpBbmlVc2poNk1lMHBpVW9leWVpcVMxOFVidmxIajI4OTA0eDM5S01VWk9qc2VGQjJvMk94ZXgzLWQxcXZrM2t3?oc=5",
+      "source": "Google News / 证券之星",
+      "published_at": "2026-07-23T11:04:51Z",
+      "fetched_at": "2026-07-23T22:32:17Z",
+      "ticker": "600519.SS",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA Corp (NASDAQ:NVDA) is a Quality Stock with a 125% ROIC and Strong Growth Profile",
+      "summary": "NVIDIA Corp (NASDAQ:NVDA) is a Quality Stock with a 125% ROIC and Strong Growth Profile ChartMill",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNRjN6dFVEYl9qM3JDVFVsXzlOSXktYU11ZHUyTFg2Nlg5UUNMQzdxVlZFVHZ5ZDBaUVRrdnB3cGRkYndxZ2FRRE05VVBwZVh0NGZpYnhUYkFiVDNKY09LMi1ibkxxZ2sxM2NuenBVNHN6bzZmQXBSYjRRdkRjVjVXX1k1SXRPNXdFV2pSZkVWc0dvMFB4UHJTaklXUjhrMUIyWDZneXhYSlFaZ2oxLXAyekFCcHlsUE1WVWpXRlNpMXM1aVhUWXhzWVZLZUtMZ3FK?oc=5",
+      "source": "Google News / ChartMill",
+      "published_at": "2026-07-23T10:50:34Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA Corporation $NVDA Stock Holdings Increased by UNIVEST FINANCIAL Corp",
+      "summary": "NVIDIA Corporation $NVDA Stock Holdings Increased by UNIVEST FINANCIAL Corp MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQTllQXzd3bFRLQXJPNXlyeUg4NmFVZExFdUJqOENmWi1DNmkxODNFVkRRSlh0d3JES240aXZQQ19yN0hkNEFmVEFDclVBN1U1SV8zZms2ajhDb1IyMHI5b29sb2RMVEctU0pUZW5vSWtQT2Z3VWQwb0lGQW1ONDBBUFdvZmpENHplVnVnN2thNkY2TTZFckNUS2g1LVhENUs3eUpnSWlMSFZtRUF0d1dWbFhMQjRzRlF5NVNHb28ybHktVUR0bW5JNjlkQWxiaG5P?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-07-23T09:26:45Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Luminvest Wealth Management LLC Has $290,000 Stock Position in NVIDIA Corporation $NVDA",
+      "summary": "Luminvest Wealth Management LLC Has $290,000 Stock Position in NVIDIA Corporation $NVDA MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxNRVh5ZWJZeXJ6aDNxUnlRRGw1akpieVZqTzI3UVFSRnFuMV9HSVdPakdCam9OWlVVQnVkZVZVRU1SbWROVERNdm1nUHVtaXZZenA3VXVCZGwzRV9SZzdFVjJCVlRIaVNfVk5mTjhtNUV5UFgxZk1oNGo4MEFKV3VSVFdpaHpDMlY4NExqejRQbXdOUWxyelFLeUszY0xnVjhnczZneFlRWUtVSDZvZkpTNDduR0laUllMRlNkcklKV0JNMHFXblRpbm9NRTNDVW9lZ3AtLVVzQWNyeDVadnc?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-07-23T09:26:43Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Pittenger & Anderson Inc. Purchases 11,378 Shares of NVIDIA Corporation $NVDA",
+      "summary": "Pittenger & Anderson Inc. Purchases 11,378 Shares of NVIDIA Corporation $NVDA MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPNnlzRVJzbDBVZC1iVklMYW9lNVlpQkN2WXlRRXptdHV0M0J4Wml6Qy1HVlU3eDNNd2RackFRdjQ3S0tld0RydjVsLW4zR3VuMFFVb0xkYmxPWGh5OFYzVnVCQWlZa2Y2N3Y1Z3Q0eU5rUjlPZHRyYlVhU0NvamVyRzJidEE1Z0p6NnRweHhpT0RMZERJWjl5TW1RS2VjTHFZUnVjXzdLVkdXWVBFRXJHTE5YQl9PRDExTG96OThoNUNZN25Va1M4T3pqeFQydw?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-07-23T09:03:09Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA Corporation $NVDA Shares Sold by Midwest Trust Co",
+      "summary": "NVIDIA Corporation $NVDA Shares Sold by Midwest Trust Co MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQdTU5cllNWlBvZzZXNjR2VEVSR3JIOXNqd3lOb1EtaTBYT1FXQW9WQjg0Z3pPZnlzTXhpR2k1THVKeElHRW85eG9EcU05RWdydHdQXzBXNEpMQkF6eXdFN3RUcHhKOWtEdzRpUDJhUm1NcnVTX0NjcExtc05MYTIwTTlQbEZSVFdXaDBWRm1DRVdtN09sajg3M0dCZ3ZRc0lkS1VnTlJGaTlzbDRzRlpaam1UaHUwdTA?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-07-23T08:58:30Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVDA Stock Looks 'Remarkably Cheap', Says Wall Street After Beat-And-Raise Q1 — Analyst Sees Nvidia Market Cap Soaring Past $10 Trillion",
+      "summary": "NVDA Stock Looks 'Remarkably Cheap', Says Wall Street After Beat-And-Raise Q1 — Analyst Sees Nvidia Market Cap Soaring Past $10 Trillion Stocktwits",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNa0FheVlBTThLMGlhbGNzdGdUSnQtSEY5cmh0U1JQa01DbTlscWx4eTJUWWxqd0hMejlpOEtiU2o3OGdZa2lta3FZN19BZFk0TnlZOFFFbWUwNXRzMUd5OUNWalZmVnMzQUlfWmI3UUtLYV83WlI3VTFQUC1LUEVtUDVHX08xRmljRHJJLUM5b1pPbUp2bzdsa05HN0FKY1JaSWFpOVFFZ21JaVVhOUdZLTNaV1BFejAzZlRzTGRkbHU2NUtUMUtOWUNyTjktaTZoUXc?oc=5",
+      "source": "Google News / Stocktwits",
+      "published_at": "2026-07-23T08:16:45Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Cullinan Associates Inc. Decreases Stake in NVIDIA Corporation $NVDA",
+      "summary": "Cullinan Associates Inc. Decreases Stake in NVIDIA Corporation $NVDA MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQcXRScWhGcHpDOW9RMEhsM0lLbmhpMW5yOEU5R0ZMU0xVRk1lYzlwcjBwakVvR0hhNExjODFFYTA1NlpZbVh5dXJFSGk5dTVYWXBfWFA4a0swbkJUekwwS3B6dXdFc2gxZ3pZdnpPU1REckFaaFpSX29lUElrMDJHSVdvRFdxcTFQdlBqOWRuWjRKR3NVaEh3RURwRHpEVHk5cFUyYnpONkE3UnNUTVRYcWhQWkZkUjk3eFR1b2x4VmlkRkV6amc?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-07-23T07:36:20Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "ARQ Wealth Advisors LLC Grows Position in NVIDIA Corporation $NVDA",
+      "summary": "ARQ Wealth Advisors LLC Grows Position in NVIDIA Corporation $NVDA MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQT29XZEJlY1ZjT2FDTjJPMzVNd19KUHk4cHM3WWZXV2xlUUg0RHlQWXEwTUZ2SlZ4aU96MHN1Y3B3Xy1lZERuUWgyWGZmNWMxQWRtZVV6ZHJTZE5jS3BmQ2pMMTlsUmhUcVBDLWJfRmlINEVrNG9xdFY2UGNfN2lEcGR1UUE1QjJjYmRzbzdNVlBLaGtPMC12c1I5WjhLYmNrLXJmOTMxa2l3eWxldVdTSWhoVjhlZ2ltNGVvdkhhMU5lcWtn?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-07-23T07:28:20Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVDA 260722 210.00C (NVDA260722C210000) Stock Options Chain | Quotes & News",
+      "summary": "NVDA 260722 210.00C (NVDA260722C210000) Stock Options Chain | Quotes & News Moomoo",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE5Vc1dtalczV2ZPbVlvLThmZzB2aXpoX2RodjVhdm04d01VbmFBN0EtbTJZZEJMejhYUDB1dkoyQ2NTNHRmeEVsbzF3NVdOM1VJaTktNHpmdFZrSDFaTGc?oc=5",
+      "source": "Google News / Moomoo",
+      "published_at": "2026-07-23T05:26:36Z",
+      "fetched_at": "2026-07-23T22:32:16Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    }
+  ]
 }
