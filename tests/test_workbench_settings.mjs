@@ -187,6 +187,16 @@ test("ships semantic schedules, high-severity web and PushPlus alerts, and bound
   });
 });
 
+test("accepts valid IANA timezones and rejects unknown timezone identifiers", () => {
+  const valid = defaultSettingsInput();
+  valid.profiles[0].timezone = "America/New_York";
+  assert.equal(buildWorkbenchSettings(valid).profiles[0].timezone, "America/New_York");
+
+  const invalid = defaultSettingsInput();
+  invalid.profiles[0].timezone = "Mars/Olympus_Mons";
+  assertSettingsError("INVALID_TIMEZONE", () => buildWorkbenchSettings(invalid));
+});
+
 test("rejects malformed schedule times, windows, and intervals", () => {
   const invalidTime = defaultSettingsInput();
   invalidTime.profiles[0].schedules.usCloseSnapshot.time = "5:35";
@@ -346,8 +356,14 @@ test("the legacy workbench view derives its ticker list from enabled v2 full-ana
     new URL("../public/assets/workbench.js", import.meta.url),
     "utf8",
   );
+  const helper = /function settingsTickers\(settings\) \{([\s\S]*?)\n  \}\n\n  function renderSettingsSummary/.exec(
+    script,
+  );
   assert.match(script, /function settingsTickers\(settings\)/);
-  assert.match(script, /target\.analysis === "full"/);
+  assert.ok(helper);
+  assert.match(helper[1], /\.find\(\(profile\) => profile\.enabled\)/);
+  assert.doesNotMatch(helper[1], /\.flatMap\(/);
+  assert.match(helper[1], /target\.analysis === "full"/);
   assert.match(script, /settingsTickers\(state\.settings\)/);
   assert.match(script, /settings:\s*state\.settings/);
 });

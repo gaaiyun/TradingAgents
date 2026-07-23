@@ -127,6 +127,16 @@ function timeMinutes(value) {
   return hours * 60 + minutes;
 }
 
+function normalizeTimezone(value) {
+  const timezone = requiredString(value, "profile.timezone", "INVALID_TIMEZONE");
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: timezone });
+  } catch {
+    fail("INVALID_TIMEZONE", `无效的 IANA 时区：${timezone}`);
+  }
+  return timezone;
+}
+
 function normalizeTarget(target) {
   if (!target || typeof target !== "object" || Array.isArray(target)) {
     fail("INVALID_TARGET", "target 必须是对象");
@@ -315,7 +325,7 @@ function normalizeProfile(profile) {
     name: requiredString(profile.name, "profile.name"),
     objective: requiredString(profile.objective, "profile.objective"),
     enabled: profile.enabled,
-    timezone: requiredString(profile.timezone, "profile.timezone"),
+    timezone: normalizeTimezone(profile.timezone),
     targets: normalizeTargets(profile.targets),
     systemBenchmarks: profile.systemBenchmarks.map(normalizeSystemBenchmark),
     schedules: normalizeSchedules(profile.schedules),

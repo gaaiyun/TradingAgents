@@ -9,7 +9,6 @@ import {
 } from "./_util.js";
 import {
   WorkbenchSettingsError,
-  buildWorkbenchSettings,
   updateWorkbenchFullAnalysisTargets,
 } from "./_workbench_settings.mjs";
 
@@ -39,13 +38,45 @@ export async function onRequestPost({ request, env }) {
   }
   if (!gate(env, headerCode ?? body.code)) return json({ error: "访问码不正确" }, 401);
 
+  let currentSettings = body.settings;
+  const loadedCurrentSettings = !currentSettings;
+  if (loadedCurrentSettings) {
+    let currentResponse;
+    try {
+      currentResponse = await proxyRaw("data/workbench-settings.json", { cacheSeconds: 5 });
+    } catch {
+      return json(
+        { error: "无法读取当前工作台设置", error_code: "CURRENT_SETTINGS_UNAVAILABLE" },
+        502,
+      );
+    }
+    if (!currentResponse.ok) {
+      return json(
+        { error: "无法读取当前工作台设置", error_code: "CURRENT_SETTINGS_UNAVAILABLE" },
+        502,
+      );
+    }
+    try {
+      currentSettings = await currentResponse.json();
+    } catch {
+      return json(
+        { error: "当前工作台设置不是合法 JSON", error_code: "CURRENT_SETTINGS_INVALID" },
+        502,
+      );
+    }
+  }
+
   let settings;
   try {
-    settings = body.settings
-      ? updateWorkbenchFullAnalysisTargets(body.settings, body.tickers)
-      : buildWorkbenchSettings(body.tickers);
+    settings = updateWorkbenchFullAnalysisTargets(currentSettings, body.tickers);
   } catch (error) {
     if (error instanceof WorkbenchSettingsError) {
+      if (loadedCurrentSettings) {
+        return json(
+          { error: "当前工作台设置无法通过校验", error_code: "CURRENT_SETTINGS_INVALID" },
+          502,
+        );
+      }
       return json({ error: error.message, error_code: error.code }, 400);
     }
     throw error;

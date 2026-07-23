@@ -63,10 +63,15 @@ test("settings and analysis reject oversized request bodies", async () => {
   assert.equal(settingsResponse.status, 413);
 });
 
-test("saved settings support header authentication without persisting the code", async () => {
+test("legacy ticker-only saves merge into the current v2 settings without losing metadata", async () => {
   const originalFetch = globalThis.fetch;
   let dispatch;
-  globalThis.fetch = async (_url, init) => {
+  let currentReads = 0;
+  globalThis.fetch = async (url, init) => {
+    if (String(url).includes("raw.githubusercontent.com")) {
+      currentReads += 1;
+      return Response.json(defaultSettings());
+    }
     dispatch = JSON.parse(init.body);
     return new Response(null, { status: 204 });
   };
@@ -76,9 +81,17 @@ test("saved settings support header authentication without persisting the code",
       env,
     });
     const payload = await response.json();
+    const persisted = JSON.parse(dispatch.inputs.settings_json);
     assert.equal(response.status, 202);
+    assert.equal(currentReads, 1);
     assert.deepEqual(payload.settings.tickers, ["SPY", "000001.SZ"]);
-    assert.equal(JSON.parse(dispatch.inputs.settings_json).version, 2);
+    assert.equal(persisted.profiles[0].id, "cn-semi-comms");
+    assert.equal(persisted.profiles[0].objective.includes("传导影响"), true);
+    assert.deepEqual(
+      persisted.profiles[0].targets.filter((target) => target.analysis === "signal"),
+      defaultSettings().profiles[0].targets.filter((target) => target.analysis === "signal"),
+    );
+    assert.deepEqual(persisted.profiles[0].systemBenchmarks, defaultSettings().profiles[0].systemBenchmarks);
     assert.equal(JSON.stringify(dispatch).includes("correct-code"), false);
   } finally {
     globalThis.fetch = originalFetch;
@@ -108,6 +121,41 @@ test("saving full-analysis tickers from the v2 page preserves signal targets and
     );
     assert.deepEqual(persisted.profiles[0].systemBenchmarks, defaultSettings().profiles[0].systemBenchmarks);
     assert.deepEqual(payload.settings.tickers, ["515880.SS", "512480.SS"]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("saving the primary profile leaves every other profile and target ownership unchanged", async () => {
+  const originalFetch = globalThis.fetch;
+  let dispatch;
+  globalThis.fetch = async (_url, init) => {
+    dispatch = JSON.parse(init.body);
+    return new Response(null, { status: 204 });
+  };
+  const settings = defaultSettings();
+  const secondProfile = structuredClone(settings.profiles[0]);
+  secondProfile.id = "second-profile";
+  secondProfile.name = "第二研究目标";
+  secondProfile.targets = [
+    { symbol: "SPY", name: "SPY", market: "US", role: "core", analysis: "full" },
+    { symbol: "QQQ", name: "QQQ", market: "US", role: "benchmark", analysis: "signal" },
+  ];
+  settings.profiles.push(secondProfile);
+
+  try {
+    const response = await saveSettings({
+      request: post(JSON.stringify({ tickers: ["515880", "512480"], settings })),
+      env,
+    });
+    const persisted = JSON.parse(dispatch.inputs.settings_json);
+    const primaryFullSymbols = persisted.profiles[0].targets
+      .filter((target) => target.analysis === "full")
+      .map((target) => target.symbol);
+
+    assert.equal(response.status, 202);
+    assert.deepEqual(primaryFullSymbols, ["515880.SS", "512480.SS"]);
+    assert.deepEqual(persisted.profiles[1], secondProfile);
   } finally {
     globalThis.fetch = originalFetch;
   }

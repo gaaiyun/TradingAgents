@@ -357,18 +357,11 @@
   }
 
   function settingsTickers(settings) {
-    if (Array.isArray(settings?.tickers)) return settings.tickers;
-    const seen = new Set();
-    return (settings?.profiles || [])
-      .filter((profile) => profile.enabled)
-      .flatMap((profile) => profile.targets || [])
+    const primaryProfile = (settings?.profiles || []).find((profile) => profile.enabled);
+    if (!primaryProfile) return Array.isArray(settings?.tickers) ? settings.tickers : [];
+    return (primaryProfile.targets || [])
       .filter((target) => target.analysis === "full")
-      .map((target) => target.symbol)
-      .filter((symbol) => {
-        if (seen.has(symbol)) return false;
-        seen.add(symbol);
-        return true;
-      });
+      .map((target) => target.symbol);
   }
 
   function renderSettingsSummary() {
