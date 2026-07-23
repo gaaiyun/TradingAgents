@@ -9,6 +9,7 @@ export const DEFAULT_TARGETS = Object.freeze([
   { symbol: "AVGO", name: "Broadcom", market: "US", role: "driver", analysis: "signal" },
   { symbol: "AMD", name: "AMD", market: "US", role: "driver", analysis: "signal" },
   { symbol: "ASML", name: "ASML", market: "US", role: "driver", analysis: "signal" },
+  { symbol: "ORCL", name: "Oracle", market: "US", role: "driver", analysis: "signal" },
 ]);
 
 const VALID_STATUSES = new Set(["ok", "degraded", "stale", "unavailable"]);

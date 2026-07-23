@@ -41,6 +41,7 @@ export function mapProviderSymbol(provider, rawSymbol) {
   if (provider === "tencent" && match) {
     return `${match[2] === "SS" ? "sh" : "sz"}${match[1]}`;
   }
+  if (provider === "tencent-us" && !match) return `us${symbol}`;
   if (provider === "eastmoney" && match) {
     return `${match[2] === "SS" ? "1" : "0"}.${match[1]}`;
   }
@@ -104,7 +105,7 @@ export function normalizeBar(input, context) {
       context.now,
       context.freshnessThresholdMs,
     ),
-    adjustment: "none",
+    adjustment: context.adjustment ?? "none",
     quality: "good",
   };
 }

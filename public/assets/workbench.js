@@ -773,7 +773,7 @@ import {
     const symbol = normalizeSymbol($("#target-search").value);
     if (!symbol) { toast("请输入支持的 A 股或美股代码", true); return; }
     if (profile.targets.some((target) => target.symbol === symbol)) { toast("该标的已在研究目标中", true); return; }
-    if (profile.targets.length >= 10) { toast("每个研究目标最多 10 个标的", true); return; }
+    if (profile.targets.length >= 12) { toast("每个研究目标最多 12 个标的", true); return; }
     profile.targets.push({ symbol, name: symbol, market: symbol.includes(".S") ? "CN" : "US", role: "comparison", analysis: "signal" });
     $("#target-search").value = "";
     renderTargetEditor(); renderWatchlist();

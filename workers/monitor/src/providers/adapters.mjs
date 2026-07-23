@@ -127,6 +127,26 @@ function parseTencent(payload, request) {
   }));
 }
 
+function tencentUsUrl(request) {
+  const symbol = mapProviderSymbol("tencent-us", request.symbol);
+  return `https://web.ifzq.gtimg.cn/appstock/app/usfqkline/get?param=${symbol},day,,,320,qfq`;
+}
+
+function parseTencentUs(payload, request) {
+  if (payload?.code !== 0) return null;
+  const symbol = mapProviderSymbol("tencent-us", request.symbol);
+  return payload?.data?.[symbol]?.day?.map(
+    ([timestamp, open, close, high, low, volume]) => ({
+      timestamp: utcTimestamp(timestamp, "America/New_York"),
+      open,
+      high,
+      low,
+      close,
+      volume,
+    }),
+  );
+}
+
 function eastmoneyUrl(request) {
   const symbol = mapProviderSymbol("eastmoney", request.symbol);
   const klt = request.timeframe === "5m" ? "5" : "101";
@@ -236,18 +256,37 @@ export function createAdapters({ fetch: fetcher, apiKey, timeoutMs }) {
   const fetchJson = async (url) => (
     await request(fetcher, url, { timeoutMs, format: "json" })
   ).body;
-  const contextFor = (request, source, fetchedAt, now, freshnessThresholdMs) => ({
+  const contextFor = (
+    request,
+    source,
+    fetchedAt,
+    now,
+    freshnessThresholdMs,
+    adjustment = "none",
+  ) => ({
     symbol: request.symbol,
     timeframe: request.timeframe,
     source,
     fetchedAt,
     now,
     freshnessThresholdMs,
+    adjustment,
   });
   return {
     tencent: async (marketRequest, runtime) => normalizeRows(
       parseTencent(await fetchJson(tencentUrl(marketRequest)), marketRequest),
       contextFor(marketRequest, "tencent", runtime.fetchedAt, runtime.now, runtime.freshnessThresholdMs),
+    ),
+    "tencent-us": async (marketRequest, runtime) => normalizeRows(
+      parseTencentUs(await fetchJson(tencentUsUrl(marketRequest)), marketRequest),
+      contextFor(
+        marketRequest,
+        "tencent-us",
+        runtime.fetchedAt,
+        runtime.now,
+        runtime.freshnessThresholdMs,
+        "qfq",
+      ),
     ),
     eastmoney: async (marketRequest, runtime) => normalizeRows(
       parseEastmoney(await fetchJson(eastmoneyUrl(marketRequest)), marketRequest),

@@ -1,6 +1,7 @@
 import { normalizeMarketRequest } from "./contracts.mjs";
 
 const FRESHNESS_VALUES = new Set(["fresh", "stale"]);
+const ADJUSTMENT_VALUES = new Set(["none", "qfq"]);
 
 export class MarketBarWriteError extends Error {
   constructor(code) {
@@ -50,7 +51,7 @@ function validateBar(bar) {
     typeof bar.source !== "string" ||
     !bar.source ||
     !FRESHNESS_VALUES.has(bar.freshness) ||
-    bar.adjustment !== "none" ||
+    !ADJUSTMENT_VALUES.has(bar.adjustment) ||
     typeof bar.quality !== "string" ||
     !bar.quality
   ) {

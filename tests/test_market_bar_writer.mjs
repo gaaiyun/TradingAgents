@@ -117,6 +117,7 @@ test("rejects bad numeric, timestamp, and metadata values before touching D1", a
     marketBar({ high: 8 }),
     marketBar({ freshness: "cached-but-fresh" }),
     marketBar({ source: "" }),
+    marketBar({ adjustment: "mystery" }),
   ];
 
   for (const bar of invalidBars) {

@@ -40,7 +40,7 @@ test("research terminal exposes the continuous three-column workspace and indica
 test("default universe contains the full ETF and semiconductor driver set", () => {
   assert.deepEqual(
     DEFAULT_TARGETS.map(({ symbol }) => symbol),
-    ["515880.SS", "512480.SS", "159995.SZ", "SOXX", "SMH", "NVDA", "TSM", "AVGO", "AMD", "ASML"],
+    ["515880.SS", "512480.SS", "159995.SZ", "SOXX", "SMH", "NVDA", "TSM", "AVGO", "AMD", "ASML", "ORCL"],
   );
 });
 

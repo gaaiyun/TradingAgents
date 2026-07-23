@@ -71,6 +71,17 @@ function alphaVantageFixture() {
   };
 }
 
+function tencentUsFixture() {
+  return {
+    code: 0,
+    data: {
+      usNVDA: {
+        day: [["2026-07-23", "209.46", "208.72", "210.87", "205.96", "68214063"]],
+      },
+    },
+  };
+}
+
 test("routes CN symbols through Tencent first and returns normalized bars and quote", async () => {
   const { createProviderRegistry } = await import(registryUrl);
   const urls = [];
@@ -138,20 +149,17 @@ test("falls back from Tencent to Eastmoney with a degraded status and stable rea
   assert.doesNotMatch(JSON.stringify(result), /private upstream body/);
 });
 
-test("omits Alpha Vantage without a key and uses Stooq only as a US daily fallback", async () => {
+test("uses Tencent US before Stooq when Yahoo daily is unavailable", async () => {
   const { createProviderRegistry } = await import(registryUrl);
   const urls = [];
   const registry = createProviderRegistry({
     fetch: async (url) => {
       urls.push(String(url));
       if (String(url).includes("yahoo")) return response("", 500);
-      return response([
-        "Date,Open,High,Low,Close,Volume",
-        "2026-07-23,10,12,9,11,1000",
-      ].join("\n"));
+      return jsonResponse(tencentUsFixture());
     },
     env: {},
-    now: () => new Date("2026-07-23T02:05:00.000Z"),
+    now: () => new Date("2026-07-24T02:05:00.000Z"),
     dailyFreshnessMs: 24 * 60 * 60 * 1000,
   });
 
@@ -162,12 +170,13 @@ test("omits Alpha Vantage without a key and uses Stooq only as a US daily fallba
   });
 
   assert.equal(result.status, "degraded");
-  assert.equal(result.source, "stooq");
-  assert.deepEqual(result.sources.map(({ source }) => source), ["yahoo", "stooq"]);
+  assert.equal(result.source, "tencent-us");
+  assert.equal(result.bars.at(-1).adjustment, "qfq");
+  assert.deepEqual(result.sources.map(({ source }) => source), ["yahoo", "tencent-us"]);
   assert.equal(urls.some((url) => /alphavantage/i.test(url)), false);
   assert.match(urls[1], /query2\.finance\.yahoo\.com/);
-  assert.match(urls[2], /stooq\.com/);
-  assert.match(urls[2], /nvda\.us/);
+  assert.match(urls[2], /web\.ifzq\.gtimg\.cn/);
+  assert.match(urls[2], /usNVDA/);
 });
 
 test("includes Alpha Vantage between Yahoo and Stooq only when a key is configured", async () => {

@@ -193,7 +193,7 @@ def run_browser():
         page.wait_for_function("document.querySelector('#chart-empty').hidden === true")
         page.screenshot(path=str(SCREENSHOT_DIR / "etf-workbench-desktop.png"), full_page=True)
 
-        assert page.locator("#watchlist .watch-row").count() == 10
+        assert page.locator("#watchlist .watch-row").count() == 11
         assert page.locator("#market-chart").is_visible()
         assert page.locator("a[href*='tradingview.com']").count() >= 1
         assert page.locator("#deep-analysis-open").is_visible()

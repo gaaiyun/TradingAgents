@@ -1,6 +1,6 @@
 export const WORKBENCH_SETTINGS_VERSION = 2;
 export const MAX_WORKBENCH_TICKERS = 10;
-export const MAX_WORKBENCH_TARGETS = MAX_WORKBENCH_TICKERS;
+export const MAX_WORKBENCH_TARGETS = 12;
 
 const A_SHARE = /^(\d{6})(?:\.(SS|SH|SZ))?$/;
 const US_EQUITY = /^([A-Z]{1,5})(?:[.-]([A-Z]))?$/;

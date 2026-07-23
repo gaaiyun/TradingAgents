@@ -59,6 +59,7 @@ test("the checked-in v2 settings contain the only default research profile", () 
       { symbol: "AVGO", name: "AVGO", role: "driver", analysis: "signal" },
       { symbol: "AMD", name: "AMD", role: "driver", analysis: "signal" },
       { symbol: "ASML", name: "ASML", role: "driver", analysis: "signal" },
+      { symbol: "ORCL", name: "Oracle", role: "driver", analysis: "signal" },
     ],
   );
   assert.deepEqual(
@@ -126,7 +127,7 @@ test("accepts only the supported target roles and analysis depths", () => {
   assert.equal(buildWorkbenchSettings(benchmarkRole).profiles[0].targets[0].role, "benchmark");
 });
 
-test("de-duplicates normalized target symbols before enforcing the ten-target cap", () => {
+test("de-duplicates normalized target symbols before enforcing the twelve-target cap", () => {
   const duplicate = defaultSettingsInput();
   duplicate.profiles[0].targets.push({
     symbol: "515880.sh",
@@ -136,13 +137,21 @@ test("de-duplicates normalized target symbols before enforcing the ten-target ca
     analysis: "signal",
   });
   const normalized = buildWorkbenchSettings(duplicate);
-  assert.equal(normalized.profiles[0].targets.length, 10);
+  assert.equal(normalized.profiles[0].targets.length, 11);
   assert.equal(normalized.profiles[0].targets[0].name, "通信ETF");
 
   const tooMany = defaultSettingsInput();
   tooMany.profiles[0].targets.push({
     symbol: "INTC",
     name: "Intel",
+    market: "US",
+    role: "driver",
+    analysis: "signal",
+  });
+  assert.equal(buildWorkbenchSettings(tooMany).profiles[0].targets.length, 12);
+  tooMany.profiles[0].targets.push({
+    symbol: "MSFT",
+    name: "Microsoft",
     market: "US",
     role: "driver",
     analysis: "signal",
@@ -157,7 +166,7 @@ test("does not count provider-neutral system benchmarks toward the target cap", 
     name: `系统基准 ${index}`,
     market: "GLOBAL",
   }));
-  assert.equal(buildWorkbenchSettings(input).profiles[0].targets.length, 10);
+  assert.equal(buildWorkbenchSettings(input).profiles[0].targets.length, 11);
 });
 
 test("ships semantic schedules, high-severity web and PushPlus alerts, and bounded agent work", () => {

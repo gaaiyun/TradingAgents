@@ -11,6 +11,10 @@ const seedMigrationUrl = new URL(
   "../migrations/0006_seed_workbench_settings.sql",
   import.meta.url,
 );
+const oracleMigrationUrl = new URL(
+  "../migrations/0007_add_oracle_monitor.sql",
+  import.meta.url,
+);
 
 test("D1 migration defines every dynamic workbench table and its lookup indexes", () => {
   const sql = readFileSync(migrationUrl, "utf8");
@@ -143,4 +147,35 @@ test("settings seed is valid v2 JSON and never overwrites a web-edited row", asy
   ).get();
   assert.equal(preserved.settings_json, '{"version":2,"profiles":[]}');
   assert.equal(preserved.updated_at, "2099-01-01T00:00:00.000Z");
+});
+
+test("Oracle monitor migration appends once without replacing existing targets", async (t) => {
+  let DatabaseSync;
+  try {
+    ({ DatabaseSync } = await import("node:sqlite"));
+  } catch {
+    t.skip("node:sqlite is unavailable on this Node version");
+    return;
+  }
+  const db = new DatabaseSync(":memory:");
+  db.exec(readFileSync(migrationUrl, "utf8"));
+  db.exec(readFileSync(seedMigrationUrl, "utf8"));
+  const sql = readFileSync(oracleMigrationUrl, "utf8");
+  db.exec(sql);
+  db.exec(sql);
+  const settings = JSON.parse(
+    db.prepare("SELECT settings_json FROM workbench_settings WHERE id = 1").get().settings_json,
+  );
+  assert.equal(settings.profiles[0].targets.length, 11);
+  assert.equal(
+    settings.profiles[0].targets.filter(({ symbol }) => symbol === "ORCL").length,
+    1,
+  );
+  assert.deepEqual(settings.profiles[0].targets.at(-1), {
+    symbol: "ORCL",
+    name: "Oracle",
+    market: "US",
+    role: "driver",
+    analysis: "signal",
+  });
 });

@@ -70,6 +70,41 @@ test("Tencent uses the live mkline 5m and kline 1d contracts for all configured 
   assert.equal(daily.at(-1).close, 1.106);
 });
 
+test("Tencent US daily fallback returns qfq bars for Oracle and semiconductor drivers", async () => {
+  const requests = [];
+  const adapters = createAdapters({
+    fetch: async (url) => {
+      requests.push(String(url));
+      return jsonResponse({
+        code: 0,
+        data: {
+          usORCL: {
+            day: [
+              ["2026-07-22", "121.10", "123.96", "124.70", "120.80", "20431058"],
+              ["2026-07-23", "123.96", "119.74", "124.70", "119.50", "21431058"],
+            ],
+          },
+        },
+      });
+    },
+    timeoutMs: 100,
+  });
+  const bars = await adapters["tencent-us"]({
+    symbol: "ORCL",
+    market: "US",
+    timeframe: "1d",
+  }, {
+    ...runtime,
+    fetchedAt: "2026-07-24T02:05:00.000Z",
+    now: new Date("2026-07-24T02:05:00.000Z"),
+    freshnessThresholdMs: 36 * 60 * 60 * 1000,
+  });
+  assert.equal(bars.at(-1).close, 119.74);
+  assert.equal(bars.at(-1).adjustment, "qfq");
+  assert.match(requests[0], /web\.ifzq\.gtimg\.cn/);
+  assert.match(requests[0], /usORCL,day,,,320,qfq/);
+});
+
 test("Eastmoney includes its required range parameters and validates rc/data/klines", async () => {
   let requestedUrl;
   const adapters = createAdapters({
