@@ -105,6 +105,74 @@ test("Tencent US daily fallback returns qfq bars for Oracle and semiconductor dr
   assert.match(requests[0], /usORCL,day,,,320,qfq/);
 });
 
+test("Tencent US removes a disconnected listing seed instead of returning a false history", async () => {
+  const adapters = createAdapters({
+    fetch: async () => jsonResponse({
+      code: 0,
+      data: {
+        usORCL: {
+          day: [
+            ["2011-06-02", "32.40", "32.40", "32.94", "32.18", "54664740"],
+            ["2026-07-23", "123.96", "119.74", "124.70", "119.50", "21431058"],
+          ],
+        },
+      },
+    }),
+    timeoutMs: 100,
+  });
+
+  const bars = await adapters["tencent-us"]({
+    symbol: "ORCL",
+    market: "US",
+    timeframe: "1d",
+  }, {
+    ...runtime,
+    fetchedAt: "2026-07-24T02:05:00.000Z",
+    now: new Date("2026-07-24T02:05:00.000Z"),
+    freshnessThresholdMs: 36 * 60 * 60 * 1000,
+  });
+
+  assert.equal(bars.length, 1);
+  assert.equal(bars[0].timestamp, "2026-07-23T04:00:00.000Z");
+});
+
+test("Eastmoney US returns the latest adjusted daily window for Oracle", async () => {
+  let requestedUrl;
+  const adapters = createAdapters({
+    fetch: async (url) => {
+      requestedUrl = String(url);
+      return jsonResponse({
+        rc: 0,
+        data: {
+          code: "ORCL",
+          klines: Array.from({ length: 325 }, (_, index) => {
+            const day = new Date(Date.UTC(2025, 0, index + 1)).toISOString().slice(0, 10);
+            return `${day},120,121,122,119,1000`;
+          }),
+        },
+      });
+    },
+    timeoutMs: 100,
+  });
+
+  const bars = await adapters["eastmoney-us"]({
+    symbol: "ORCL",
+    market: "US",
+    timeframe: "1d",
+  }, {
+    ...runtime,
+    fetchedAt: "2026-07-24T02:05:00.000Z",
+    now: new Date("2026-07-24T02:05:00.000Z"),
+    freshnessThresholdMs: 36 * 60 * 60 * 1000,
+  });
+
+  assert.equal(bars.length, 320);
+  assert.equal(bars.at(-1).adjustment, "qfq");
+  assert.match(requestedUrl, /eastmoney\.com/);
+  assert.match(requestedUrl, /secid=106\.ORCL/);
+  assert.match(requestedUrl, /fqt=1/);
+});
+
 test("Eastmoney includes its required range parameters and validates rc/data/klines", async () => {
   let requestedUrl;
   const adapters = createAdapters({

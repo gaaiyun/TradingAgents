@@ -2,6 +2,16 @@ import { normalizeWorkbenchTicker } from "../../../../functions/api/_workbench_s
 
 const TIMEFRAMES = new Set(["5m", "1d"]);
 const CN_SUFFIXES = [".SS", ".SZ"];
+const EASTMONEY_US_MARKETS = {
+  SOXX: "105",
+  SMH: "105",
+  NVDA: "105",
+  TSM: "106",
+  AVGO: "105",
+  AMD: "105",
+  ASML: "105",
+  ORCL: "106",
+};
 
 export class ProviderError extends Error {
   constructor(code) {
@@ -42,6 +52,9 @@ export function mapProviderSymbol(provider, rawSymbol) {
     return `${match[2] === "SS" ? "sh" : "sz"}${match[1]}`;
   }
   if (provider === "tencent-us" && !match) return `us${symbol}`;
+  if (provider === "eastmoney-us" && EASTMONEY_US_MARKETS[symbol]) {
+    return `${EASTMONEY_US_MARKETS[symbol]}.${symbol}`;
+  }
   if (provider === "eastmoney" && match) {
     return `${match[2] === "SS" ? "1" : "0"}.${match[1]}`;
   }

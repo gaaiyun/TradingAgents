@@ -135,7 +135,7 @@ function tencentUsUrl(request) {
 function parseTencentUs(payload, request) {
   if (payload?.code !== 0) return null;
   const symbol = mapProviderSymbol("tencent-us", request.symbol);
-  return payload?.data?.[symbol]?.day?.map(
+  const rows = payload?.data?.[symbol]?.day?.map(
     ([timestamp, open, close, high, low, volume]) => ({
       timestamp: utcTimestamp(timestamp, "America/New_York"),
       open,
@@ -145,6 +145,37 @@ function parseTencentUs(payload, request) {
       volume,
     }),
   );
+  if (!Array.isArray(rows) || rows.length < 2) return rows;
+  const sorted = [...rows].sort(
+    (left, right) => Date.parse(left.timestamp) - Date.parse(right.timestamp),
+  );
+  let start = sorted.length - 1;
+  while (start > 0) {
+    const gap = Date.parse(sorted[start].timestamp) - Date.parse(sorted[start - 1].timestamp);
+    if (!Number.isFinite(gap) || gap > 7 * 24 * 60 * 60 * 1000) break;
+    start -= 1;
+  }
+  return sorted.slice(start);
+}
+
+function eastmoneyUsUrl(request) {
+  const symbol = mapProviderSymbol("eastmoney-us", request.symbol);
+  return `https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${symbol}&klt=101&fqt=1&beg=0&end=20500101&lmt=320&fields1=f1&fields2=f51,f52,f53,f54,f55,f56`;
+}
+
+function parseEastmoneyUs(payload, request) {
+  if (payload?.rc !== 0 || payload?.data?.code !== request.symbol) return null;
+  return payload?.data?.klines?.slice(-320).map((line) => {
+    const [timestamp, open, close, high, low, volume] = String(line).split(",");
+    return {
+      timestamp: utcTimestamp(timestamp, "America/New_York"),
+      open,
+      high,
+      low,
+      close,
+      volume,
+    };
+  });
 }
 
 function eastmoneyUrl(request) {
@@ -282,6 +313,17 @@ export function createAdapters({ fetch: fetcher, apiKey, timeoutMs }) {
       contextFor(
         marketRequest,
         "tencent-us",
+        runtime.fetchedAt,
+        runtime.now,
+        runtime.freshnessThresholdMs,
+        "qfq",
+      ),
+    ),
+    "eastmoney-us": async (marketRequest, runtime) => normalizeRows(
+      parseEastmoneyUs(await fetchJson(eastmoneyUsUrl(marketRequest)), marketRequest),
+      contextFor(
+        marketRequest,
+        "eastmoney-us",
         runtime.fetchedAt,
         runtime.now,
         runtime.freshnessThresholdMs,

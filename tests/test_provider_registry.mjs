@@ -82,6 +82,19 @@ function tencentUsFixture() {
   };
 }
 
+function eastmoneyUsFixture() {
+  return {
+    rc: 0,
+    data: {
+      code: "NVDA",
+      klines: [
+        "2026-07-22,206.50,209.46,210.10,205.80,63140000",
+        "2026-07-23,209.46,208.72,210.87,205.96,68214063",
+      ],
+    },
+  };
+}
+
 test("routes CN symbols through Tencent first and returns normalized bars and quote", async () => {
   const { createProviderRegistry } = await import(registryUrl);
   const urls = [];
@@ -149,7 +162,7 @@ test("falls back from Tencent to Eastmoney with a degraded status and stable rea
   assert.doesNotMatch(JSON.stringify(result), /private upstream body/);
 });
 
-test("uses Tencent US before Stooq when Yahoo daily is unavailable", async () => {
+test("uses Tencent US after Eastmoney US fails and before Stooq", async () => {
   const { createProviderRegistry } = await import(registryUrl);
   const urls = [];
   const registry = createProviderRegistry({
@@ -172,11 +185,43 @@ test("uses Tencent US before Stooq when Yahoo daily is unavailable", async () =>
   assert.equal(result.status, "degraded");
   assert.equal(result.source, "tencent-us");
   assert.equal(result.bars.at(-1).adjustment, "qfq");
-  assert.deepEqual(result.sources.map(({ source }) => source), ["yahoo", "tencent-us"]);
+  assert.deepEqual(
+    result.sources.map(({ source }) => source),
+    ["yahoo", "eastmoney-us", "tencent-us"],
+  );
   assert.equal(urls.some((url) => /alphavantage/i.test(url)), false);
   assert.match(urls[1], /query2\.finance\.yahoo\.com/);
-  assert.match(urls[2], /web\.ifzq\.gtimg\.cn/);
-  assert.match(urls[2], /usNVDA/);
+  assert.match(urls[2], /eastmoney\.com/);
+  assert.match(urls[3], /web\.ifzq\.gtimg\.cn/);
+  assert.match(urls[3], /usNVDA/);
+});
+
+test("uses continuous Eastmoney US history before Tencent US", async () => {
+  const { createProviderRegistry } = await import(registryUrl);
+  const urls = [];
+  const registry = createProviderRegistry({
+    fetch: async (url) => {
+      urls.push(String(url));
+      if (String(url).includes("yahoo")) return response("", 500);
+      return jsonResponse(eastmoneyUsFixture());
+    },
+    env: {},
+    now: () => new Date("2026-07-24T02:05:00.000Z"),
+    dailyFreshnessMs: 24 * 60 * 60 * 1000,
+  });
+
+  const result = await registry.fetchMarketData({
+    symbol: "NVDA",
+    market: "US",
+    timeframe: "1d",
+  });
+
+  assert.equal(result.status, "degraded");
+  assert.equal(result.source, "eastmoney-us");
+  assert.equal(result.bars.length, 2);
+  assert.deepEqual(result.sources.map(({ source }) => source), ["yahoo", "eastmoney-us"]);
+  assert.match(urls[2], /secid=105\.NVDA/);
+  assert.equal(urls.some((url) => /gtimg/i.test(url)), false);
 });
 
 test("includes Alpha Vantage between Yahoo and Stooq only when a key is configured", async () => {

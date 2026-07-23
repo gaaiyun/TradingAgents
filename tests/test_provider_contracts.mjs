@@ -23,6 +23,8 @@ test("maps supported Workbench symbols for every provider", async () => {
   assert.equal(mapProviderSymbol("tencent", "512480.SS"), "sh512480");
   assert.equal(mapProviderSymbol("tencent-us", "NVDA"), "usNVDA");
   assert.equal(mapProviderSymbol("tencent-us", "ORCL"), "usORCL");
+  assert.equal(mapProviderSymbol("eastmoney-us", "NVDA"), "105.NVDA");
+  assert.equal(mapProviderSymbol("eastmoney-us", "ORCL"), "106.ORCL");
   assert.equal(mapProviderSymbol("eastmoney", "159995.SZ"), "0.159995");
   assert.equal(mapProviderSymbol("yahoo", "159995.SZ"), "159995.SZ");
   assert.equal(mapProviderSymbol("yahoo", "NVDA"), "NVDA");

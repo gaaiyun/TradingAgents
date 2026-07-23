@@ -10,7 +10,7 @@ import {
 function providerOrder(request, apiKey) {
   if (request.market === "CN") return ["tencent", "eastmoney", "yahoo"];
   const providers = request.timeframe === "1d"
-    ? ["yahoo", "tencent-us"]
+    ? ["yahoo", "eastmoney-us", "tencent-us"]
     : ["yahoo"];
   if (apiKey) providers.push("alphavantage");
   if (request.timeframe === "1d") providers.push("stooq");
