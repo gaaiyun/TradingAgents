@@ -91,10 +91,12 @@ function sourceMetadata(row) {
 function aggregateStatus(rows, health) {
   if (rows.length === 0) return "unavailable";
   if (health) {
-    if (rows.some((row) => row.status === "degraded" || row.status === "unavailable")) {
-      return "degraded";
-    }
-    if (rows.some((row) => row.status === "stale")) return "stale";
+    const allowed = new Set(["ok", "degraded", "stale", "unavailable"]);
+    const statuses = rows.map((row) => allowed.has(row.status) ? row.status : "unavailable");
+    const unavailableCount = statuses.filter((status) => status === "unavailable").length;
+    if (unavailableCount === statuses.length) return "unavailable";
+    if (unavailableCount > 0 || statuses.includes("degraded")) return "degraded";
+    if (statuses.includes("stale")) return "stale";
   }
   if (rows.some((row) => ["degraded", "poor", "error", "partial"].includes(row.quality))) {
     return "degraded";

@@ -15,6 +15,7 @@ import {
 import {
   d1Binding,
   readSettingsFromD1,
+  SettingsConflictError,
   writeSettingsToD1,
 } from "./_d1_repository.mjs";
 
@@ -24,7 +25,10 @@ export async function onRequestGet({ env } = {}) {
   if (db) {
     try {
       const stored = await readSettingsFromD1(db);
-      if (stored) return json(parseWorkbenchSettings(stored.settings));
+      if (stored) return json({
+        ...parseWorkbenchSettings(stored.settings),
+        updatedAt: stored.updatedAt,
+      });
     } catch {
       // D1 故障或数据损坏不应使设置页不可用。
     }
@@ -34,6 +38,48 @@ export async function onRequestGet({ env } = {}) {
 
 function settingsResponse(settings) {
   return { ...settings, tickers: settings.tickers };
+}
+
+function expectedRevision(body, stored) {
+  if (!Object.prototype.hasOwnProperty.call(body, "expectedUpdatedAt")) {
+    return stored?.updatedAt ?? null;
+  }
+  const value = body.expectedUpdatedAt;
+  if (value === null) return null;
+  if (typeof value !== "string" || !value.trim() || Number.isNaN(new Date(value).valueOf())) {
+    throw new WorkbenchSettingsError(
+      "INVALID_EXPECTED_UPDATED_AT",
+      "expectedUpdatedAt 必须是 ISO 时间或 null",
+    );
+  }
+  return value;
+}
+
+function storageFailure() {
+  return json(
+    { error: "设置存储暂不可用", error_code: "SETTINGS_STORAGE_UNAVAILABLE" },
+    503,
+  );
+}
+
+async function saveToD1(db, settings, expectedUpdatedAt) {
+  try {
+    const updatedAt = await writeSettingsToD1(db, settings, expectedUpdatedAt);
+    return json({
+      ok: true,
+      settings: settingsResponse(settings),
+      updatedAt,
+      message: "设置已保存并即时生效",
+    });
+  } catch (error) {
+    if (error instanceof SettingsConflictError) {
+      return json(
+        { error: "设置已被其他请求更新，请刷新后重试", error_code: "SETTINGS_CONFLICT" },
+        409,
+      );
+    }
+    return storageFailure();
+  }
 }
 
 async function dispatchSettings(env, settings, { legacy = false } = {}) {
@@ -86,9 +132,24 @@ export async function onRequestPut({ request, env }) {
     return json({ error: "请求体不是合法 JSON 对象" }, 400);
   }
 
+  const db = d1Binding(env);
+  let stored = null;
+  if (db) {
+    try {
+      stored = await readSettingsFromD1(db);
+    } catch {
+      return storageFailure();
+    }
+  }
+
   let settings;
+  let expectedUpdatedAt;
   try {
-    settings = parseWorkbenchSettings(body.settings ?? body);
+    expectedUpdatedAt = expectedRevision(body, stored);
+    const current = body.settings ?? stored?.settings ?? body;
+    settings = body.tickers === undefined
+      ? parseWorkbenchSettings(current)
+      : updateWorkbenchFullAnalysisTargets(current, body.tickers);
   } catch (error) {
     if (error instanceof WorkbenchSettingsError) {
       return json({ error: error.message, error_code: error.code }, 400);
@@ -96,14 +157,8 @@ export async function onRequestPut({ request, env }) {
     throw error;
   }
 
-  const db = d1Binding(env);
   if (db) {
-    try {
-      const updatedAt = await writeSettingsToD1(db, settings);
-      return json({ ok: true, settings: settingsResponse(settings), updatedAt });
-    } catch {
-      // 保持旧部署路径可用，不返回 D1 内部错误或绑定信息。
-    }
+    return saveToD1(db, settings, expectedUpdatedAt);
   }
   return dispatchSettings(env, settings);
 }
@@ -129,7 +184,20 @@ export async function onRequestPost({ request, env }) {
   }
   if (!gate(env, headerCode ?? body.code)) return json({ error: "访问码不正确" }, 401);
 
-  let currentSettings = body.settings;
+  const db = d1Binding(env);
+  let stored = null;
+  if (db) {
+    try {
+      stored = await readSettingsFromD1(db);
+    } catch {
+      return storageFailure();
+    }
+  }
+
+  const hasExpectedRevision = Object.prototype.hasOwnProperty.call(body, "expectedUpdatedAt");
+  let currentSettings = hasExpectedRevision
+    ? body.settings ?? stored?.settings
+    : stored?.settings ?? body.settings;
   const loadedCurrentSettings = !currentSettings;
   if (loadedCurrentSettings) {
     let currentResponse;
@@ -158,7 +226,9 @@ export async function onRequestPost({ request, env }) {
   }
 
   let settings;
+  let expectedUpdatedAt;
   try {
+    expectedUpdatedAt = expectedRevision(body, stored);
     settings = updateWorkbenchFullAnalysisTargets(currentSettings, body.tickers);
   } catch (error) {
     if (error instanceof WorkbenchSettingsError) {
@@ -173,5 +243,6 @@ export async function onRequestPost({ request, env }) {
     throw error;
   }
 
+  if (db) return saveToD1(db, settings, expectedUpdatedAt);
   return dispatchSettings(env, settings, { legacy: true });
 }

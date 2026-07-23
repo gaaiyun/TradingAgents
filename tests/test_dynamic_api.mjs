@@ -66,7 +66,9 @@ test("market API builds parameterized symbol/profile/timeframe/date filters and 
   assert.match(sql, /ts\s*>=\s*\?/i);
   assert.match(sql, /ts\s*<=\s*\?/i);
   assert.match(sql, /LIMIT\s+\?/i);
-  assert.deepEqual(params, ["SPY", "us-core", "5m", "2026-07-23T09:00:00.000Z", "2026-07-23T11:00:00.000Z", 25]);
+  assert.deepEqual(params.slice(0, 5), ["SPY", "us-core", "5m", "2026-07-23T09:00:00.000Z", "2026-07-23T11:00:00.000Z"]);
+  assert.equal(typeof params[5], "string");
+  assert.equal(params[6], 25);
 });
 
 test("news and events APIs support topic and importance filters without interpolating input", async () => {
@@ -144,7 +146,94 @@ test("monitor status returns source health in the same envelope", async () => {
   assertEnvelope(payload);
   assert.equal(payload.status, "degraded");
   assert.equal(payload.sources[0].adjustment, null);
-  assert.deepEqual(DB.calls[0].params, ["wire", 10]);
+  assert.equal(DB.calls[0].params[0], "wire");
+  assert.equal(typeof DB.calls[0].params[1], "string");
+  assert.equal(DB.calls[0].params[2], 10);
+});
+
+test("dynamic queries exclude expired rows before ordering and limiting", async () => {
+  const base = {
+    symbol: "SPY",
+    profile_id: "us-core",
+    timeframe: "5m",
+    source: "market-provider",
+    as_of: "2026-07-23T10:01:00Z",
+    fetched_at: "2026-07-23T10:01:05Z",
+    freshness: "fresh",
+    adjustment: "none",
+    quality: "good",
+  };
+  const DB = new FakeD1({ rows: { market_bars: [
+    { ...base, ts: "2026-07-23T10:03:00Z", close: 999, expires_at: "2000-01-01T00:00:00Z" },
+    { ...base, ts: "2026-07-23T10:01:00Z", close: 621, expires_at: null },
+    { ...base, ts: "2026-07-23T10:02:00Z", close: 622, expires_at: "2099-01-01T00:00:00Z" },
+  ] } });
+
+  const response = await marketApi.onRequestGet({
+    request: request("/api/market?symbol=SPY&limit=1"),
+    env: { DB },
+  });
+  const payload = await response.json();
+
+  assert.equal(payload.status, "ok");
+  assert.equal(payload.data.length, 1);
+  assert.equal(payload.data[0].close, 622);
+  assert.match(DB.calls[0].sql, /expires_at\s+IS\s+NULL\s+OR\s+expires_at\s*>\s*\?/i);
+  assert.equal(typeof DB.calls[0].params[1], "string");
+  assert.equal(DB.calls[0].params.at(-1), 1);
+});
+
+test("expired-only market, news, events, and source health return unavailable", async () => {
+  const expired = {
+    source: "expired-source",
+    as_of: "2026-07-23T09:00:00Z",
+    fetched_at: "2026-07-23T09:00:05Z",
+    freshness: "fresh",
+    adjustment: null,
+    quality: "good",
+    expires_at: "2000-01-01T00:00:00Z",
+  };
+  const cases = [
+    [marketApi, "market_bars", { ...expired, symbol: "SPY", timeframe: "1d", ts: "2026-07-23T00:00:00Z" }],
+    [newsApi, "news_items", { ...expired, id: "expired-news", title: "old", published_at: "2026-07-23T00:00:00Z" }],
+    [eventsApi, "market_events", { ...expired, id: "expired-event", importance: "low", title: "old", event_at: "2026-07-23T00:00:00Z" }],
+    [monitorApi, "source_health", { ...expired, status: "ok" }],
+  ];
+  for (const [api, table, row] of cases) {
+    const response = await api.onRequestGet({
+      request: request("/api/data"),
+      env: { DB: new FakeD1({ rows: { [table]: [row] } }) },
+    });
+    const payload = await response.json();
+    assert.equal(payload.status, "unavailable");
+    assert.deepEqual(payload.data, []);
+  }
+});
+
+test("monitor status distinguishes total outage, partial outage, and unknown states", async () => {
+  const health = (source, status) => ({
+    source,
+    status,
+    as_of: "2026-07-23T09:00:00Z",
+    fetched_at: "2026-07-23T09:00:05Z",
+    freshness: "fresh",
+    adjustment: null,
+    quality: "good",
+    expires_at: null,
+  });
+  const cases = [
+    [[health("a", "unavailable"), health("b", "unavailable")], "unavailable"],
+    [[health("a", "ok"), health("b", "unavailable")], "degraded"],
+    [[health("a", "mystery")], "unavailable"],
+    [[health("a", "ok"), health("b", "mystery")], "degraded"],
+  ];
+  for (const [rows, expected] of cases) {
+    const response = await monitorApi.onRequestGet({
+      request: request("/api/monitor-status"),
+      env: { DB: new FakeD1({ rows: { source_health: rows } }) },
+    });
+    assert.equal((await response.json()).status, expected);
+  }
 });
 
 test("dynamic APIs return unavailable envelopes for missing, empty, or failing D1", async () => {

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS workbench_settings (
 CREATE TABLE IF NOT EXISTS market_bars (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   symbol TEXT NOT NULL,
-  profile_id TEXT,
+  profile_id TEXT NOT NULL DEFAULT '',
   timeframe TEXT NOT NULL,
   ts TEXT NOT NULL,
   open REAL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS market_bars (
   adjustment TEXT NOT NULL DEFAULT 'none',
   quality TEXT NOT NULL,
   expires_at TEXT NOT NULL,
-  UNIQUE (symbol, timeframe, ts, source, adjustment)
+  UNIQUE (profile_id, symbol, timeframe, ts, source, adjustment)
 );
 
 CREATE INDEX IF NOT EXISTS idx_market_bars_symbol_timeframe_ts
@@ -89,7 +89,7 @@ CREATE INDEX IF NOT EXISTS idx_market_events_expires_at
 
 CREATE TABLE IF NOT EXISTS source_health (
   source TEXT PRIMARY KEY,
-  status TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('ok', 'degraded', 'stale', 'unavailable')),
   as_of TEXT,
   fetched_at TEXT,
   freshness TEXT,

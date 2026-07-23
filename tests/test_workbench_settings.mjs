@@ -367,3 +367,14 @@ test("the legacy workbench view derives its ticker list from enabled v2 full-ana
   assert.match(script, /settingsTickers\(state\.settings\)/);
   assert.match(script, /settings:\s*state\.settings/);
 });
+
+test("the workbench saves settings with PUT and the last observed D1 revision", () => {
+  const script = readFileSync(
+    new URL("../public/assets/workbench.js", import.meta.url),
+    "utf8",
+  );
+  assert.match(script, /settingsUpdatedAt:\s*null/);
+  assert.match(script, /expectedUpdatedAt:\s*state\.settingsUpdatedAt/);
+  assert.match(script, /submitAction\("\/api\/settings",[\s\S]*?,\s*"PUT"\)/);
+  assert.match(script, /state\.settingsUpdatedAt\s*=\s*payload\.updatedAt/);
+});

@@ -39,6 +39,7 @@
     latest: null,
     history: [],
     settings: null,
+    settingsUpdatedAt: null,
     runs: [],
     health: null,
     news: null,
@@ -746,10 +747,10 @@
     syncCredentialUi(); toast("本机访问码副本已清除");
   }
 
-  async function submitAction(path, body) {
+  async function submitAction(path, body, method = "POST") {
     if (!state.accessCode) throw Object.assign(new Error("请先输入访问码"), { status: 401 });
     const response = await fetch(path, {
-      method: "POST",
+      method,
       headers: { "content-type": "application/json", "x-access-code": state.accessCode },
       body: JSON.stringify(body),
     });
@@ -875,8 +876,12 @@
     catch { state.history = []; renderArchiveList(); }
   }
   async function loadSettings() {
-    try { state.settings = (await fetchJson(["/api/settings", "./data/workbench-settings.json"])).data; renderSettingsSummary(); }
-    catch { state.settings = null; renderSettingsSummary(); }
+    try {
+      state.settings = (await fetchJson(["/api/settings", "./data/workbench-settings.json"])).data;
+      state.settingsUpdatedAt = state.settings.updatedAt ?? null;
+      renderSettingsSummary();
+    }
+    catch { state.settings = null; state.settingsUpdatedAt = null; renderSettingsSummary(); }
   }
   async function loadRuns() {
     try { state.runs = (await fetchJson("/api/runs")).data.runs || []; }
@@ -937,7 +942,7 @@
     $("#save-settings").addEventListener("click", async () => {
       state.accessCode = $("#settings-code").value.trim();
       const notice = $("#settings-notice"); notice.textContent = "正在校验并保存…"; notice.className = "form-notice"; $("#save-settings").disabled = true;
-      try { const payload = await submitAction("/api/settings", { tickers: $("#settings-tickers").value, settings: state.settings }); state.settings = payload.settings; renderSettingsSummary(); notice.textContent = payload.message; toast("每日研究清单已受理"); }
+      try { const payload = await submitAction("/api/settings", { tickers: $("#settings-tickers").value, settings: state.settings, expectedUpdatedAt: state.settingsUpdatedAt }, "PUT"); state.settings = payload.settings; state.settingsUpdatedAt = payload.updatedAt; renderSettingsSummary(); notice.textContent = payload.message; toast("每日研究清单已保存"); }
       catch (error) { notice.textContent = error.message; notice.classList.add("is-bad"); }
       finally { $("#save-settings").disabled = false; }
     });

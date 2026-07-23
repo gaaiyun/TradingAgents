@@ -2,6 +2,13 @@ export function d1Binding(env) {
   return env?.DB && typeof env.DB.prepare === "function" ? env.DB : null;
 }
 
+export class SettingsConflictError extends Error {
+  constructor() {
+    super("settings revision conflict");
+    this.name = "SettingsConflictError";
+  }
+}
+
 export async function readSettingsFromD1(db) {
   if (!db) return null;
   const row = await db.prepare(
@@ -15,16 +22,27 @@ export async function readSettingsFromD1(db) {
   };
 }
 
-export async function writeSettingsToD1(db, settings, now = new Date()) {
-  const updatedAt = now.toISOString();
-  await db.prepare(
-    `INSERT INTO workbench_settings (id, version, settings_json, updated_at)
-     VALUES (1, ?, ?, ?)
-     ON CONFLICT(id) DO UPDATE SET
-       version = excluded.version,
-       settings_json = excluded.settings_json,
-       updated_at = excluded.updated_at`,
-  ).bind(settings.version, JSON.stringify(settings), updatedAt).run();
+export async function writeSettingsToD1(db, settings, expectedUpdatedAt, now = new Date()) {
+  let updatedAt = now.toISOString();
+  if (updatedAt === expectedUpdatedAt) {
+    updatedAt = new Date(now.valueOf() + 1).toISOString();
+  }
+  let result;
+  if (expectedUpdatedAt === null) {
+    result = await db.prepare(
+      `INSERT INTO workbench_settings (id, version, settings_json, updated_at)
+       VALUES (1, ?, ?, ?)
+       ON CONFLICT(id) DO NOTHING`,
+    ).bind(settings.version, JSON.stringify(settings), updatedAt).run();
+  } else {
+    result = await db.prepare(
+      `UPDATE workbench_settings
+       SET version = ?, settings_json = ?, updated_at = ?
+       WHERE id = 1 AND updated_at = ?`,
+    ).bind(settings.version, JSON.stringify(settings), updatedAt, expectedUpdatedAt).run();
+  }
+  const changes = result?.meta?.changes ?? result?.changes ?? 0;
+  if (changes !== 1) throw new SettingsConflictError();
   return updatedAt;
 }
 
@@ -44,6 +62,8 @@ async function queryRows(db, { table, columns, filters, timeColumn, from, to, li
     clauses.push(`${timeColumn} <= ?`);
     values.push(to);
   }
+  clauses.push("(expires_at IS NULL OR expires_at > ?)");
+  values.push(new Date().toISOString());
   values.push(limit);
   const where = clauses.length ? ` WHERE ${clauses.join(" AND ")}` : "";
   const result = await db.prepare(
