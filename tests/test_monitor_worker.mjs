@@ -295,7 +295,7 @@ test("scheduled handler uses scheduledTime and waitUntil while health reveals no
   assert.equal((await worker.fetch(new Request("https://monitor.example/anything"))).status, 404);
 });
 
-test("monitor wrangler config uses five-minute cron and the same placeholder D1 binding", () => {
+test("monitor wrangler config uses five-minute cron and the same deployed D1 binding", () => {
   const pages = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
   const monitor = readFileSync(
     new URL("../wrangler.monitor.toml", import.meta.url),
@@ -305,7 +305,12 @@ test("monitor wrangler config uses five-minute cron and the same placeholder D1 
   assert.match(monitor, /crons\s*=\s*\[\s*"\*\/5 \* \* \* \*"\s*\]/);
   assert.match(monitor, /binding\s*=\s*"DB"/);
   assert.match(monitor, /database_name\s*=\s*"tradingagents-workbench"/);
-  assert.match(monitor, /database_id\s*=\s*"replace-with-d1-database-id"/);
+  assert.match(monitor, /GITHUB_REPOSITORY\s*=\s*"gaaiyun\/TradingAgents"/);
+  assert.match(monitor, /GITHUB_WORKFLOW_ID\s*=\s*"daily-analysis\.yml"/);
+  const monitorDatabaseId = /database_id\s*=\s*"([^"]+)"/.exec(monitor)[1];
+  const pagesDatabaseId = /database_id\s*=\s*"([^"]+)"/.exec(pages)[1];
+  assert.match(monitorDatabaseId, /^[0-9a-f-]{36}$/);
+  assert.equal(monitorDatabaseId, pagesDatabaseId);
   assert.equal(monitor.includes("GITHUB_DISPATCH_TOKEN"), false);
   assert.equal(
     /database_name\s*=\s*"([^"]+)"/.exec(monitor)[1],

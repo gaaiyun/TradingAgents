@@ -7,6 +7,10 @@ const healthMigrationUrl = new URL(
   "../migrations/0002_provider_circuit_breaker.sql",
   import.meta.url,
 );
+const seedMigrationUrl = new URL(
+  "../migrations/0006_seed_workbench_settings.sql",
+  import.meta.url,
+);
 
 test("D1 migration defines every dynamic workbench table and its lookup indexes", () => {
   const sql = readFileSync(migrationUrl, "utf8");
@@ -108,4 +112,35 @@ test("provider health migration adds durable circuit-breaker state without widen
     last_error_code: null,
     last_success_at: null,
   });
+});
+
+test("settings seed is valid v2 JSON and never overwrites a web-edited row", async (t) => {
+  let DatabaseSync;
+  try {
+    ({ DatabaseSync } = await import("node:sqlite"));
+  } catch {
+    t.skip("node:sqlite is unavailable on this Node version");
+    return;
+  }
+  const db = new DatabaseSync(":memory:");
+  db.exec(readFileSync(migrationUrl, "utf8"));
+  const seedSql = readFileSync(seedMigrationUrl, "utf8");
+  db.exec(seedSql);
+  const seeded = db.prepare(
+    "SELECT version, settings_json, updated_at FROM workbench_settings WHERE id = 1",
+  ).get();
+  const settings = JSON.parse(seeded.settings_json);
+  assert.equal(seeded.version, 2);
+  assert.equal(settings.profiles[0].id, "cn-semi-comms");
+  assert.equal(settings.profiles[0].targets.length, 10);
+
+  db.prepare(
+    "UPDATE workbench_settings SET settings_json = ?, updated_at = ? WHERE id = 1",
+  ).run('{"version":2,"profiles":[]}', "2099-01-01T00:00:00.000Z");
+  db.exec(seedSql);
+  const preserved = db.prepare(
+    "SELECT settings_json, updated_at FROM workbench_settings WHERE id = 1",
+  ).get();
+  assert.equal(preserved.settings_json, '{"version":2,"profiles":[]}');
+  assert.equal(preserved.updated_at, "2099-01-01T00:00:00.000Z");
 });
