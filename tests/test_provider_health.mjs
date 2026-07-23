@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const registryUrl = new URL(
@@ -12,7 +13,9 @@ function response(body, status = 200) {
 
 function eastmoneyFixture() {
   return {
+    rc: 0,
     data: {
+      code: "515880",
       klines: ["2026-07-23 10:00,10,11,12,9,1000"],
     },
   };
@@ -20,6 +23,7 @@ function eastmoneyFixture() {
 
 function tencentFixture() {
   return {
+    code: 0,
     data: {
       sh515880: {
         m5: [["202607231000", "10", "11", "12", "9", "1000"]],
@@ -45,13 +49,13 @@ class FakeHealthD1 {
             const previous = this.rows.get(source);
             if (sql.includes("source_health.consecutive_failures + 1")) {
               const consecutiveFailures = (previous?.consecutive_failures ?? 0) + 1;
-              const threshold = values[5];
+              const threshold = values[7];
               this.rows.set(source, {
                 source,
                 status: consecutiveFailures >= threshold ? "unavailable" : "degraded",
                 consecutive_failures: consecutiveFailures,
-                paused_until: consecutiveFailures >= threshold ? values[6] : null,
-                last_error_code: values[4],
+                paused_until: consecutiveFailures >= threshold ? values[8] : null,
+                last_error_code: values[6],
               });
             } else {
               this.rows.set(source, {
@@ -73,6 +77,36 @@ class FakeHealthD1 {
       },
     };
   }
+}
+
+async function sqliteHealthD1(t) {
+  let DatabaseSync;
+  try {
+    ({ DatabaseSync } = await import("node:sqlite"));
+  } catch {
+    t.skip("node:sqlite is unavailable on this Node version");
+    return null;
+  }
+  const sqlite = new DatabaseSync(":memory:");
+  sqlite.exec(readFileSync(
+    new URL("../migrations/0001_workbench_dynamic.sql", import.meta.url),
+    "utf8",
+  ));
+  sqlite.exec(readFileSync(
+    new URL("../migrations/0002_provider_circuit_breaker.sql", import.meta.url),
+    "utf8",
+  ));
+  return {
+    sqlite,
+    prepare(sql) {
+      return {
+        bind: (...values) => ({
+          first: async () => sqlite.prepare(sql).get(...values),
+          run: async () => sqlite.prepare(sql).run(...values),
+        }),
+      };
+    },
+  };
 }
 
 test("opens a D1-backed circuit after three failures, skips for 15 minutes, then retries", async () => {
@@ -179,6 +213,80 @@ test("persists normalized stale metadata instead of reporting the source as fres
     consecutive_failures: 0,
     paused_until: null,
     last_error_code: null,
+  });
+});
+
+test("ignores expired health and treats the next failure as the first failure", async (t) => {
+  const db = await sqliteHealthD1(t);
+  if (!db) return;
+  db.sqlite.prepare(`
+    INSERT INTO source_health (
+      source, status, expires_at, consecutive_failures, paused_until,
+      last_error_code
+    ) VALUES (?, ?, ?, ?, ?, ?)
+  `).run(
+    "tencent",
+    "unavailable",
+    "2026-06-23T02:05:00.000Z",
+    3,
+    "2099-01-01T00:00:00.000Z",
+    "HTTP_ERROR",
+  );
+  let tencentCalls = 0;
+  const { createProviderRegistry } = await import(registryUrl);
+  const registry = createProviderRegistry({
+    db,
+    fetch: async (url) => {
+      if (String(url).includes("gtimg")) {
+        tencentCalls += 1;
+        return response("", 503);
+      }
+      return response(eastmoneyFixture());
+    },
+    now: () => new Date("2026-07-23T02:05:00.000Z"),
+  });
+
+  await registry.fetchMarketData({
+    symbol: "515880.SS",
+    market: "CN",
+    timeframe: "5m",
+  });
+  const health = db.sqlite.prepare(`
+    SELECT status, consecutive_failures, paused_until, last_error_code
+    FROM source_health WHERE source = 'tencent'
+  `).get();
+
+  assert.equal(tencentCalls, 1);
+  assert.deepEqual({ ...health }, {
+    status: "degraded",
+    consecutive_failures: 1,
+    paused_until: null,
+    last_error_code: "HTTP_ERROR",
+  });
+});
+
+test("failure threshold one pauses on the initial insert", async (t) => {
+  const db = await sqliteHealthD1(t);
+  if (!db) return;
+  const { recordSourceFailure } = await import(
+    new URL("../workers/monitor/src/providers/health.mjs", import.meta.url)
+  );
+  await recordSourceFailure(
+    db,
+    "yahoo",
+    "HTTP_ERROR",
+    new Date("2026-07-23T02:05:00.000Z"),
+    { failureThreshold: 1, pauseMs: 15 * 60 * 1000 },
+  );
+  const health = db.sqlite.prepare(`
+    SELECT status, consecutive_failures, paused_until
+    FROM source_health WHERE source = 'yahoo'
+  `).get();
+
+  assert.deepEqual({ ...health }, {
+    status: "unavailable",
+    consecutive_failures: 1,
+    paused_until: "2026-07-23T02:20:00.000Z",
   });
 });
 

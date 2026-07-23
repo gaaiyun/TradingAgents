@@ -30,38 +30,41 @@ class FakeBarsD1 {
   constructor() {
     this.rows = new Map();
     this.prepared = [];
-    this.batchCalls = 0;
+    this.runCalls = 0;
+    this.binds = [];
   }
 
   prepare(sql) {
     this.prepared.push(sql);
     return {
-      bind: (...values) => ({
+      bind: (...values) => {
+        this.binds.push(values);
+        return {
         sql,
         values,
         run: async () => {
-          const key = [
-            values[0],
-            values[1],
-            values[2],
-            values[3],
-            values[9],
-            values[13],
-          ].join("|");
-          this.rows.set(key, values);
-          return { meta: { changes: 1 } };
-        },
-      }),
+            this.runCalls += 1;
+            const payload = JSON.parse(values[0]);
+            for (const row of payload) {
+              const key = [
+                row.profileId,
+                row.symbol,
+                row.timeframe,
+                row.timestamp,
+                row.source,
+                row.adjustment,
+              ].join("|");
+              this.rows.set(key, row);
+            }
+            return { meta: { changes: payload.length } };
+          },
+        };
+      },
     };
-  }
-
-  async batch(statements) {
-    this.batchCalls += 1;
-    return Promise.all(statements.map((statement) => statement.run()));
   }
 }
 
-test("writes normalized bars with parameterized D1 batch statements", async () => {
+test("writes normalized bars with one parameterized JSON1 statement", async () => {
   const { writeMarketBars } = await import(writerUrl);
   const db = new FakeBarsD1();
   const result = await writeMarketBars(db, {
@@ -71,19 +74,19 @@ test("writes normalized bars with parameterized D1 batch statements", async () =
   });
 
   assert.deepEqual(result, { written: 1 });
-  assert.equal(db.batchCalls, 1);
+  assert.equal(db.runCalls, 1);
   assert.equal(db.rows.size, 1);
   assert.match(db.prepared[0], /INSERT INTO market_bars/i);
+  assert.match(db.prepared[0], /json_each\s*\(\s*\?\s*\)/i);
   assert.match(db.prepared[0], /ON CONFLICT\s*\(\s*profile_id\s*,\s*symbol/i);
   assert.equal(db.prepared[0].includes("profile-a"), false);
   assert.equal(db.prepared[0].includes("515880.SS"), false);
-  const values = [...db.rows.values()][0];
-  assert.deepEqual(values.slice(0, 4), [
-    "profile-a",
-    "515880.SS",
-    "5m",
-    "2026-07-23T02:00:00.000Z",
-  ]);
+  assert.equal(db.binds[0].length, 1);
+  const row = [...db.rows.values()][0];
+  assert.deepEqual(
+    [row.profileId, row.symbol, row.timeframe, row.timestamp],
+    ["profile-a", "515880.SS", "5m", "2026-07-23T02:00:00.000Z"],
+  );
 });
 
 test("keeps the same source bar for two profiles and makes repeats idempotent", async () => {
@@ -127,7 +130,7 @@ test("rejects bad numeric, timestamp, and metadata values before touching D1", a
       (error) => error instanceof MarketBarWriteError && error.code === "INVALID_BAR",
     );
     assert.equal(db.prepared.length, 0);
-    assert.equal(db.batchCalls, 0);
+    assert.equal(db.runCalls, 0);
   }
 });
 
@@ -150,9 +153,65 @@ test("retains 5m bars for 90 days and 1d bars for five calendar years", async ()
     })],
     now,
   });
-  const expiries = [...db.rows.values()].map((values) => values.at(-1)).sort();
+  const expiries = [...db.rows.values()].map((row) => row.expiresAt).sort();
   assert.deepEqual(expiries, [
     "2026-10-21T02:05:00.000Z",
     "2031-07-23T02:05:00.000Z",
   ]);
+});
+
+test("executes 1255 bars as one SQLite JSON1 UPSERT and stays profile-scoped and idempotent", async (t) => {
+  let DatabaseSync;
+  try {
+    ({ DatabaseSync } = await import("node:sqlite"));
+  } catch {
+    t.skip("node:sqlite is unavailable on this Node version");
+    return;
+  }
+  const { readFileSync } = await import("node:fs");
+  const sqlite = new DatabaseSync(":memory:");
+  sqlite.exec(readFileSync(
+    new URL("../migrations/0001_workbench_dynamic.sql", import.meta.url),
+    "utf8",
+  ));
+  const db = {
+    queries: [],
+    prepare(sql) {
+      this.queries.push(sql);
+      return {
+        bind: (...values) => ({
+          run: async () => sqlite.prepare(sql).run(...values),
+        }),
+      };
+    },
+  };
+  const { writeMarketBars } = await import(writerUrl);
+  const now = new Date("2026-07-23T02:05:00.000Z");
+  const bars = Array.from({ length: 1255 }, (_, index) => {
+    const timestamp = new Date(
+      Date.UTC(2026, 6, 23, 2) - index * 5 * 60 * 1000,
+    ).toISOString();
+    return marketBar({ timestamp, asOf: timestamp });
+  });
+
+  await writeMarketBars(db, { profileId: "profile-a", bars, now });
+  assert.equal(db.queries.length, 1);
+  assert.equal(
+    sqlite.prepare("SELECT count(*) AS count FROM market_bars").get().count,
+    1255,
+  );
+
+  await writeMarketBars(db, { profileId: "profile-a", bars, now });
+  assert.equal(db.queries.length, 2);
+  assert.equal(
+    sqlite.prepare("SELECT count(*) AS count FROM market_bars").get().count,
+    1255,
+  );
+
+  await writeMarketBars(db, { profileId: "profile-b", bars, now });
+  assert.equal(db.queries.length, 3);
+  assert.equal(
+    sqlite.prepare("SELECT count(*) AS count FROM market_bars").get().count,
+    2510,
+  );
 });

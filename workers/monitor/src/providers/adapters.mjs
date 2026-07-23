@@ -19,7 +19,10 @@ async function request(fetcher, url, { timeoutMs, format }) {
     const response = await fetcher(url, { signal: controller.signal });
     if (!response?.ok) throw new ProviderError("HTTP_ERROR");
     try {
-      return format === "text" ? await response.text() : await response.json();
+      return {
+        body: format === "text" ? await response.text() : await response.json(),
+        contentType: response.headers.get("content-type") ?? "",
+      };
     } catch {
       throw new ProviderError("MALFORMED_DATA");
     }
@@ -103,11 +106,14 @@ function normalizeRows(rows, context) {
 
 function tencentUrl(request) {
   const symbol = mapProviderSymbol("tencent", request.symbol);
-  const series = request.timeframe === "5m" ? "m5" : "day";
-  return `https://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${symbol},${series},,320`;
+  if (request.timeframe === "5m") {
+    return `https://ifzq.gtimg.cn/appstock/app/kline/mkline?param=${symbol},m5,,320`;
+  }
+  return `https://ifzq.gtimg.cn/appstock/app/kline/kline?param=${symbol},day,,,320`;
 }
 
 function parseTencent(payload, request) {
+  if (payload?.code !== 0) return null;
   const symbol = mapProviderSymbol("tencent", request.symbol);
   const series = request.timeframe === "5m" ? "m5" : "day";
   const rows = payload?.data?.[symbol]?.[series];
@@ -124,10 +130,13 @@ function parseTencent(payload, request) {
 function eastmoneyUrl(request) {
   const symbol = mapProviderSymbol("eastmoney", request.symbol);
   const klt = request.timeframe === "5m" ? "5" : "101";
-  return `https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${symbol}&klt=${klt}&fqt=0&lmt=320&fields1=f1&fields2=f51,f52,f53,f54,f55,f56`;
+  return `https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=${symbol}&klt=${klt}&fqt=0&beg=0&end=20500101&lmt=320&fields1=f1&fields2=f51,f52,f53,f54,f55,f56`;
 }
 
-function parseEastmoney(payload) {
+function parseEastmoney(payload, request) {
+  if (payload?.rc !== 0 || payload?.data?.code !== request.symbol.slice(0, 6)) {
+    return null;
+  }
   return payload?.data?.klines?.map((line) => {
     const [timestamp, open, close, high, low, volume] = String(line).split(",");
     return {
@@ -141,11 +150,11 @@ function parseEastmoney(payload) {
   });
 }
 
-function yahooUrl(request) {
+function yahooUrl(request, host = "query1") {
   const symbol = encodeURIComponent(mapProviderSymbol("yahoo", request.symbol));
   const interval = request.timeframe === "5m" ? "5m" : "1d";
   const range = request.timeframe === "5m" ? "5d" : "5y";
-  return `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=${interval}&range=${range}&events=history`;
+  return `https://${host}.finance.yahoo.com/v8/finance/chart/${symbol}?interval=${interval}&range=${range}&events=history`;
 }
 
 function parseYahoo(payload) {
@@ -159,7 +168,11 @@ function parseYahoo(payload) {
     low: quote.low?.[index],
     close: quote.close?.[index],
     volume: quote.volume?.[index],
-  }));
+  })).filter((row) =>
+    row.timestamp &&
+    [row.open, row.high, row.low, row.close, row.volume]
+      .every((value) => value !== null && value !== undefined)
+  );
 }
 
 function alphaVantageUrl(request, apiKey) {
@@ -193,9 +206,26 @@ function stooqUrl(request) {
   return `https://stooq.com/q/d/l/?s=${mapProviderSymbol("stooq", request.symbol)}&i=d`;
 }
 
-function parseStooq(payload) {
+function parseStooq(payload, contentType) {
+  if (
+    contentType.toLowerCase().includes("text/html") ||
+    /requires javascript to verify|<noscript/i.test(payload)
+  ) {
+    throw new ProviderError("UPSTREAM_CHALLENGE");
+  }
+  if (
+    contentType &&
+    !/(?:text\/csv|text\/plain|application\/octet-stream)/i.test(contentType)
+  ) {
+    throw new ProviderError("MALFORMED_DATA");
+  }
   const lines = payload.trim().split(/\r?\n/);
-  if (lines.length < 2) return null;
+  if (
+    lines.length < 2 ||
+    lines[0].trim().toLowerCase() !== "date,open,high,low,close,volume"
+  ) {
+    return null;
+  }
   return lines.slice(1).filter(Boolean).map((line) => {
     const [timestamp, open, high, low, close, volume] = line.split(",");
     return { timestamp: utcTimestamp(timestamp), open, high, low, close, volume };
@@ -203,7 +233,9 @@ function parseStooq(payload) {
 }
 
 export function createAdapters({ fetch: fetcher, apiKey, timeoutMs }) {
-  const fetchJson = (url) => request(fetcher, url, { timeoutMs, format: "json" });
+  const fetchJson = async (url) => (
+    await request(fetcher, url, { timeoutMs, format: "json" })
+  ).body;
   const contextFor = (request, source, fetchedAt, now, freshnessThresholdMs) => ({
     symbol: request.symbol,
     timeframe: request.timeframe,
@@ -218,13 +250,27 @@ export function createAdapters({ fetch: fetcher, apiKey, timeoutMs }) {
       contextFor(marketRequest, "tencent", runtime.fetchedAt, runtime.now, runtime.freshnessThresholdMs),
     ),
     eastmoney: async (marketRequest, runtime) => normalizeRows(
-      parseEastmoney(await fetchJson(eastmoneyUrl(marketRequest))),
+      parseEastmoney(await fetchJson(eastmoneyUrl(marketRequest)), marketRequest),
       contextFor(marketRequest, "eastmoney", runtime.fetchedAt, runtime.now, runtime.freshnessThresholdMs),
     ),
-    yahoo: async (marketRequest, runtime) => normalizeRows(
-      parseYahoo(await fetchJson(yahooUrl(marketRequest))),
-      contextFor(marketRequest, "yahoo", runtime.fetchedAt, runtime.now, runtime.freshnessThresholdMs),
-    ),
+    yahoo: async (marketRequest, runtime) => {
+      const load = async (host) => normalizeRows(
+        parseYahoo(await fetchJson(yahooUrl(marketRequest, host))),
+        contextFor(
+          marketRequest,
+          "yahoo",
+          runtime.fetchedAt,
+          runtime.now,
+          runtime.freshnessThresholdMs,
+        ),
+      );
+      try {
+        return await load("query1");
+      } catch (error) {
+        if (marketRequest.timeframe !== "1d") throw error;
+        return load("query2");
+      }
+    },
     alphavantage: async (marketRequest, runtime) => normalizeRows(
       parseAlphaVantage(
         await fetchJson(alphaVantageUrl(marketRequest, apiKey)),
@@ -232,12 +278,21 @@ export function createAdapters({ fetch: fetcher, apiKey, timeoutMs }) {
       ),
       contextFor(marketRequest, "alphavantage", runtime.fetchedAt, runtime.now, runtime.freshnessThresholdMs),
     ),
-    stooq: async (marketRequest, runtime) => normalizeRows(
-      parseStooq(await request(fetcher, stooqUrl(marketRequest), {
+    stooq: async (marketRequest, runtime) => {
+      const response = await request(fetcher, stooqUrl(marketRequest), {
         timeoutMs,
         format: "text",
-      })),
-      contextFor(marketRequest, "stooq", runtime.fetchedAt, runtime.now, runtime.freshnessThresholdMs),
-    ),
+      });
+      return normalizeRows(
+        parseStooq(response.body, response.contentType),
+        contextFor(
+          marketRequest,
+          "stooq",
+          runtime.fetchedAt,
+          runtime.now,
+          runtime.freshnessThresholdMs,
+        ),
+      );
+    },
   };
 }

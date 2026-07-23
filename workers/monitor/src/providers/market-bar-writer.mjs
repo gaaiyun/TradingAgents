@@ -71,7 +71,7 @@ export function retentionExpiry(timeframe, now = new Date()) {
 }
 
 export async function writeMarketBars(db, { profileId, bars, now = new Date() }) {
-  if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
+  if (!db || typeof db.prepare !== "function") {
     throw new MarketBarWriteError("DB_REQUIRED");
   }
   if (typeof profileId !== "string" || !profileId.trim() || !Array.isArray(bars)) {
@@ -80,11 +80,48 @@ export async function writeMarketBars(db, { profileId, bars, now = new Date() })
   for (const bar of bars) validateBar(bar);
   if (bars.length === 0) return { written: 0 };
 
-  const statements = bars.map((bar) => db.prepare(`
+  const payload = bars.map((bar) => ({
+    profileId: profileId.trim(),
+    symbol: bar.symbol,
+    timeframe: bar.timeframe,
+    timestamp: bar.timestamp,
+    open: bar.open,
+    high: bar.high,
+    low: bar.low,
+    close: bar.close,
+    volume: bar.volume,
+    source: bar.source,
+    asOf: bar.asOf,
+    fetchedAt: bar.fetchedAt,
+    freshness: bar.freshness,
+    adjustment: bar.adjustment,
+    quality: bar.quality,
+    expiresAt: retentionExpiry(bar.timeframe, now),
+  }));
+  await db.prepare(`
     INSERT INTO market_bars (
       profile_id, symbol, timeframe, ts, open, high, low, close, volume,
       source, as_of, fetched_at, freshness, adjustment, quality, expires_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    )
+    SELECT
+      json_extract(value, '$.profileId'),
+      json_extract(value, '$.symbol'),
+      json_extract(value, '$.timeframe'),
+      json_extract(value, '$.timestamp'),
+      json_extract(value, '$.open'),
+      json_extract(value, '$.high'),
+      json_extract(value, '$.low'),
+      json_extract(value, '$.close'),
+      json_extract(value, '$.volume'),
+      json_extract(value, '$.source'),
+      json_extract(value, '$.asOf'),
+      json_extract(value, '$.fetchedAt'),
+      json_extract(value, '$.freshness'),
+      json_extract(value, '$.adjustment'),
+      json_extract(value, '$.quality'),
+      json_extract(value, '$.expiresAt')
+    FROM json_each(?)
+    WHERE 1
     ON CONFLICT(profile_id, symbol, timeframe, ts, source, adjustment)
     DO UPDATE SET
       open = excluded.open,
@@ -97,24 +134,6 @@ export async function writeMarketBars(db, { profileId, bars, now = new Date() })
       freshness = excluded.freshness,
       quality = excluded.quality,
       expires_at = excluded.expires_at
-  `).bind(
-    profileId.trim(),
-    bar.symbol,
-    bar.timeframe,
-    bar.timestamp,
-    bar.open,
-    bar.high,
-    bar.low,
-    bar.close,
-    bar.volume,
-    bar.source,
-    bar.asOf,
-    bar.fetchedAt,
-    bar.freshness,
-    bar.adjustment,
-    bar.quality,
-    retentionExpiry(bar.timeframe, now),
-  ));
-  await db.batch(statements);
+  `).bind(JSON.stringify(payload)).run();
   return { written: bars.length };
 }

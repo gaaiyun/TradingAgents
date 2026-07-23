@@ -2,14 +2,15 @@ const DEFAULT_FAILURE_THRESHOLD = 3;
 const DEFAULT_PAUSE_MS = 15 * 60 * 1000;
 const HEALTH_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
 
-export async function readSourceHealth(db, source) {
+export async function readSourceHealth(db, source, now = new Date()) {
   if (!db) return null;
   return db.prepare(`
     SELECT source, status, consecutive_failures, paused_until, last_error_code,
            last_success_at
     FROM source_health
     WHERE source = ?
-  `).bind(source).first();
+      AND (expires_at IS NULL OR expires_at > ?)
+  `).bind(source, now.toISOString()).first();
 }
 
 export function circuitIsOpen(health, now = new Date()) {
@@ -31,19 +32,31 @@ export async function recordSourceFailure(
   const asOf = now.toISOString();
   const pausedUntil = new Date(now.valueOf() + pauseMs).toISOString();
   const expiresAt = new Date(now.valueOf() + HEALTH_RETENTION_MS).toISOString();
+  const initialStatus = failureThreshold <= 1 ? "unavailable" : "degraded";
+  const initialPausedUntil = failureThreshold <= 1 ? pausedUntil : null;
   await db.prepare(`
     INSERT INTO source_health (
       source, status, as_of, fetched_at, freshness, adjustment, quality, detail,
       expires_at, consecutive_failures, paused_until, last_error_code
-    ) VALUES (?, 'degraded', ?, ?, 'stale', 'none', 'failed', NULL, ?, 1, NULL, ?)
+    ) VALUES (?, ?, ?, ?, 'stale', 'none', 'failed', NULL, ?, 1, ?, ?)
     ON CONFLICT(source) DO UPDATE SET
-      consecutive_failures = source_health.consecutive_failures + 1,
+      consecutive_failures = CASE
+        WHEN source_health.expires_at IS NOT NULL
+          AND source_health.expires_at <= excluded.fetched_at THEN 1
+        ELSE source_health.consecutive_failures + 1
+      END,
       paused_until = CASE
+        WHEN source_health.expires_at IS NOT NULL
+          AND source_health.expires_at <= excluded.fetched_at
+          THEN excluded.paused_until
         WHEN source_health.consecutive_failures + 1 >= ? THEN ?
         ELSE NULL
       END,
       last_error_code = excluded.last_error_code,
       status = CASE
+        WHEN source_health.expires_at IS NOT NULL
+          AND source_health.expires_at <= excluded.fetched_at
+          THEN excluded.status
         WHEN source_health.consecutive_failures + 1 >= ? THEN 'unavailable'
         ELSE 'degraded'
       END,
@@ -56,9 +69,11 @@ export async function recordSourceFailure(
       expires_at = excluded.expires_at
   `).bind(
     source,
+    initialStatus,
     asOf,
     asOf,
     expiresAt,
+    initialPausedUntil,
     errorCode,
     failureThreshold,
     pausedUntil,

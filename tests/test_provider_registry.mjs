@@ -16,6 +16,7 @@ function jsonResponse(value, status = 200) {
 
 function tencentFixture() {
   return {
+    code: 0,
     data: {
       sh515880: {
         m5: [
@@ -28,7 +29,9 @@ function tencentFixture() {
 
 function eastmoneyFixture() {
   return {
+    rc: 0,
     data: {
+      code: "515880",
       klines: ["2026-07-23 10:00,10,11,12,9,1000"],
     },
   };
@@ -162,8 +165,9 @@ test("omits Alpha Vantage without a key and uses Stooq only as a US daily fallba
   assert.equal(result.source, "stooq");
   assert.deepEqual(result.sources.map(({ source }) => source), ["yahoo", "stooq"]);
   assert.equal(urls.some((url) => /alphavantage/i.test(url)), false);
-  assert.match(urls[1], /stooq\.com/);
-  assert.match(urls[1], /nvda\.us/);
+  assert.match(urls[1], /query2\.finance\.yahoo\.com/);
+  assert.match(urls[2], /stooq\.com/);
+  assert.match(urls[2], /nvda\.us/);
 });
 
 test("includes Alpha Vantage between Yahoo and Stooq only when a key is configured", async () => {
