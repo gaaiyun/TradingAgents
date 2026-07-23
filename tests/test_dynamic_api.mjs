@@ -51,6 +51,10 @@ test("market API builds parameterized symbol/profile/timeframe/date filters and 
   assertEnvelope(payload);
   assert.equal(payload.status, "ok");
   assert.deepEqual(payload.data, [row]);
+  assert.equal(payload.indicators.version, "ta-indicators-v1");
+  assert.equal(payload.indicators.bars, 1);
+  assert.equal(payload.indicators.asOf, row.ts);
+  assert.equal(payload.indicators.adjustment, "split");
   assert.deepEqual(payload.sources[0], {
     source: "market-provider",
     asOf: "2026-07-23T10:01:00Z",

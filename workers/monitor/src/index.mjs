@@ -13,6 +13,7 @@ import {
   finishScheduledSlot,
   listRetryableSlots,
 } from "./slots.mjs";
+import { evaluateIntradaySignals } from "./signals.mjs";
 
 function emptyCounts() {
   return {
@@ -70,8 +71,16 @@ async function executeTask({
   deps,
   now,
 }) {
-  if (task.type === "premarketBrief" || task.type === "intradaySignal") {
+  if (task.type === "premarketBrief") {
     return deferredHook();
+  }
+  if (task.type === "intradaySignal") {
+    return evaluateIntradaySignals({
+      db,
+      profile,
+      scheduledFor: task.scheduledFor,
+      now,
+    });
   }
   if (task.type === "closeFullAnalysis") {
     return dispatchFullAnalysis({
