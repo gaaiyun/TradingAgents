@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -45,4 +46,10 @@ test("rejects unknown schema versions", () => {
   assertSettingsError("UNSUPPORTED_SETTINGS_VERSION", () =>
     parseWorkbenchSettings({ version: 2, tickers: ["SPY"] }),
   );
+});
+
+test("assistant drawer styles do not match assistant chat messages", () => {
+  const css = readFileSync(new URL("../public/assets/workbench.css", import.meta.url), "utf8");
+  assert.doesNotMatch(css, /(^|\n)\s*\.assistant(?:\.is-open)?\s*\{/);
+  assert.match(css, /#assistant\.is-open\s*\{\s*transform:\s*translateX\(0\)/);
 });
