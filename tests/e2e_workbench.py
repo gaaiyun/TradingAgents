@@ -177,7 +177,17 @@ def run_browser():
         )
         page = browser.new_page(viewport={"width": 1600, "height": 1000}, device_scale_factor=1)
         capture_browser_diagnostics(page, "desktop")
-        page.add_init_script("window.setInterval = ((native) => (fn, delay, ...args) => native(fn, delay >= 60000 ? 250 : delay, ...args))(window.setInterval)")
+        page.add_init_script("""
+          const nativeSetInterval = window.setInterval.bind(window);
+          window.__pollWorkbench = null;
+          window.setInterval = (fn, delay, ...args) => {
+            if (delay >= 60000) {
+              window.__pollWorkbench = () => fn(...args);
+              return 60000;
+            }
+            return nativeSetInterval(fn, delay, ...args);
+          };
+        """)
         page.route("**/api/**", route_api)
         page.goto(BASE_URL, wait_until="domcontentloaded")
         page.wait_for_selector("#watchlist .watch-row")
@@ -193,6 +203,9 @@ def run_browser():
         assert page.get_by_role("tab", name="1h").get_attribute("aria-selected") == "true"
         page.wait_for_selector("#research-feed .feed-item")
         page.select_option("#feed-symbol", "NVDA")
+        page.wait_for_function(
+            "document.querySelectorAll('#research-feed .feed-item').length === 1",
+        )
         assert page.locator("#research-feed .feed-item").count() == 1
 
         page.click("#settings-open")
@@ -379,6 +392,7 @@ def run_browser():
 
         counts_before_poll = dict(API_COUNTS)
         market_count_before_poll = len(MARKET_REQUESTS)
+        page.evaluate("window.__pollWorkbench()")
         page.wait_for_timeout(650)
         assert any(symbol == "515880.SS" and limit == 2 for symbol, _, limit in MARKET_REQUESTS)
         assert len(MARKET_REQUESTS) >= market_count_before_poll + 10
