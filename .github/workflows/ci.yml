@@ -10,6 +10,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  pages-functions-test:
+    name: Pages Functions unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Test Pages Functions contracts
+        run: |
+          npm run test:functions
+          npm run check:workbench
+
   test:
     name: tests (py${{ matrix.python-version }})
     runs-on: ubuntu-latest

@@ -23,10 +23,44 @@ export function ghHeaders(env) {
   return h;
 }
 
-export async function readJsonBody(request) {
+export class RequestBodyTooLargeError extends Error {
+  constructor(maxBytes) {
+    super(`request body exceeds ${maxBytes} bytes`);
+    this.name = "RequestBodyTooLargeError";
+    this.maxBytes = maxBytes;
+  }
+}
+
+export async function readJsonBody(request, { maxBytes = 16 * 1024 } = {}) {
+  const advertised = Number(request.headers.get("content-length"));
+  if (Number.isFinite(advertised) && advertised > maxBytes) {
+    throw new RequestBodyTooLargeError(maxBytes);
+  }
+
   try {
-    return await request.json();
-  } catch {
+    if (!request.body) return null;
+    const reader = request.body.getReader();
+    const chunks = [];
+    let total = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) {
+        await reader.cancel("request body too large");
+        throw new RequestBodyTooLargeError(maxBytes);
+      }
+      chunks.push(value);
+    }
+    const bytes = new Uint8Array(total);
+    let offset = 0;
+    for (const chunk of chunks) {
+      bytes.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    return JSON.parse(new TextDecoder().decode(bytes));
+  } catch (error) {
+    if (error instanceof RequestBodyTooLargeError) throw error;
     return null;
   }
 }

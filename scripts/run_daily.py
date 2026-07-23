@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Headless daily runner for CI: multi-ticker analysis -> static site + WeChat push.
 
 设计目标（与上游解耦）：
@@ -26,6 +25,8 @@ import sys
 import traceback
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from typing import Any
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -36,6 +37,193 @@ CST = timezone(timedelta(hours=8))
 RATING_TIERS = ["Sell", "Underweight", "Hold", "Overweight", "Buy"]
 
 HISTORY_CAP = 60
+
+NEWS_EXPORT_VERSION = 1
+_NEWS_ITEM_FIELDS = (
+    "title",
+    "summary",
+    "url",
+    "source",
+    "published_at",
+    "fetched_at",
+    "ticker",
+    "source_tier",
+)
+
+
+def _failed_news_bundle(
+    *,
+    query_type: str,
+    ticker: str | None,
+    start_date: str,
+    end_date: str,
+    generated_at: str,
+) -> dict[str, Any]:
+    """Return a public-safe bundle when the aggregator itself cannot run."""
+    return {
+        "status": "failed",
+        "query_type": query_type,
+        "ticker": ticker,
+        "start_date": start_date,
+        "end_date": end_date,
+        "fetched_at": generated_at,
+        "items": [],
+        "source_statuses": [
+            {"source": "news exporter", "status": "failed", "item_count": 0}
+        ],
+    }
+
+
+def _public_news_bundle(bundle: Any, fallback: dict[str, Any]) -> dict[str, Any]:
+    """Keep the export limited to the stable aggregator contract.
+
+    The aggregator already hides vendor request details.  This defensive
+    projection also protects the static site if a future collector adds debug
+    metadata or a monkeypatched/third-party adapter returns an exception value.
+    """
+    if not isinstance(bundle, dict):
+        return fallback
+
+    result = {
+        key: bundle.get(key, fallback[key])
+        for key in ("status", "query_type", "ticker", "start_date", "end_date", "fetched_at")
+    }
+    result["items"] = [
+        {field: item.get(field) for field in _NEWS_ITEM_FIELDS}
+        for item in bundle.get("items", [])
+        if isinstance(item, dict)
+    ]
+    result["source_statuses"] = [
+        {
+            "source": str(status.get("source", "unknown source")),
+            "status": str(status.get("status", "failed")),
+            "item_count": int(status.get("item_count", 0) or 0),
+        }
+        for status in bundle.get("source_statuses", [])
+        if isinstance(status, dict)
+    ]
+    return result
+
+
+def _news_item_key(item: dict[str, Any]) -> tuple[str, str]:
+    """Return a deterministic cross-bundle key, ignoring common URL tracking."""
+    title = " ".join(str(item.get("title", "")).casefold().split())
+    url = str(item.get("url", "")).strip()
+    try:
+        parsed = urlsplit(url)
+        query = [
+            (key, value)
+            for key, value in parse_qsl(parsed.query, keep_blank_values=True)
+            if not key.lower().startswith("utm_")
+        ]
+        url = urlunsplit(
+            (
+                parsed.scheme.lower(),
+                parsed.netloc.lower(),
+                parsed.path,
+                urlencode(sorted(query)),
+                "",
+            )
+        )
+    except ValueError:
+        pass
+    return url, title
+
+
+def _merge_news_items(bundles: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Combine global and ticker news without duplicate stories."""
+    items: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for bundle in bundles:
+        for item in bundle["items"]:
+            key = _news_item_key(item)
+            if key in seen:
+                continue
+            seen.add(key)
+            items.append(item)
+    return sorted(items, key=lambda item: str(item.get("published_at") or ""), reverse=True)
+
+
+def write_news_export(
+    data_dir: Path,
+    *,
+    tickers: list[str],
+    trade_date: str,
+    generated_at: str,
+) -> dict[str, Any]:
+    """Fetch independent news and write the static site's stable v1 contract.
+
+    News is supplemental to the LLM workflow: every retrieval failure becomes a
+    safe ``failed`` bundle rather than aborting ticker analysis or leaking a
+    request URL, credential, or raw exception to the public artifact.
+    """
+    global_fallback = _failed_news_bundle(
+        query_type="global",
+        ticker=None,
+        start_date=trade_date,
+        end_date=trade_date,
+        generated_at=generated_at,
+    )
+    ticker_bundles: dict[str, dict[str, Any]] = {}
+    try:
+        from tradingagents.dataflows.news_aggregator import (
+            get_global_news_bundle,
+            get_news_bundle,
+        )
+    except Exception:  # a partial install still gets a valid public artifact
+        get_global_news_bundle = None
+        get_news_bundle = None
+
+    if get_global_news_bundle is None:
+        global_bundle = global_fallback
+    else:
+        try:
+            global_bundle = _public_news_bundle(
+                get_global_news_bundle(trade_date), global_fallback
+            )
+        except Exception:  # supplemental data must not fail the analysis job
+            global_bundle = global_fallback
+
+    for ticker in tickers:
+        fallback = _failed_news_bundle(
+            query_type="ticker",
+            ticker=ticker,
+            start_date=trade_date,
+            end_date=trade_date,
+            generated_at=generated_at,
+        )
+        try:
+            if get_news_bundle is None:
+                raise RuntimeError("news aggregator unavailable")
+            bundle = get_news_bundle(ticker, trade_date, trade_date)
+            ticker_bundles[ticker] = _public_news_bundle(bundle, fallback)
+        except Exception:  # supplemental data must not fail the analysis job
+            ticker_bundles[ticker] = fallback
+
+    all_bundles = [global_bundle, *ticker_bundles.values()]
+    statuses = {str(bundle.get("status", "failed")) for bundle in all_bundles}
+    if statuses == {"failed"}:
+        status = "failed"
+    elif statuses <= {"unavailable", "failed"}:
+        status = "unavailable"
+    elif statuses & {"failed", "unavailable", "partial", "partial_empty"}:
+        status = "partial"
+    else:
+        status = "ok"
+
+    payload = {
+        "version": NEWS_EXPORT_VERSION,
+        "status": status,
+        "generated_at": generated_at,
+        "trade_date": trade_date,
+        "global": global_bundle,
+        "tickers": ticker_bundles,
+        "items": _merge_news_items(all_bundles),
+    }
+    (data_dir / "news.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    return payload
 
 
 def normalize_ticker(raw: str) -> str:
@@ -194,6 +382,13 @@ def main(argv: list[str] | None = None) -> int:
     tickers = list(dict.fromkeys(t for t in tickers if t))
     analysts = [a.strip().lower() for a in args.analysts.split(",") if a.strip()]
     generated_at = datetime.now(CST).isoformat(timespec="seconds")
+    news_payload = write_news_export(
+        data_dir,
+        tickers=tickers,
+        trade_date=trade_date,
+        generated_at=generated_at,
+    )
+    print(f"[NEWS] status={news_payload['status']}, items={len(news_payload['items'])}")
 
     ready, provider = resolve_llm_key_status()
     if not ready:

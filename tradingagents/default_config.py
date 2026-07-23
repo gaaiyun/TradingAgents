@@ -19,6 +19,10 @@ _ENV_OVERRIDES = {
     "TRADINGAGENTS_BENCHMARK_TICKER":     "benchmark_ticker",
     "TRADINGAGENTS_TEMPERATURE":          "temperature",
     "TRADINGAGENTS_LLM_MAX_RETRIES":      "llm_max_retries",
+    "TRADINGAGENTS_NEWS_TICKER_SOURCES":  "news_ticker_sources",
+    "TRADINGAGENTS_NEWS_GLOBAL_SOURCES":  "news_global_sources",
+    "TRADINGAGENTS_NEWS_REQUEST_TIMEOUT": "news_request_timeout_seconds",
+    "TRADINGAGENTS_NEWS_USER_AGENT":      "news_user_agent",
     # Provider-specific reasoning/thinking knobs (None = each provider's own
     # default). Settable here for non-interactive runs; the CLI also offers an
     # interactive choice, which is skipped when the matching var is set.
@@ -116,6 +120,15 @@ DEFAULT_CONFIG = _apply_env_overrides({
     "news_article_limit": 20,             # max articles per ticker (ticker-news)
     "global_news_article_limit": 10,      # max articles for global/macro news
     "global_news_lookback_days": 7,       # macro news lookback window
+    # The multi-source news vendor combines Yahoo coverage with keyless,
+    # first-party sources. Alpha Vantage remains opt-in: append
+    # ``alpha_vantage`` only after ALPHA_VANTAGE_API_KEY is configured.
+    "news_ticker_sources": "yfinance,google_news,sec",
+    "news_global_sources": "yfinance,federal_reserve",
+    "news_request_timeout_seconds": 15,
+    "news_future_tolerance_minutes": 5,
+    "news_user_agent": "TradingAgents/0.3.1 (https://github.com/gaaiyun/TradingAgents)",
+    "news_sec_forms": "8-K,10-Q,10-K,6-K,20-F,40-F,S-1,DEF 14A",
     # Search queries used by get_global_news for macro headlines. Extend or
     # replace to broaden geographic / sector coverage.
     "global_news_queries": [
@@ -134,12 +147,15 @@ DEFAULT_CONFIG = _apply_env_overrides({
         "core_stock_apis": "yfinance",       # Options: alpha_vantage, yfinance
         "technical_indicators": "yfinance",  # Options: alpha_vantage, yfinance
         "fundamental_data": "yfinance",      # Options: alpha_vantage, yfinance
-        "news_data": "yfinance",             # Options: alpha_vantage, yfinance
+        "news_data": "multi_source",          # Options: multi_source, yfinance, alpha_vantage
         "macro_data": "fred",                # Options: fred (needs FRED_API_KEY)
         "prediction_markets": "polymarket",  # Options: polymarket (keyless)
     },
     # Tool-level configuration (takes precedence over category-level)
     "tool_vendors": {
+        # Multi-source aggregation applies to article tools only; insider
+        # transactions keep the existing yfinance route.
+        "get_insider_transactions": "yfinance",
         # Example: "get_stock_data": "alpha_vantage",  # Override category default
     },
     # Benchmark for alpha calculation in the reflection layer.

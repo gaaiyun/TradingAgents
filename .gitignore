@@ -227,3 +227,6 @@ reports/
 
 # wrangler 本地缓存
 .wrangler/
+
+# Node.js local tooling dependencies
+node_modules/

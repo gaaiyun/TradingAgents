@@ -1,134 +1,297 @@
-"""yfinance-based news data fetching functions."""
+"""yfinance news collector plus backwards-compatible Markdown wrappers."""
 
-import contextlib
-from datetime import datetime
+from __future__ import annotations
+
+import re
+from datetime import datetime, timedelta
+from typing import Any
 
 import yfinance as yf
-from dateutil.relativedelta import relativedelta
 
 from .config import get_config
+from .news_common import (
+    NewsAggregationResult,
+    NewsItem,
+    SourceStatus,
+    ensure_utc,
+    format_news_report,
+    normalize_filter_dedupe,
+    parse_timestamp,
+    ticker_window_timezone,
+    utc_now,
+)
 from .stockstats_utils import yf_retry
 from .symbol_utils import normalize_symbol
 
+_COMPANY_STOPWORDS = {
+    "company",
+    "corporation",
+    "corp",
+    "group",
+    "holdings",
+    "inc",
+    "incorporated",
+    "international",
+    "limited",
+    "ltd",
+    "plc",
+    "the",
+}
+
+
+def _article_symbols(article: dict) -> set[str]:
+    """Extract exact related-ticker metadata when Yahoo provides it."""
+    content = article.get("content") if isinstance(article.get("content"), dict) else article
+    finance = content.get("finance", {}) if isinstance(content, dict) else {}
+    candidates: list[Any] = []
+    for value in (
+        article.get("relatedTickers"),
+        content.get("relatedTickers") if isinstance(content, dict) else None,
+        finance.get("stockTickers") if isinstance(finance, dict) else None,
+    ):
+        if isinstance(value, list):
+            candidates.extend(value)
+
+    symbols: set[str] = set()
+    for candidate in candidates:
+        if isinstance(candidate, str):
+            symbol = candidate
+        elif isinstance(candidate, dict):
+            symbol = candidate.get("symbol") or candidate.get("ticker")
+        else:
+            continue
+        if symbol:
+            symbols.add(str(symbol).strip().upper())
+    return symbols
+
 
 def _extract_article_data(article: dict) -> dict:
-    """Extract article data from yfinance news format (handles nested 'content' structure)."""
-    # Handle nested content structure
-    if "content" in article:
+    """Normalize flat and nested Yahoo news payloads without filtering them."""
+    if "content" in article and isinstance(article["content"], dict):
         content = article["content"]
-        title = content.get("title", "No title")
-        summary = content.get("summary", "")
         provider = content.get("provider", {})
-        publisher = provider.get("displayName", "Unknown")
-
-        # Get URL from canonicalUrl or clickThroughUrl
+        if not isinstance(provider, dict):
+            provider = {}
         url_obj = content.get("canonicalUrl") or content.get("clickThroughUrl") or {}
-        link = url_obj.get("url", "")
-
-        # Get publish date
-        pub_date_str = content.get("pubDate", "")
-        pub_date = None
-        if pub_date_str:
-            with contextlib.suppress(ValueError, AttributeError):
-                pub_date = datetime.fromisoformat(pub_date_str.replace("Z", "+00:00"))
-
+        link = url_obj.get("url", "") if isinstance(url_obj, dict) else url_obj
         return {
-            "title": title,
-            "summary": summary,
-            "publisher": publisher,
+            "title": content.get("title", "No title"),
+            "summary": content.get("summary") or content.get("description") or "",
+            "publisher": provider.get("displayName", "Unknown"),
             "link": link,
-            "pub_date": pub_date,
+            "pub_date": parse_timestamp(content.get("pubDate")),
+            "symbols": _article_symbols(article),
         }
-    else:
-        # Fallback for flat structure. Parse the epoch publish time so flat
-        # articles are date-filterable too (otherwise they bypass the
-        # historical window and leak future news, #992/#1007).
-        pub_date = None
-        ts = article.get("providerPublishTime")
-        if ts:
-            with contextlib.suppress(ValueError, OSError, TypeError):
-                pub_date = datetime.fromtimestamp(ts)
-        return {
-            "title": article.get("title", "No title"),
-            "summary": article.get("summary", ""),
-            "publisher": article.get("publisher", "Unknown"),
-            "link": article.get("link", ""),
-            "pub_date": pub_date,
-        }
+
+    return {
+        "title": article.get("title", "No title"),
+        "summary": article.get("summary", ""),
+        "publisher": article.get("publisher", "Unknown"),
+        "link": article.get("link", ""),
+        "pub_date": parse_timestamp(article.get("providerPublishTime")),
+        "symbols": _article_symbols(article),
+    }
+
+
+def _company_aliases(quotes: list[dict], canonical: str) -> set[str]:
+    aliases: set[str] = set()
+    for quote in quotes:
+        if not isinstance(quote, dict) or str(quote.get("symbol", "")).upper() != canonical.upper():
+            continue
+        for field in (
+            "shortname",
+            "longname",
+            "shortName",
+            "longName",
+            "displayName",
+            "name",
+        ):
+            value = " ".join(str(quote.get(field) or "").split()).strip()
+            if not value:
+                continue
+            aliases.add(value.casefold())
+            words = re.findall(r"[^\W_]+", value.casefold(), flags=re.UNICODE)
+            for word in words:
+                if len(word) >= 4 and word not in _COMPANY_STOPWORDS:
+                    aliases.add(word)
+    return aliases
+
+
+def _text_has_exact_term(text: str, term: str) -> bool:
+    if not term:
+        return False
+    return re.search(rf"(?<!\w){re.escape(term.casefold())}(?!\w)", text.casefold()) is not None
+
+
+def _is_ticker_relevant(data: dict, ticker: str, canonical: str, aliases: set[str]) -> bool:
+    symbols = data["symbols"]
+    ticker_candidates = {ticker.upper(), canonical.upper()}
+    base = canonical.upper().split(".", 1)[0]
+    if base:
+        ticker_candidates.add(base)
+    if symbols:
+        return bool(ticker_candidates & symbols)
+
+    text = f"{data['title']} {data['summary']}"
+    if any(_text_has_exact_term(text, candidate) for candidate in ticker_candidates):
+        return True
+    return any(_text_has_exact_term(text, alias) for alias in aliases)
 
 
 def _in_news_window(pub_date, start_dt, end_dt) -> bool:
-    """Whether an article belongs in the [start_dt, end_dt] window.
-
-    Dated articles are kept only if they fall in the window. An undated article
-    is kept only when the window reaches the present (live run) — in a
-    historical/backtest window it's excluded, since we can't prove it isn't
-    future news (look-ahead safety, #992/#1007).
-    """
+    """Compatibility helper for callers/tests using datetime window objects."""
     if pub_date is not None:
-        naive = pub_date.replace(tzinfo=None) if hasattr(pub_date, "replace") else pub_date
-        return start_dt <= naive <= end_dt + relativedelta(days=1)
-    return end_dt >= datetime.now() - relativedelta(days=1)
+        published = ensure_utc(pub_date)
+        start = ensure_utc(start_dt)
+        end = ensure_utc(end_dt) + timedelta(days=1)
+        return start <= published <= end
+    # Preserve the previous live-window behavior for direct helper callers.
+    return ensure_utc(end_dt) >= utc_now() - timedelta(days=1)
 
 
-def get_news_yfinance(
+def fetch_ticker_news_yfinance(
     ticker: str,
-    start_date: str,
-    end_date: str,
-) -> str:
-    """
-    Retrieve news for a specific stock ticker using yfinance.
-
-    Args:
-        ticker: Stock ticker symbol (e.g., "AAPL")
-        start_date: Start date in yyyy-mm-dd format
-        end_date: End date in yyyy-mm-dd format
-
-    Returns:
-        Formatted string containing news articles
-    """
-    article_limit = get_config()["news_article_limit"]
-    # Query Yahoo with the canonical symbol, like every other yfinance path —
-    # a raw broker/forex/crypto alias (XAUUSD, BTCUSD) otherwise silently
-    # returns no news. Keep the user's ticker in the report header.
+    *,
+    limit: int,
+    fetched_at: datetime,
+) -> list[NewsItem]:
+    """Collect dated ticker news as NewsItems; network errors propagate."""
     canonical = normalize_symbol(ticker)
+    stock = yf.Ticker(canonical)
+    aliases: set[str] = set()
+    raw_news: list[dict] = []
+    try:
+        search = yf_retry(
+            lambda: yf.Search(
+                query=canonical,
+                news_count=limit,
+                enable_fuzzy_query=False,
+            )
+        )
+        raw_news = list(getattr(search, "news", None) or [])
+        aliases.update(_company_aliases(list(getattr(search, "quotes", None) or []), canonical))
+    except Exception:  # noqa: BLE001 - the ticker endpoint remains a best-effort fallback
+        raw_news = []
+
+    if not raw_news:
+        raw_news = yf_retry(lambda: stock.get_news(count=limit)) or []
+    if not aliases:
+        try:
+            info = stock.get_info() or {}
+        except Exception:  # noqa: BLE001 - relevance falls back to exact ticker text
+            info = {}
+        aliases.update(_company_aliases([{"symbol": canonical, **info}], canonical))
+
+    items: list[NewsItem] = []
+    for article in raw_news:
+        if not isinstance(article, dict):
+            continue
+        data = _extract_article_data(article)
+        published_at = data["pub_date"]
+        if published_at is None:
+            # A dated citation is required by the canonical contract.  Keeping
+            # an undated item would make look-ahead/age checks unverifiable.
+            continue
+        if not _is_ticker_relevant(data, ticker, canonical, aliases):
+            continue
+        items.append(
+            NewsItem(
+                title=data["title"],
+                summary=data["summary"],
+                url=data["link"],
+                source=data["publisher"] or "Yahoo Finance",
+                published_at=published_at,
+                fetched_at=fetched_at,
+                ticker=ticker,
+                source_tier="aggregator",
+            )
+        )
+    return items
+
+
+def fetch_global_news_yfinance(
+    *,
+    queries: list[str],
+    limit: int,
+    fetched_at: datetime,
+) -> list[NewsItem]:
+    """Collect dated global-market search results as NewsItems."""
+    items: list[NewsItem] = []
+    for query in queries:
+        search = yf_retry(
+            lambda q=query: yf.Search(
+                query=q,
+                news_count=limit,
+                enable_fuzzy_query=True,
+            )
+        )
+        for article in getattr(search, "news", None) or []:
+            if not isinstance(article, dict):
+                continue
+            data = _extract_article_data(article)
+            if data["pub_date"] is None:
+                continue
+            items.append(
+                NewsItem(
+                    title=data["title"],
+                    summary=data["summary"],
+                    url=data["link"],
+                    source=data["publisher"] or "Yahoo Finance",
+                    published_at=data["pub_date"],
+                    fetched_at=fetched_at,
+                    ticker=None,
+                    source_tier="aggregator",
+                )
+            )
+    return items
+
+
+def get_news_yfinance(ticker: str, start_date: str, end_date: str) -> str:
+    """Retrieve ticker news using only yfinance (legacy vendor entry point)."""
+    config = get_config()
+    limit = config["news_article_limit"]
+    fetched_at = utc_now()
+    canonical = normalize_symbol(ticker)
+    window_timezone = ticker_window_timezone(canonical)
     resolved = "" if canonical == ticker else f" (resolved to {canonical})"
     try:
-        stock = yf.Ticker(canonical)
-        news = yf_retry(lambda: stock.get_news(count=article_limit))
-
-        if not news:
-            return f"No news found for {ticker}{resolved}"
-
-        # Parse date range for filtering
-        start_dt = datetime.strptime(start_date, "%Y-%m-%d")
-        end_dt = datetime.strptime(end_date, "%Y-%m-%d")
-
-        news_str = ""
-        filtered_count = 0
-
-        for article in news:
-            data = _extract_article_data(article)
-
-            # Keep only articles within the requested window (look-ahead safe).
-            if not _in_news_window(data["pub_date"], start_dt, end_dt):
-                continue
-
-            news_str += f"### {data['title']} (source: {data['publisher']})\n"
-            if data["summary"]:
-                news_str += f"{data['summary']}\n"
-            if data["link"]:
-                news_str += f"Link: {data['link']}\n"
-            news_str += "\n"
-            filtered_count += 1
-
-        if filtered_count == 0:
-            return f"No news found for {ticker}{resolved} between {start_date} and {end_date}"
-
-        return f"## {ticker}{resolved} News, from {start_date} to {end_date}:\n\n{news_str}"
-
-    except Exception as e:
-        return f"Error fetching news for {ticker}: {str(e)}"
+        collected = fetch_ticker_news_yfinance(
+            ticker,
+            limit=limit,
+            fetched_at=fetched_at,
+        )
+        items = normalize_filter_dedupe(
+            collected,
+            start_date,
+            end_date,
+            fetched_at=fetched_at,
+            limit=limit,
+            window_timezone=window_timezone,
+        )
+        status = SourceStatus(
+            "Yahoo Finance",
+            "ok" if collected else "empty",
+            len(collected),
+        )
+    except Exception as exc:  # noqa: BLE001 - represented as source health, not "no news"
+        items = []
+        status = SourceStatus(
+            "Yahoo Finance",
+            "failed",
+            detail=f"request failed ({type(exc).__name__})",
+        )
+    result = NewsAggregationResult(
+        items=items,
+        source_statuses=[status],
+        fetched_at=fetched_at,
+        start_date=start_date,
+        end_date=end_date,
+        ticker=ticker.upper(),
+    )
+    return format_news_report(
+        result,
+        f"{ticker}{resolved} News, from {start_date} to {end_date}",
+    )
 
 
 def get_global_news_yfinance(
@@ -136,84 +299,49 @@ def get_global_news_yfinance(
     look_back_days: int | None = None,
     limit: int | None = None,
 ) -> str:
-    """
-    Retrieve global/macro economic news using yfinance Search.
-
-    Args:
-        curr_date: Current date in yyyy-mm-dd format
-        look_back_days: Number of days to look back. ``None`` falls back to
-            ``global_news_lookback_days`` from the active config.
-        limit: Maximum number of articles to return. ``None`` falls back to
-            ``global_news_article_limit`` from the active config.
-
-    Returns:
-        Formatted string containing global news articles
-    """
+    """Retrieve global news using only yfinance (legacy vendor entry point)."""
     config = get_config()
-    if look_back_days is None:
-        look_back_days = config["global_news_lookback_days"]
-    if limit is None:
-        limit = config["global_news_article_limit"]
-    search_queries = config["global_news_queries"]
-
-    all_news = []
-    seen_titles = set()
-
+    look_back_days = (
+        config["global_news_lookback_days"] if look_back_days is None else look_back_days
+    )
+    limit = config["global_news_article_limit"] if limit is None else limit
+    curr_dt = datetime.strptime(curr_date, "%Y-%m-%d")
+    start_date = (curr_dt - timedelta(days=look_back_days)).strftime("%Y-%m-%d")
+    fetched_at = utc_now()
     try:
-        for query in search_queries:
-            search = yf_retry(lambda q=query: yf.Search(
-                query=q,
-                news_count=limit,
-                enable_fuzzy_query=True,
-            ))
-
-            if search.news:
-                for article in search.news:
-                    # Handle both flat and nested structures
-                    if "content" in article:
-                        data = _extract_article_data(article)
-                        title = data["title"]
-                    else:
-                        title = article.get("title", "")
-
-                    # Deduplicate by title
-                    if title and title not in seen_titles:
-                        seen_titles.add(title)
-                        all_news.append(article)
-
-            if len(all_news) >= limit:
-                break
-
-        if not all_news:
-            return f"No global news found for {curr_date}"
-
-        # Calculate date range
-        curr_dt = datetime.strptime(curr_date, "%Y-%m-%d")
-        start_dt = curr_dt - relativedelta(days=look_back_days)
-        start_date = start_dt.strftime("%Y-%m-%d")
-
-        news_str = ""
-        kept = 0
-        for article in all_news[:limit]:
-            # Extract uniformly (flat + nested) and apply the same look-ahead-safe
-            # window filter, so flat articles can't leak future news (#1007).
-            data = _extract_article_data(article)
-            if not _in_news_window(data["pub_date"], start_dt, curr_dt):
-                continue
-            news_str += f"### {data['title']} (source: {data['publisher']})\n"
-            if data["summary"]:
-                news_str += f"{data['summary']}\n"
-            if data["link"]:
-                news_str += f"Link: {data['link']}\n"
-            news_str += "\n"
-            kept += 1
-
-        # All candidates fell outside the window -> say so rather than return an
-        # empty-bodied report (#993).
-        if kept == 0:
-            return f"No global news found between {start_date} and {curr_date}"
-
-        return f"## Global Market News, from {start_date} to {curr_date}:\n\n{news_str}"
-
-    except Exception as e:
-        return f"Error fetching global news: {str(e)}"
+        collected = fetch_global_news_yfinance(
+            queries=config["global_news_queries"],
+            limit=limit,
+            fetched_at=fetched_at,
+        )
+        items = normalize_filter_dedupe(
+            collected,
+            start_date,
+            curr_date,
+            fetched_at=fetched_at,
+            limit=limit,
+        )
+        status = SourceStatus(
+            "Yahoo Finance",
+            "ok" if collected else "empty",
+            len(collected),
+        )
+    except Exception as exc:  # noqa: BLE001 - represented as source health, not "no news"
+        items = []
+        status = SourceStatus(
+            "Yahoo Finance",
+            "failed",
+            detail=f"request failed ({type(exc).__name__})",
+        )
+    result = NewsAggregationResult(
+        items=items,
+        source_statuses=[status],
+        fetched_at=fetched_at,
+        start_date=start_date,
+        end_date=curr_date,
+        query_type="global",
+    )
+    return format_news_report(
+        result,
+        f"Global Market News, from {start_date} to {curr_date}",
+    )

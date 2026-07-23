@@ -83,6 +83,13 @@ class VendorRoutingTests(unittest.TestCase):
         self.assertIn("boom", joined)            # the real error surfaced in logs
         self.assertIn("yfinance", joined)
 
+    def test_error_text_redacts_query_credentials(self):
+        text = interface._safe_exception_text(
+            ValueError("GET https://vendor.test/news?apikey=secret-value&symbol=AAPL")
+        )
+        self.assertIn("apikey=[REDACTED]", text)
+        self.assertNotIn("secret-value", text)
+
     def test_unknown_configured_vendor_raises(self):
         set_config({"data_vendors": {"core_stock_apis": "bogus_vendor"}})
         with self.assertRaises(ValueError) as ctx:

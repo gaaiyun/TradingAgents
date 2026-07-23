@@ -1,14 +1,33 @@
 import { json } from "./_util.js";
+import {
+  DEFAULT_LIVE_URL,
+  DEFAULT_SNAPSHOT_URL,
+  loadVolguardData,
+} from "./_volguard.mjs";
 
-const VOLGUARD_URL = "https://sh50-volguard.pages.dev/data/latest.json";
+// GET /api/volguard → 优先返回实时行情，上游不可用时自动降级为慢速快照。
+export async function onRequestGet({ env }) {
+  const result = await loadVolguardData({
+    liveUrl: env.VOLGUARD_LIVE_URL || DEFAULT_LIVE_URL,
+    snapshotUrl: env.VOLGUARD_SNAPSHOT_URL || DEFAULT_SNAPSHOT_URL,
+  });
 
-// GET /api/volguard → 上证50ETF 期权风控快照（VolGuard 项目, 同账号 Pages）
-export async function onRequestGet() {
-  const resp = await fetch(VOLGUARD_URL, { cf: { cacheTtl: 120, cacheEverything: true } });
-  if (!resp.ok) return json({ error: `VolGuard 上游 ${resp.status}` }, 502);
-  const body = await resp.text();
-  return new Response(body, {
-    status: 200,
-    headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=120" },
+  if (!result.ok) {
+    return json(
+      {
+        error: "VolGuard 实时与快照数据均不可用",
+        mode: result.mode,
+        attempts: result.attempts,
+        errors: result.errors,
+      },
+      502,
+      { "cache-control": "no-store", "x-volguard-mode": "unavailable" },
+    );
+  }
+
+  return json(result.data, 200, {
+    "cache-control": result.mode === "live" ? "public, max-age=15" : "public, max-age=120",
+    "x-volguard-mode": result.mode,
+    ...(result.fallback_reason ? { "x-volguard-fallback": result.fallback_reason } : {}),
   });
 }

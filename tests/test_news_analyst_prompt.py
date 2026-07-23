@@ -23,3 +23,6 @@ def test_news_prompt_matches_get_news_signature():
     src = inspect.getsource(na)
     assert "get_news(ticker, start_date, end_date)" in src
     assert "get_news(query" not in src
+    assert "retain the source URL" in src
+    assert "published timestamp" in src
+    assert "a failed source is not evidence that no news exists" in src

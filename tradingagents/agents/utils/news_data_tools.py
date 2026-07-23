@@ -13,7 +13,9 @@ def get_news(
 ) -> str:
     """
     Retrieve news data for a given ticker symbol.
-    Uses the configured news_data vendor.
+    Uses the configured news_data vendor. The default multi-source result keeps
+    source URLs, published timestamps, and per-source retrieval status; a
+    retrieval failure is explicitly distinct from no relevant news.
     Args:
         ticker (str): Ticker symbol
         start_date (str): Start date in yyyy-mm-dd format
@@ -31,7 +33,8 @@ def get_global_news(
 ) -> str:
     """
     Retrieve global news data.
-    Uses the configured news_data vendor. Defaults for look_back_days and
+    Uses the configured news_data vendor. The default multi-source result keeps
+    source URLs, published timestamps, and per-source retrieval status. Defaults for look_back_days and
     limit come from DEFAULT_CONFIG (global_news_lookback_days,
     global_news_article_limit); pass explicit values to override.
 

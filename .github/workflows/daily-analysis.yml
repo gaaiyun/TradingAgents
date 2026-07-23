@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tickers:
-        description: "逗号分隔的股票代码（留空用仓库变量 TRADINGAGENTS_TICKERS，默认 SPY,NVDA）"
+        description: "逗号分隔的股票代码（留空使用网页保存的每日清单）"
         required: false
         default: ""
 
@@ -23,7 +23,8 @@ concurrency:
 jobs:
   analyze-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 清单上限为 10，分析按标的顺序执行；为满清单预留足够时间。
+    timeout-minutes: 240
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -35,7 +36,6 @@ jobs:
       TRADINGAGENTS_QUICK_THINK_LLM: ${{ vars.TRADINGAGENTS_QUICK_THINK_LLM || 'deepseek-v4-flash' }}
       TRADINGAGENTS_LLM_BACKEND_URL: ${{ vars.TRADINGAGENTS_LLM_BACKEND_URL }}
       TRADINGAGENTS_OUTPUT_LANGUAGE: ${{ vars.TRADINGAGENTS_OUTPUT_LANGUAGE || '中文' }}
-      TRADINGAGENTS_TICKERS: ${{ inputs.tickers || vars.TRADINGAGENTS_TICKERS || 'SPY,NVDA' }}
       TRADINGAGENTS_ANALYSTS: ${{ vars.TRADINGAGENTS_ANALYSTS || 'market,news,fundamentals' }}
       # ── 各家 LLM 密钥透传（只需配置与 provider 匹配的那一个）────
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -67,6 +67,32 @@ jobs:
           # workflow_dispatch 的 GITHUB_SHA 固定在触发时刻；排队后开跑时 main 可能已
           # 被前一个 run 提交过数据，必须检出运行时的最新分支头
           ref: main
+
+      - name: Resolve daily ticker list
+        env:
+          MANUAL_TICKERS: ${{ inputs.tickers || '' }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFile, readFile } from "node:fs/promises";
+          import {
+            normalizeWorkbenchTickers,
+            parseWorkbenchSettings,
+          } from "./functions/api/_workbench_settings.mjs";
+
+          const manual = process.env.MANUAL_TICKERS.trim();
+          let tickers;
+          if (manual) {
+            tickers = normalizeWorkbenchTickers(manual);
+            console.log("using workflow_dispatch ticker override");
+          } else {
+            const raw = await readFile("public/data/workbench-settings.json", "utf8");
+            tickers = parseWorkbenchSettings(JSON.parse(raw)).tickers;
+            console.log("using saved workbench ticker list");
+          }
+          const value = tickers.join(",");
+          await appendFile(process.env.GITHUB_ENV, `TRADINGAGENTS_TICKERS=${value}\n`, "utf8");
+          console.log(`resolved tickers: ${value}`);
+          NODE
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
