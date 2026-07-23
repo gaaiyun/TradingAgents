@@ -1,14 +1,16 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
-import {
+import * as workbenchData from "../public/assets/workbench-data.mjs";
+
+const {
   DEFAULT_TARGETS,
   computeNextRun,
   filterFeedItems,
   mergeIncrementalBars,
   normalizeEnvelope,
-} from "../public/assets/workbench-data.mjs";
+} = workbenchData;
 
 const html = readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
 const css = readFileSync(new URL("../public/assets/workbench.css", import.meta.url), "utf8");
@@ -111,4 +113,82 @@ test("mobile layout switches usable regions instead of shrinking the desktop gri
   assert.match(css, /@media\s*\(max-width:\s*760px\)/);
   assert.match(css, /body\[data-mobile-view="watch"\]/);
   assert.match(script, /setMobileView/);
+});
+
+test("chart uses vendored Lightweight Charts 5.2.0 with panes, axes, and incremental series updates", () => {
+  const vendorUrl = new URL("../public/vendor/lightweight-charts.production.mjs", import.meta.url);
+  const licenseUrl = new URL("../public/vendor/LICENSE-lightweight-charts", import.meta.url);
+  const noticeUrl = new URL("../public/vendor/NOTICE-lightweight-charts", import.meta.url);
+  assert.equal(existsSync(vendorUrl), true);
+  assert.equal(existsSync(licenseUrl), true);
+  assert.equal(existsSync(noticeUrl), true);
+  assert.match(script, /lightweight-charts\.production\.mjs/);
+  assert.match(script, /createChart/);
+  assert.match(script, /addSeries\([^)]*,[^)]*,\s*1\)/);
+  assert.match(script, /addSeries\([^)]*,[^)]*,\s*2\)/);
+  assert.match(script, /\.update\(/);
+  assert.doesNotMatch(script, /attributionLogo\s*:\s*false/);
+});
+
+test("scheduled refresh updates selected bars, watch quotes, feeds, and monitor without reloading the page", () => {
+  assert.match(script, /function pollWorkbenchData/);
+  assert.match(script, /loadMarket\(\{\s*incremental:\s*true\s*\}\)/);
+  assert.match(script, /loadQuoteStrip\(\)/);
+  assert.match(script, /loadFeeds\(\)/);
+  assert.match(script, /loadMonitor\(\)/);
+  assert.doesNotMatch(script, /location\.reload/);
+});
+
+test("task timeline never maps source health rows to schedule slots by array position", () => {
+  assert.equal(typeof workbenchData.buildTaskTimeline, "function");
+  const profile = {
+    schedules: {
+      usCloseSnapshot: { enabled: true, time: "05:35" },
+      preMarketBrief: { enabled: true, time: "08:25" },
+      cnIntraday: { enabled: true, windows: [{ start: "09:30", end: "11:30" }] },
+      closeDeepAnalysis: { enabled: true, time: "15:20" },
+    },
+  };
+  const timeline = workbenchData.buildTaskTimeline(profile, [
+    { source: "yahoo", status: "ok", detail: "healthy" },
+  ]);
+  assert.equal(timeline.length, 4);
+  assert.equal(timeline.every((item) => item.status === "pending"), true);
+  assert.equal(timeline.every((item) => item.detail === "任务结果接口未提供"), true);
+});
+
+test("current-symbol conclusion never falls back to a different symbol", () => {
+  assert.equal(typeof workbenchData.selectConclusion, "function");
+  const latest = { results: [{ ticker: "NVDA", rating: "Buy" }] };
+  assert.equal(workbenchData.selectConclusion(latest, "515880.SS"), null);
+  assert.equal(workbenchData.selectConclusion(latest, "NVDA"), latest.results[0]);
+});
+
+test("chat keeps persistent local threads and streams SSE with history context", () => {
+  assert.match(script, /ta\.workbench\.threads\.v1/);
+  assert.match(script, /function loadThreads/);
+  assert.match(script, /function saveThreads/);
+  assert.match(script, /history:\s*historyMessages/);
+  assert.match(script, /stream:\s*true/);
+  assert.match(script, /response\.body\.getReader\(\)/);
+  assert.match(script, /event\s*===\s*"delta"/);
+  assert.match(html, /id="thread-select"/);
+  assert.match(html, /id="new-thread"/);
+  assert.match(html, /id="delete-thread"/);
+});
+
+test("mobile chart view keeps cross-market drivers accessible", () => {
+  assert.doesNotMatch(css, /\.driver-deck\s*\{\s*display:\s*none/);
+  assert.match(css, /body\[data-mobile-view="watch"\]\s+\.driver-deck/);
+});
+
+test("settings expose every schedule and PushPlus switch plus local credential clearing", () => {
+  for (const id of [
+    "enable-us-close", "enable-premarket", "enable-intraday", "enable-close-analysis",
+    "alert-pushplus", "clear-credential",
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  assert.match(script, /function clearCredential/);
+  assert.match(script, /localStorage\.removeItem\(STORAGE\.deviceKey\)/);
 });

@@ -1,0 +1,12 @@
+TradingView Lightweight Charts™ Copyright (c) 2025 TradingView, Inc.
+https://www.tradingview.com/
+
+Version: 5.2.0
+Source: https://github.com/tradingview/lightweight-charts
+License: Apache License 2.0 (see LICENSE-lightweight-charts)
+
+This distribution preserves the library's default TradingView attribution logo.
+TradingView and Lightweight Charts are trademarks of their respective owners.
+
+Runtime dependency: fancy-canvas 2.1.0 (MIT)
+The browser import map resolves the library's package import to the vendored ES modules.

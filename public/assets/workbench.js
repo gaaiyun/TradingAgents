@@ -1,11 +1,22 @@
 import {
   DEFAULT_TARGETS,
+  buildTaskTimeline,
   computeIndicators,
   computeNextRun,
   filterFeedItems,
   mergeIncrementalBars,
   normalizeEnvelope,
+  selectConclusion,
 } from "./workbench-data.mjs";
+import {
+  CandlestickSeries,
+  ColorType,
+  CrosshairMode,
+  HistogramSeries,
+  LineSeries,
+  LineStyle,
+  createChart,
+} from "../vendor/lightweight-charts.production.mjs";
 
 (() => {
   "use strict";
@@ -20,6 +31,7 @@ import {
     sessionCode: "ta.workbench.access.session.v1",
     deviceKey: "ta.workbench.device-key.v1",
     encryptedCode: "ta.workbench.access.encrypted.v1",
+    threads: "ta.workbench.threads.v1",
   };
   const state = {
     settings: null,
@@ -34,10 +46,12 @@ import {
     latest: null,
     accessCode: "",
     rememberCode: false,
-    chart: { bars: [], visibleCount: 80, offset: 0, hoverIndex: null, dragging: false, dragX: 0, dragOffset: 0 },
+    chart: { bars: [], api: null, series: null },
     indicators: { volume: true, ma20: true, ma60: true },
     chatBusy: false,
     latestReport: null,
+    threads: [],
+    threadId: null,
   };
 
   const escapeHtml = (value) => String(value ?? "")
@@ -189,9 +203,13 @@ import {
     $("#profile-name").value = profile.name || "";
     $("#profile-objective").value = profile.objective || "";
     $("#profile-timezone").value = profile.timezone || "Asia/Shanghai";
+    $("#enable-us-close").checked = profile.schedules?.usCloseSnapshot?.enabled !== false;
     $("#schedule-us-close").value = profile.schedules?.usCloseSnapshot?.time || "05:35";
+    $("#enable-premarket").checked = profile.schedules?.preMarketBrief?.enabled !== false;
     $("#schedule-premarket").value = profile.schedules?.preMarketBrief?.time || "08:25";
+    $("#enable-close-analysis").checked = profile.schedules?.closeDeepAnalysis?.enabled !== false;
     $("#schedule-close").value = profile.schedules?.closeDeepAnalysis?.time || "15:20";
+    $("#enable-intraday").checked = profile.schedules?.cnIntraday?.enabled !== false;
     $("#window-am-start").value = profile.schedules?.cnIntraday?.windows?.[0]?.start || "09:30";
     $("#window-am-end").value = profile.schedules?.cnIntraday?.windows?.[0]?.end || "11:30";
     $("#window-pm-start").value = profile.schedules?.cnIntraday?.windows?.[1]?.start || "13:00";
@@ -202,9 +220,11 @@ import {
     $("#quiet-start").value = profile.alerts?.quietHours?.start || "22:30";
     $("#quiet-end").value = profile.alerts?.quietHours?.end || "07:30";
     $("#alert-web").checked = profile.alerts?.channels?.web !== false;
+    $("#alert-pushplus").checked = profile.alerts?.channels?.pushPlus !== false;
     renderTargetEditor();
     renderWatchlist();
     renderNextRun();
+    renderTimeline();
   }
 
   function ensureSettings() {
@@ -315,7 +335,6 @@ import {
       state.market = envelope;
       const incoming = sortBars(envelope.data);
       state.chart.bars = incremental ? mergeIncrementalBars(state.chart.bars, incoming) : incoming;
-      if (!incremental) { state.chart.visibleCount = Math.min(80, Math.max(20, incoming.length)); state.chart.offset = 0; }
       const last = state.chart.bars.at(-1);
       const prior = state.chart.bars.at(-2);
       if (last) state.quotes.set(state.selectedSymbol, { close: Number(last.close), change: prior ? (Number(last.close) / Number(prior.close) - 1) * 100 : null });
@@ -328,7 +347,7 @@ import {
     $("#chart-empty").hidden = state.chart.bars.length > 0;
     renderInstrument();
     renderWatchlist();
-    drawCharts();
+    syncChartData({ incremental });
   }
 
   async function loadQuoteStrip() {
@@ -418,18 +437,9 @@ import {
 
   function renderTimeline() {
     const profile = state.settings?.profiles?.[0];
-    const rows = state.monitor.data;
-    const schedules = [
-      [profile?.schedules?.usCloseSnapshot?.time || "05:35", "美股收盘快照", profile?.schedules?.usCloseSnapshot?.enabled],
-      [profile?.schedules?.preMarketBrief?.time || "08:25", "盘前传导简报", profile?.schedules?.preMarketBrief?.enabled],
-      [profile?.schedules?.cnIntraday?.windows?.[0]?.start || "09:30", "A 股盘中采集", profile?.schedules?.cnIntraday?.enabled],
-      [profile?.schedules?.closeDeepAnalysis?.time || "15:20", "收盘深度分析", profile?.schedules?.closeDeepAnalysis?.enabled],
-    ].filter((item) => item[2]);
-    $("#task-timeline").innerHTML = schedules.map(([time, label], index) => {
-      const row = rows[index];
-      const status = row?.status || "pending";
-      const detail = row?.detail || (state.monitor.status === "unavailable" ? "状态接口不可用" : "等待计划时间");
-      return `<li class="is-${escapeHtml(status)}"><time>${time}</time><span><b>${escapeHtml(label)}</b><small>${escapeHtml(detail)}</small></span></li>`;
+    const schedules = buildTaskTimeline(profile);
+    $("#task-timeline").innerHTML = schedules.map(({ time, label, status, detail }) => {
+      return `<li class="is-${escapeHtml(status)}"><time>${escapeHtml(time)}</time><span><b>${escapeHtml(label)}</b><small>${escapeHtml(detail)}</small></span></li>`;
     }).join("") || '<li class="is-pending"><time>—</time><span><b>未启用计划</b><small>在设置中启用监控</small></span></li>';
   }
 
@@ -457,8 +467,7 @@ import {
   }
 
   function renderConclusion() {
-    const results = state.latest?.results || [];
-    const result = results.find((item) => item.ticker === state.selectedSymbol) || results[0];
+    const result = selectConclusion(state.latest, state.selectedSymbol);
     if (!result) {
       $("#conclusion-asof").textContent = "尚无可验证研究结果";
       $("#conclusion-body").innerHTML = '<div class="conclusion-rating neutral">待研究</div><p>最新研究接口与静态归档均未返回可用结论。</p>';
@@ -483,175 +492,180 @@ import {
     $("#correlation-asof").textContent = state.market.asOf ? `数据 ${formatTime(state.market.asOf, true)}` : "等待市场数据";
   }
 
-  function chartRange() {
-    const length = state.chart.bars.length;
-    const count = Math.min(state.chart.visibleCount, length);
-    const end = Math.max(count, length - state.chart.offset);
-    return { start: Math.max(0, end - count), end };
+  function barTime(bar) {
+    return Math.floor(new Date(bar.ts).valueOf() / 1000);
   }
 
-  function setupCanvas(canvas) {
-    const rect = canvas.getBoundingClientRect();
-    const ratio = Math.min(devicePixelRatio || 1, 2);
-    const width = Math.max(1, Math.round(rect.width * ratio));
-    const height = Math.max(1, Math.round(rect.height * ratio));
-    if (canvas.width !== width || canvas.height !== height) { canvas.width = width; canvas.height = height; }
-    const context = canvas.getContext("2d");
-    context.setTransform(ratio, 0, 0, ratio, 0, 0);
-    return { context, width: rect.width, height: rect.height };
+  function linePoint(time, value) {
+    return Number.isFinite(value) ? { time, value } : { time };
   }
 
-  function drawGrid(context, width, height, rows = 4) {
-    context.strokeStyle = "#242a2e";
-    context.lineWidth = 1;
-    context.beginPath();
-    for (let index = 1; index < rows; index += 1) {
-      const y = Math.round(height * index / rows) + .5;
-      context.moveTo(0, y); context.lineTo(width, y);
-    }
-    context.stroke();
-  }
-
-  function drawPriceCanvas(bars, indicators, range) {
-    const { context, width, height } = setupCanvas($("#market-chart"));
-    context.clearRect(0, 0, width, height);
-    drawGrid(context, width, height, 5);
-    if (!bars.length) return;
-    const plotHeight = state.indicators.volume ? height * .76 : height - 15;
-    const prices = bars.flatMap((bar) => [Number(bar.high), Number(bar.low)]);
-    const maValues = [...indicators.ma20, ...indicators.ma60].filter(Number.isFinite);
-    const min = Math.min(...prices, ...maValues);
-    const max = Math.max(...prices, ...maValues);
-    const spread = max - min || 1;
-    const xStep = width / bars.length;
-    const x = (index) => (index + .5) * xStep;
-    const y = (value) => 7 + (max - value) / spread * (plotHeight - 14);
-    const maxVolume = Math.max(...bars.map((bar) => Number(bar.volume) || 0), 1);
-    bars.forEach((bar, index) => {
-      const rising = Number(bar.close) >= Number(bar.open);
-      const color = rising ? "#38b788" : "#e05f68";
-      const center = x(index);
-      context.strokeStyle = color;
-      context.fillStyle = color;
-      context.lineWidth = 1;
-      context.beginPath(); context.moveTo(center, y(Number(bar.high))); context.lineTo(center, y(Number(bar.low))); context.stroke();
-      const top = y(Math.max(Number(bar.open), Number(bar.close)));
-      const bottom = y(Math.min(Number(bar.open), Number(bar.close)));
-      context.fillRect(center - Math.max(1, xStep * .29), top, Math.max(2, xStep * .58), Math.max(1, bottom - top));
-      if (state.indicators.volume) {
-        const volumeHeight = (Number(bar.volume) || 0) / maxVolume * (height - plotHeight - 8);
-        context.globalAlpha = .32;
-        context.fillRect(center - Math.max(1, xStep * .3), height - volumeHeight, Math.max(2, xStep * .6), volumeHeight);
-        context.globalAlpha = 1;
-      }
+  function ensureChart() {
+    if (state.chart.api) return;
+    const chart = createChart($("#market-chart"), {
+      autoSize: true,
+      height: 486,
+      layout: {
+        background: { type: ColorType.Solid, color: "#0d0f11" },
+        textColor: "#879197",
+        fontFamily: '"IBM Plex Mono", "SFMono-Regular", Consolas, monospace',
+        fontSize: 11,
+        panes: {
+          separatorColor: "#2c3338",
+          separatorHoverColor: "#495158",
+          enableResize: true,
+        },
+      },
+      grid: {
+        vertLines: { color: "#20262a" },
+        horzLines: { color: "#242a2e" },
+      },
+      rightPriceScale: {
+        borderColor: "#343b40",
+        minimumWidth: 58,
+      },
+      timeScale: {
+        borderColor: "#343b40",
+        timeVisible: true,
+        secondsVisible: false,
+        rightOffset: 3,
+        barSpacing: 8,
+      },
+      crosshair: {
+        mode: CrosshairMode.Normal,
+        vertLine: { color: "#667077", style: LineStyle.Dashed, labelBackgroundColor: "#343b40" },
+        horzLine: { color: "#667077", style: LineStyle.Dashed, labelBackgroundColor: "#343b40" },
+      },
     });
-    const drawLine = (values, color) => {
-      context.strokeStyle = color; context.lineWidth = 1.1; context.beginPath();
-      let started = false;
-      values.forEach((value, index) => {
-        if (!Number.isFinite(value)) return;
-        if (!started) { context.moveTo(x(index), y(value)); started = true; }
-        else context.lineTo(x(index), y(value));
-      });
-      context.stroke();
-    };
-    if (state.indicators.ma20) drawLine(indicators.ma20, "#aab2b5");
-    if (state.indicators.ma60) drawLine(indicators.ma60, "#707b81");
-    drawCrosshair(context, width, height, bars, range);
-  }
-
-  function drawIndicatorCanvas(selector, bars, values, options = {}) {
-    const { context, width, height } = setupCanvas($(selector));
-    context.clearRect(0, 0, width, height);
-    drawGrid(context, width, height, options.rows || 3);
-    if (!bars.length) return;
-    const series = Array.isArray(values[0]) ? values : [values];
-    const finite = series.flat().filter(Number.isFinite);
-    const min = options.fixedMin ?? Math.min(...finite, 0);
-    const max = options.fixedMax ?? Math.max(...finite, 0);
-    const spread = max - min || 1;
-    const xStep = width / bars.length;
-    const y = (value) => 5 + (max - value) / spread * (height - 10);
-    if (options.thresholds) {
-      context.strokeStyle = "#3a4248"; context.setLineDash([3, 4]);
-      for (const threshold of options.thresholds) {
-        context.beginPath(); context.moveTo(0, y(threshold)); context.lineTo(width, y(threshold)); context.stroke();
+    const candles = chart.addSeries(CandlestickSeries, {
+      upColor: "#38b788",
+      downColor: "#e05f68",
+      borderVisible: false,
+      wickUpColor: "#38b788",
+      wickDownColor: "#e05f68",
+      priceLineVisible: true,
+      lastValueVisible: true,
+    }, 0);
+    const volume = chart.addSeries(HistogramSeries, {
+      priceFormat: { type: "volume" },
+      priceScaleId: "volume",
+      priceLineVisible: false,
+      lastValueVisible: false,
+    }, 0);
+    const ma20 = chart.addSeries(LineSeries, {
+      color: "#bcc5c9",
+      lineWidth: 1,
+      priceLineVisible: false,
+      lastValueVisible: false,
+      title: "MA20",
+    }, 0);
+    const ma60 = chart.addSeries(LineSeries, {
+      color: "#747f85",
+      lineWidth: 1,
+      priceLineVisible: false,
+      lastValueVisible: false,
+      title: "MA60",
+    }, 0);
+    const macd = chart.addSeries(LineSeries, {
+      color: "#aab2b5",
+      lineWidth: 1,
+      priceLineVisible: false,
+      title: "MACD",
+    }, 1);
+    const signal = chart.addSeries(LineSeries, {
+      color: "#6c777d",
+      lineWidth: 1,
+      priceLineVisible: false,
+      title: "SIGNAL",
+    }, 1);
+    const histogram = chart.addSeries(HistogramSeries, {
+      priceLineVisible: false,
+      lastValueVisible: false,
+      title: "HIST",
+    }, 1);
+    const rsi = chart.addSeries(LineSeries, {
+      color: "#b8c1c5",
+      lineWidth: 1,
+      priceLineVisible: false,
+      title: "RSI",
+    }, 2);
+    rsi.createPriceLine({ price: 70, color: "#485158", lineWidth: 1, lineStyle: LineStyle.Dashed, axisLabelVisible: true, title: "70" });
+    rsi.createPriceLine({ price: 30, color: "#485158", lineWidth: 1, lineStyle: LineStyle.Dashed, axisLabelVisible: true, title: "30" });
+    chart.priceScale("volume", 0).applyOptions({ scaleMargins: { top: 0.78, bottom: 0 } });
+    const panes = chart.panes();
+    panes[0]?.setHeight(310);
+    panes[1]?.setHeight(92);
+    panes[2]?.setHeight(84);
+    chart.subscribeCrosshairMove((param) => {
+      const point = param.seriesData.get(candles);
+      const readout = $("#crosshair-readout");
+      if (!point || !param.time) {
+        readout.hidden = true;
+        return;
       }
-      context.setLineDash([]);
-    }
-    series.forEach((line, lineIndex) => {
-      context.strokeStyle = options.colors?.[lineIndex] || "#aab2b5";
-      context.lineWidth = 1; context.beginPath(); let started = false;
-      line.forEach((value, index) => {
-        if (!Number.isFinite(value)) return;
-        const pointX = (index + .5) * xStep;
-        if (!started) { context.moveTo(pointX, y(value)); started = true; } else context.lineTo(pointX, y(value));
-      });
-      context.stroke();
+      const bar = state.chart.bars.find((item) => barTime(item) === Number(param.time));
+      if (!bar) {
+        readout.hidden = true;
+        return;
+      }
+      readout.hidden = false;
+      readout.textContent = `${formatTime(bar.ts, true)}  O ${formatNumber(bar.open)}  H ${formatNumber(bar.high)}  L ${formatNumber(bar.low)}  C ${formatNumber(bar.close)}  V ${formatVolume(bar.volume)}`;
     });
-    drawCrosshair(context, width, height, bars, chartRange());
+    state.chart.api = chart;
+    state.chart.series = { candles, volume, ma20, ma60, macd, signal, histogram, rsi };
   }
 
-  function drawCrosshair(context, width, height, bars) {
-    if (state.chart.hoverIndex == null || !bars.length) return;
-    const index = Math.max(0, Math.min(bars.length - 1, state.chart.hoverIndex));
-    const x = (index + .5) * width / bars.length;
-    context.strokeStyle = "#778086";
-    context.setLineDash([3, 3]); context.beginPath(); context.moveTo(x, 0); context.lineTo(x, height); context.stroke(); context.setLineDash([]);
-  }
-
-  function drawCharts() {
-    const range = chartRange();
-    const bars = state.chart.bars.slice(range.start, range.end);
+  function syncChartData({ incremental = false } = {}) {
+    ensureChart();
+    const bars = state.chart.bars;
+    const series = state.chart.series;
     const indicators = computeIndicators(bars);
-    drawPriceCanvas(bars, indicators, range);
-    drawIndicatorCanvas("#macd-chart", bars, [indicators.macd, indicators.signal], { colors: ["#aab2b5", "#6c777d"] });
-    drawIndicatorCanvas("#rsi-chart", bars, indicators.rsi, { fixedMin: 0, fixedMax: 100, thresholds: [30, 70], colors: ["#aab2b5"] });
-    if (state.chart.hoverIndex != null && bars[state.chart.hoverIndex]) {
-      const bar = bars[state.chart.hoverIndex];
-      $("#crosshair-readout").hidden = false;
-      $("#crosshair-readout").textContent = `${formatTime(bar.ts, true)}  O ${formatNumber(bar.open)}  H ${formatNumber(bar.high)}  L ${formatNumber(bar.low)}  C ${formatNumber(bar.close)}  V ${formatVolume(bar.volume)}`;
-    } else {
+    series.volume.applyOptions({ visible: state.indicators.volume });
+    series.ma20.applyOptions({ visible: state.indicators.ma20 });
+    series.ma60.applyOptions({ visible: state.indicators.ma60 });
+    if (!bars.length) {
+      Object.values(series).forEach((item) => item.setData([]));
       $("#crosshair-readout").hidden = true;
+      return;
+    }
+    const candleData = bars.map((bar) => ({
+      time: barTime(bar),
+      open: Number(bar.open),
+      high: Number(bar.high),
+      low: Number(bar.low),
+      close: Number(bar.close),
+    }));
+    const volumeData = bars.map((bar) => ({
+      time: barTime(bar),
+      value: Number(bar.volume) || 0,
+      color: Number(bar.close) >= Number(bar.open) ? "#38b78855" : "#e05f6855",
+    }));
+    const lineData = (values) => bars.map((bar, index) => linePoint(barTime(bar), values[index]));
+    const histogramData = bars.map((bar, index) => ({
+      time: barTime(bar),
+      value: indicators.histogram[index],
+      color: indicators.histogram[index] >= 0 ? "#38b78877" : "#e05f6877",
+    }));
+    const dataSets = {
+      candles: candleData,
+      volume: volumeData,
+      ma20: lineData(indicators.ma20),
+      ma60: lineData(indicators.ma60),
+      macd: lineData(indicators.macd),
+      signal: lineData(indicators.signal),
+      histogram: histogramData,
+      rsi: lineData(indicators.rsi),
+    };
+    if (incremental) {
+      Object.entries(series).forEach(([key, item]) => item.update(dataSets[key].at(-1)));
+    } else {
+      Object.entries(series).forEach(([key, item]) => item.setData(dataSets[key]));
+      state.chart.api.timeScale().fitContent();
     }
   }
 
-  function bindChartInteractions() {
-    const canvases = ["#market-chart", "#macd-chart", "#rsi-chart"].map((selector) => $(selector));
-    const updateHover = (event) => {
-      const canvas = event.currentTarget;
-      const range = chartRange();
-      const count = range.end - range.start;
-      const x = event.clientX - canvas.getBoundingClientRect().left;
-      state.chart.hoverIndex = Math.max(0, Math.min(count - 1, Math.floor(x / canvas.clientWidth * count)));
-      drawCharts();
-    };
-    canvases.forEach((canvas) => {
-      canvas.addEventListener("pointermove", (event) => {
-        if (state.chart.dragging) {
-          const delta = Math.round((event.clientX - state.chart.dragX) / Math.max(5, canvas.clientWidth / Math.max(state.chart.visibleCount, 1)));
-          state.chart.offset = Math.max(0, Math.min(state.chart.bars.length - state.chart.visibleCount, state.chart.dragOffset - delta));
-        }
-        updateHover(event);
-      });
-      canvas.addEventListener("pointerleave", () => { state.chart.hoverIndex = null; state.chart.dragging = false; drawCharts(); });
-      canvas.addEventListener("pointerdown", (event) => { state.chart.dragging = true; state.chart.dragX = event.clientX; state.chart.dragOffset = state.chart.offset; canvas.setPointerCapture(event.pointerId); });
-      canvas.addEventListener("pointerup", () => { state.chart.dragging = false; });
-      canvas.addEventListener("wheel", (event) => {
-        event.preventDefault();
-        state.chart.visibleCount = Math.max(20, Math.min(state.chart.bars.length || 20, state.chart.visibleCount + (event.deltaY > 0 ? 10 : -10)));
-        state.chart.offset = Math.min(state.chart.offset, Math.max(0, state.chart.bars.length - state.chart.visibleCount));
-        drawCharts();
-      }, { passive: false });
-      canvas.addEventListener("keydown", (event) => {
-        if (event.key === "+" || event.key === "=") state.chart.visibleCount = Math.max(20, state.chart.visibleCount - 10);
-        else if (event.key === "-") state.chart.visibleCount = Math.min(state.chart.bars.length, state.chart.visibleCount + 10);
-        else if (event.key === "ArrowLeft") state.chart.offset = Math.min(Math.max(0, state.chart.bars.length - state.chart.visibleCount), state.chart.offset + 1);
-        else if (event.key === "ArrowRight") state.chart.offset = Math.max(0, state.chart.offset - 1);
-        else return;
-        event.preventDefault(); drawCharts();
-      });
-    });
+  function initializeChart() {
+    ensureChart();
   }
 
   async function selectSymbol(symbol) {
@@ -726,9 +740,13 @@ import {
     profile.name = $("#profile-name").value.trim();
     profile.objective = $("#profile-objective").value.trim();
     profile.timezone = $("#profile-timezone").value;
+    profile.schedules.usCloseSnapshot.enabled = $("#enable-us-close").checked;
     profile.schedules.usCloseSnapshot.time = $("#schedule-us-close").value;
+    profile.schedules.preMarketBrief.enabled = $("#enable-premarket").checked;
     profile.schedules.preMarketBrief.time = $("#schedule-premarket").value;
+    profile.schedules.closeDeepAnalysis.enabled = $("#enable-close-analysis").checked;
     profile.schedules.closeDeepAnalysis.time = $("#schedule-close").value;
+    profile.schedules.cnIntraday.enabled = $("#enable-intraday").checked;
     profile.schedules.cnIntraday.windows = [
       { start: $("#window-am-start").value, end: $("#window-am-end").value },
       { start: $("#window-pm-start").value, end: $("#window-pm-end").value },
@@ -739,6 +757,7 @@ import {
     profile.alerts.quietHours.start = $("#quiet-start").value;
     profile.alerts.quietHours.end = $("#quiet-end").value;
     profile.alerts.channels.web = $("#alert-web").checked;
+    profile.alerts.channels.pushPlus = $("#alert-pushplus").checked;
     return state.settings;
   }
 
@@ -830,6 +849,17 @@ import {
     $("#settings-remember").checked = state.rememberCode;
   }
 
+  function clearCredential() {
+    state.accessCode = "";
+    state.rememberCode = false;
+    sessionStorage.removeItem(STORAGE.sessionCode);
+    localStorage.removeItem(STORAGE.encryptedCode);
+    localStorage.removeItem(STORAGE.deviceKey);
+    $("#settings-code").value = "";
+    $("#settings-remember").checked = false;
+    toast("本机访问码及设备密钥已清除");
+  }
+
   function openAssistant() {
     openDrawer("#assistant", "#assistant-backdrop");
     $("#assistant-open").setAttribute("aria-expanded", "true");
@@ -840,13 +870,147 @@ import {
     $("#assistant-open").setAttribute("aria-expanded", "false");
   }
 
+  function threadId() {
+    return crypto.randomUUID?.() || `thread-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+
+  function saveThreads() {
+    localStorage.setItem(STORAGE.threads, JSON.stringify(state.threads));
+  }
+
+  function currentThread() {
+    return state.threads.find((thread) => thread.id === state.threadId) || null;
+  }
+
+  function renderThread() {
+    const thread = currentThread();
+    const log = $("#chat-log");
+    if (!thread?.messages?.length) {
+      log.innerHTML = '<div class="chat-empty"><b>从一条可验证的问题开始</b><span>可询问当前标的、最新研究结论、风险因子或数据缺口。</span></div>';
+      return;
+    }
+    log.innerHTML = thread.messages.map((message) => `<div class="chat-message ${escapeHtml(message.role)}${message.error ? " is-error" : ""}" data-message-id="${escapeHtml(message.id)}">
+      <div class="chat-message-meta">${message.role === "user" ? "我" : "研究助理"} · ${formatTime(message.at, true)}</div>
+      <div class="chat-message-body">${message.role === "assistant" ? renderMarkdown(message.content) : escapeHtml(message.content)}</div>
+    </div>`).join("");
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function renderThreads() {
+    const select = $("#thread-select");
+    select.innerHTML = state.threads.map((thread) => `<option value="${escapeHtml(thread.id)}">${escapeHtml(thread.title || "新研究会话")}</option>`).join("");
+    select.value = state.threadId || "";
+    $("#delete-thread").disabled = state.threads.length <= 1;
+    renderThread();
+  }
+
+  function createThread(title = "新研究会话") {
+    const now = new Date().toISOString();
+    const thread = { id: threadId(), title, createdAt: now, updatedAt: now, messages: [] };
+    state.threads.unshift(thread);
+    state.threadId = thread.id;
+    saveThreads();
+    renderThreads();
+    return thread;
+  }
+
+  function loadThreads() {
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORAGE.threads) || "[]");
+      state.threads = Array.isArray(stored)
+        ? stored.filter((thread) => thread && typeof thread.id === "string" && Array.isArray(thread.messages)).slice(0, 30)
+        : [];
+    } catch {
+      state.threads = [];
+    }
+    if (!state.threads.length) {
+      createThread();
+      return;
+    }
+    state.threadId = state.threads[0].id;
+    renderThreads();
+  }
+
+  function deleteCurrentThread() {
+    if (state.threads.length <= 1) {
+      currentThread().messages = [];
+      currentThread().updatedAt = new Date().toISOString();
+      saveThreads();
+      renderThread();
+      return;
+    }
+    state.threads = state.threads.filter((thread) => thread.id !== state.threadId);
+    state.threadId = state.threads[0].id;
+    saveThreads();
+    renderThreads();
+  }
+
   function appendChat(role, content, error = false) {
-    const node = document.createElement("div");
-    node.className = `chat-message ${role}${error ? " is-error" : ""}`;
-    node.innerHTML = `<div class="chat-message-meta">${role === "user" ? "我" : "研究助理"} · ${formatTime(new Date().toISOString(), true)}</div><div class="chat-message-body">${role === "assistant" ? renderMarkdown(content) : escapeHtml(content)}</div>`;
-    $("#chat-log").append(node);
+    const thread = currentThread() || createThread();
+    const message = { id: threadId(), role, content, error, at: new Date().toISOString() };
+    thread.messages.push(message);
+    thread.updatedAt = message.at;
+    if (role === "user" && thread.messages.filter((item) => item.role === "user").length === 1) {
+      thread.title = plainText(content, 28) || "新研究会话";
+    }
+    saveThreads();
+    renderThreads();
+    return $(`[data-message-id="${CSS.escape(message.id)}"]`, $("#chat-log"));
+  }
+
+  function updateChatMessage(node, content, error = false) {
+    const message = currentThread()?.messages.find((item) => item.id === node?.dataset.messageId);
+    if (!message || !node) return;
+    message.content = content;
+    message.error = error;
+    currentThread().updatedAt = new Date().toISOString();
+    node.classList.toggle("is-error", error);
+    $(".chat-message-body", node).innerHTML = message.role === "assistant" ? renderMarkdown(content) : escapeHtml(content);
+    saveThreads();
     $("#chat-log").scrollTop = $("#chat-log").scrollHeight;
-    return node;
+  }
+
+  function parseSseBlock(block) {
+    let event = "message";
+    const data = [];
+    for (const line of block.split("\n")) {
+      if (line.startsWith("event:")) event = line.slice(6).trim();
+      else if (line.startsWith("data:")) data.push(line.slice(5).trimStart());
+    }
+    if (!data.length) return { event, payload: null };
+    const raw = data.join("\n");
+    try { return { event, payload: JSON.parse(raw) }; }
+    catch { return { event, payload: { content: raw } }; }
+  }
+
+  async function readChatStream(response, answerNode) {
+    const reader = response.body.getReader();
+    let buffer = "";
+    let answer = "";
+    while (true) {
+      const { value, done } = await reader.read();
+      buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+      buffer = buffer.replaceAll("\r\n", "\n");
+      const blocks = buffer.split("\n\n");
+      buffer = blocks.pop() || "";
+      if (done && buffer.trim()) blocks.push(buffer);
+      for (const block of blocks) {
+        if (!block.trim()) continue;
+        const { event, payload } = parseSseBlock(block);
+        if (event === "meta" && payload?.context) $("#chat-context").textContent = payload.context;
+        if (event === "delta") {
+          answer += payload?.content || payload?.delta || "";
+          updateChatMessage(answerNode, answer || "上游未返回内容");
+        }
+        if (event === "error") throw new Error(payload?.error || payload?.message || "问答流中断");
+        if (event === "done" && !answer && payload?.answer) {
+          answer = payload.answer;
+          updateChatMessage(answerNode, answer);
+        }
+      }
+      if (done) break;
+    }
+    if (!answer) updateChatMessage(answerNode, "上游未返回内容", true);
   }
 
   async function sendChat(event) {
@@ -855,39 +1019,48 @@ import {
     const question = $("#chat-question").value.trim();
     if (!question) return;
     if (!state.accessCode) { openDrawer("#settings-drawer", "#settings-overlay"); toast("研究问答需要访问码", true); return; }
-    state.chatBusy = true; $("#chat-send").disabled = true; $("#chat-question").value = "";
-    $(".chat-empty", $("#chat-log"))?.remove();
+    const historyMessages = (currentThread()?.messages || []).map(({ role, content }) => ({ role, content }));
+    state.chatBusy = true;
+    $("#chat-send").disabled = true;
+    $("#chat-question").value = "";
     appendChat("user", question);
     const answer = appendChat("assistant", "正在连接已归档研究资料…");
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json", "x-access-code": state.accessCode },
-        body: JSON.stringify({ question, report: state.latestReport, stream: false }),
+        body: JSON.stringify({ question, history: historyMessages, report: state.latestReport, stream: true }),
       });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error || `HTTP ${response.status}`);
-      $(".chat-message-body", answer).innerHTML = renderMarkdown(payload.answer || "上游未返回内容");
+      if (!response.ok) {
+        let message = `HTTP ${response.status}`;
+        try { message = (await response.json()).error || message; } catch { /* non-JSON error */ }
+        throw new Error(message);
+      }
+      if (response.headers.get("content-type")?.includes("text/event-stream") && response.body) {
+        await readChatStream(response, answer);
+      } else {
+        const payload = await response.json();
+        updateChatMessage(answer, payload.answer || "上游未返回内容", !payload.answer);
+      }
     } catch (error) {
-      answer.classList.add("is-error");
-      $(".chat-message-body", answer).textContent = error.message;
+      updateChatMessage(answer, error.message, true);
     } finally {
-      state.chatBusy = false; $("#chat-send").disabled = false;
+      state.chatBusy = false;
+      $("#chat-send").disabled = false;
     }
   }
 
   async function openLatestReport() {
     if (!state.latestReport) { toast("当前没有可打开的研究档案", true); return; }
     openAssistant();
-    $(".chat-empty", $("#chat-log"))?.remove();
     const node = appendChat("assistant", "正在读取完整报告…");
     try {
       const response = await fetch(`/${state.latestReport.replace(/^\/+/, "")}`, { cache: "no-store" });
       if (!response.ok) throw new Error(`报告读取失败 (${response.status})`);
-      $(".chat-message-body", node).innerHTML = renderMarkdown(await response.text());
+      updateChatMessage(node, await response.text());
       $("#chat-context").textContent = state.latestReport;
     } catch (error) {
-      node.classList.add("is-error"); $(".chat-message-body", node).textContent = error.message;
+      updateChatMessage(node, error.message, true);
     }
   }
 
@@ -911,6 +1084,15 @@ import {
     toast("数据核验完成");
   }
 
+  async function pollWorkbenchData() {
+    await Promise.allSettled([
+      loadMarket({ incremental: true }),
+      loadQuoteStrip(),
+      loadFeeds(),
+      loadMonitor(),
+    ]);
+  }
+
   function bindEvents() {
     $$("[data-timeframe]").forEach((button) => button.addEventListener("click", async () => {
       state.timeframe = button.dataset.timeframe;
@@ -918,8 +1100,11 @@ import {
       await loadMarket();
       loadQuoteStrip();
     }));
-    $$("[data-indicator]").forEach((input) => input.addEventListener("change", () => { state.indicators[input.dataset.indicator] = input.checked; drawCharts(); }));
-    $("#chart-reset").addEventListener("click", () => { state.chart.visibleCount = Math.min(80, state.chart.bars.length); state.chart.offset = 0; drawCharts(); });
+    $$("[data-indicator]").forEach((input) => input.addEventListener("change", () => {
+      state.indicators[input.dataset.indicator] = input.checked;
+      syncChartData({ incremental: true });
+    }));
+    $("#chart-reset").addEventListener("click", () => state.chart.api?.timeScale().fitContent());
     $("#refresh-all").addEventListener("click", refreshAll);
     $("#refresh-feed").addEventListener("click", loadFeeds);
     ["#feed-symbol", "#feed-source", "#feed-importance"].forEach((selector) => $(selector).addEventListener("change", renderFeed));
@@ -937,30 +1122,36 @@ import {
     $("#run-analysis").addEventListener("click", runAnalysis);
     $("#run-analysis-left").addEventListener("click", () => { openSettings(); $("#settings-notice").textContent = "确认标的与访问码后，点击“立即运行”。"; });
     $("#toggle-code").addEventListener("click", () => { const input = $("#settings-code"); input.type = input.type === "password" ? "text" : "password"; $("#toggle-code").textContent = input.type === "password" ? "显示" : "隐藏"; });
+    $("#clear-credential").addEventListener("click", clearCredential);
     $("#assistant-open").addEventListener("click", openAssistant);
     $("#assistant-close").addEventListener("click", closeAssistant);
     $("#assistant-backdrop").addEventListener("click", closeAssistant);
     $("#chat-form").addEventListener("submit", sendChat);
+    $("#thread-select").addEventListener("change", (event) => {
+      state.threadId = event.target.value;
+      renderThread();
+    });
+    $("#new-thread").addEventListener("click", () => createThread());
+    $("#delete-thread").addEventListener("click", deleteCurrentThread);
     $("#open-latest-report").addEventListener("click", openLatestReport);
-    window.addEventListener("resize", drawCharts);
     window.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeDrawer("#settings-drawer", "#settings-overlay");
         closeAssistant();
       }
     });
-    bindChartInteractions();
+    initializeChart();
   }
 
   async function init() {
+    loadThreads();
     bindEvents();
     updateClock();
     setInterval(updateClock, 1000);
     await loadCredential();
     await loadSettings();
     await Promise.allSettled([loadMarket(), loadQuoteStrip(), loadFeeds(), loadMonitor(), loadLatest()]);
-    setInterval(() => loadMarket({ incremental: true }), 60000);
-    setInterval(loadMonitor, 60000);
+    setInterval(pollWorkbenchData, 60000);
   }
 
   init().catch((error) => {

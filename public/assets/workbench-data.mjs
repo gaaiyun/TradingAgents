@@ -54,6 +54,40 @@ export function filterFeedItems(items, filters = {}) {
   });
 }
 
+export function buildTaskTimeline(profile) {
+  const schedules = profile?.schedules || {};
+  return [
+    {
+      time: schedules.usCloseSnapshot?.time || "05:35",
+      label: "美股收盘快照",
+      enabled: schedules.usCloseSnapshot?.enabled,
+    },
+    {
+      time: schedules.preMarketBrief?.time || "08:25",
+      label: "盘前传导简报",
+      enabled: schedules.preMarketBrief?.enabled,
+    },
+    {
+      time: schedules.cnIntraday?.windows?.[0]?.start || "09:30",
+      label: "A 股盘中采集",
+      enabled: schedules.cnIntraday?.enabled,
+    },
+    {
+      time: schedules.closeDeepAnalysis?.time || "15:20",
+      label: "收盘深度分析",
+      enabled: schedules.closeDeepAnalysis?.enabled,
+    },
+  ].filter((item) => item.enabled).map((item) => ({
+    ...item,
+    status: "pending",
+    detail: "任务结果接口未提供",
+  }));
+}
+
+export function selectConclusion(latest, symbol) {
+  return (latest?.results || []).find((item) => item.ticker === symbol) || null;
+}
+
 export function simpleMovingAverage(bars, period) {
   let sum = 0;
   return bars.map((bar, index) => {

@@ -16,6 +16,25 @@ BASE_URL = "http://127.0.0.1:4207"
 SETTINGS = json.loads((ROOT / "public/data/workbench-settings.json").read_text(encoding="utf-8"))
 MARKET_REQUESTS = []
 ANALYZE_REQUESTS = []
+SETTINGS_REQUESTS = []
+CHAT_REQUESTS = []
+API_COUNTS = {}
+BROWSER_DIAGNOSTICS = []
+
+
+def capture_browser_diagnostics(page, label):
+    def record(kind, detail):
+        entry = f"[{label}] {kind}: {detail}"
+        BROWSER_DIAGNOSTICS.append(entry)
+        print(entry)
+
+    page.on("console", lambda message: record(
+        f"console.{message.type}", message.text
+    ) if message.type in {"error", "warning"} else None)
+    page.on("pageerror", lambda error: record("pageerror", error))
+    page.on("requestfailed", lambda request: record(
+        "requestfailed", f"{request.method} {request.url} — {request.failure}"
+    ))
 
 
 def envelope(data, status="ok", source="fixture-provider"):
@@ -90,9 +109,11 @@ def route_api(route):
     parsed = urlparse(route.request.url)
     query = parse_qs(parsed.query)
     path = parsed.path
+    API_COUNTS[path] = API_COUNTS.get(path, 0) + 1
     if path == "/api/settings":
         if route.request.method == "PUT":
             request = route.request.post_data_json
+            SETTINGS_REQUESTS.append(request)
             fulfill_json(route, {
                 "ok": True, "settings": request["settings"],
                 "updatedAt": "2026-07-23T07:12:00.000Z", "message": "设置已保存并即时生效",
@@ -127,7 +148,17 @@ def route_api(route):
         ANALYZE_REQUESTS.append(route.request.post_data_json)
         fulfill_json(route, {"ok": True, "message": "已受理，分析会在后台顺序执行", "tickers": [item["symbol"] for item in SETTINGS["profiles"][0]["targets"]]}, 202)
     elif path == "/api/chat":
-        fulfill_json(route, {"answer": "当前归档显示：**成交确认**仍是最重要的跟踪条件。"})
+        CHAT_REQUESTS.append(route.request.post_data_json)
+        route.fulfill(
+            status=200,
+            content_type="text/event-stream; charset=utf-8",
+            body=(
+                'event: meta\ndata: {"context":"fixture-report"}\n\n'
+                'event: delta\ndata: {"content":"当前归档显示："}\n\n'
+                'event: delta\ndata: {"content":"**成交确认**仍是最重要的跟踪条件。"}\n\n'
+                'event: done\ndata: {"done":true}\n\n'
+            ),
+        )
     else:
         fulfill_json(route, {"status": "unavailable", "asOf": None, "data": [], "sources": []})
 
@@ -145,6 +176,7 @@ def run_browser():
             executable_path=r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
         )
         page = browser.new_page(viewport={"width": 1600, "height": 1000}, device_scale_factor=1)
+        capture_browser_diagnostics(page, "desktop")
         page.add_init_script("window.setInterval = ((native) => (fn, delay, ...args) => native(fn, delay >= 60000 ? 250 : delay, ...args))(window.setInterval)")
         page.route("**/api/**", route_api)
         page.goto(BASE_URL, wait_until="domcontentloaded")
@@ -154,6 +186,9 @@ def run_browser():
 
         assert page.locator("#watchlist .watch-row").count() == 10
         assert page.locator("#market-chart").is_visible()
+        assert page.locator("a[href*='tradingview.com']").count() >= 1
+        assert "最近采集成功" not in page.locator("#task-timeline").inner_text()
+        assert "任务结果接口未提供" in page.locator("#task-timeline").inner_text()
         page.get_by_role("tab", name="1h").click()
         assert page.get_by_role("tab", name="1h").get_attribute("aria-selected") == "true"
         page.select_option("#feed-symbol", "NVDA")
@@ -162,32 +197,78 @@ def run_browser():
         page.click("#settings-open")
         page.wait_for_selector("#settings-drawer.is-open")
         page.select_option("#profile-timezone", "Asia/Singapore")
+        page.uncheck("#enable-us-close")
+        page.uncheck("#enable-premarket")
+        page.uncheck("#enable-intraday")
+        page.uncheck("#enable-close-analysis")
+        page.uncheck("#alert-pushplus")
         page.screenshot(path=str(SCREENSHOT_DIR / "etf-workbench-settings.png"), full_page=True)
         page.fill("#settings-code", "fixture-code")
+        page.check("#settings-remember")
         page.click("#save-settings")
         page.wait_for_function("document.querySelector('#settings-notice').textContent.includes('保存')")
+        saved_profile = SETTINGS_REQUESTS[-1]["settings"]["profiles"][0]
+        assert saved_profile["schedules"]["usCloseSnapshot"]["enabled"] is False
+        assert saved_profile["schedules"]["preMarketBrief"]["enabled"] is False
+        assert saved_profile["schedules"]["cnIntraday"]["enabled"] is False
+        assert saved_profile["schedules"]["closeDeepAnalysis"]["enabled"] is False
+        assert saved_profile["alerts"]["channels"]["pushPlus"] is False
         page.click("#run-analysis")
         page.wait_for_function("document.querySelector('#settings-notice').textContent.includes('已受理')")
         assert ANALYZE_REQUESTS[-1]["tickers"] == [item["symbol"] for item in SETTINGS["profiles"][0]["targets"]]
 
         mobile = browser.new_page(viewport={"width": 390, "height": 844}, device_scale_factor=1)
+        capture_browser_diagnostics(mobile, "mobile")
         mobile.route("**/api/**", route_api)
         mobile.goto(BASE_URL, wait_until="domcontentloaded")
         mobile.wait_for_selector("#market-chart")
         mobile.click('[data-mobile-section="watch"]')
         assert mobile.locator("body").get_attribute("data-mobile-view") == "watch"
         mobile.click('[data-mobile-section="chart"]')
+        assert mobile.locator("#cross-market-drivers").is_visible()
         mobile.screenshot(path=str(SCREENSHOT_DIR / "etf-workbench-mobile.png"), full_page=True)
 
+        mobile.click('[data-mobile-section="watch"]')
+        mobile.locator('[data-symbol="NVDA"]').click()
+        mobile.click('[data-mobile-section="chart"]')
+        mobile.wait_for_function("document.querySelector('#conclusion-asof').textContent.includes('尚无')")
+        assert "美股半导体驱动偏强" not in mobile.locator("#conclusion-body").inner_text()
+
+        page.click("#settings-close")
+        page.click("#assistant-open")
+        page.fill("#chat-question", "第一问")
+        page.click("#chat-send")
+        page.wait_for_function("document.querySelector('#chat-log').textContent.includes('成交确认')")
+        page.fill("#chat-question", "第二问")
+        page.click("#chat-send")
+        page.wait_for_function("document.querySelectorAll('#chat-log .chat-message.user').length === 2")
+        assert CHAT_REQUESTS[-1]["stream"] is True
+        assert len(CHAT_REQUESTS[-1]["history"]) >= 2
+        assert page.evaluate("JSON.parse(localStorage.getItem('ta.workbench.threads.v1')).length") >= 1
+
+        page.click("#assistant-close")
+        page.click("#settings-open")
+        page.click("#clear-credential")
+        assert page.input_value("#settings-code") == ""
+        assert page.evaluate("sessionStorage.getItem('ta.workbench.access.session.v1')") is None
+        assert page.evaluate("localStorage.getItem('ta.workbench.access.encrypted.v1')") is None
+        assert page.evaluate("localStorage.getItem('ta.workbench.device-key.v1')") is None
+
         unavailable = browser.new_page(viewport={"width": 900, "height": 700})
+        capture_browser_diagnostics(unavailable, "unavailable")
         unavailable.route("**/api/**", lambda route: fulfill_json(route, {"status": "unavailable", "asOf": None, "data": [], "sources": []}))
         unavailable.goto(BASE_URL, wait_until="domcontentloaded")
         unavailable.wait_for_selector("#chart-empty")
         assert unavailable.locator("#chart-empty").is_visible()
         assert unavailable.locator("#freshness-status").inner_text() == "UNAVAILABLE"
 
-        page.wait_for_timeout(600)
+        counts_before_poll = dict(API_COUNTS)
+        market_count_before_poll = len(MARKET_REQUESTS)
+        page.wait_for_timeout(650)
         assert any(symbol == "515880.SS" and limit == 2 for symbol, _, limit in MARKET_REQUESTS)
+        assert len(MARKET_REQUESTS) >= market_count_before_poll + 10
+        for path in ["/api/news", "/api/events", "/api/monitor-status"]:
+            assert API_COUNTS[path] > counts_before_poll.get(path, 0)
         browser.close()
 
 

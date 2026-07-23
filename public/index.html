@@ -7,8 +7,11 @@
   <meta name="color-scheme" content="dark">
   <meta name="description" content="TradingAgents 专业 ETF 研究终端">
   <title>TradingAgents · ETF 研究终端</title>
-  <link rel="stylesheet" href="./assets/workbench.css?v=20260723c">
-  <script type="module" src="./assets/workbench.js?v=20260723c"></script>
+  <link rel="stylesheet" href="./assets/workbench.css?v=20260723d">
+  <script type="importmap">
+    { "imports": { "fancy-canvas": "./vendor/fancy-canvas/index.mjs" } }
+  </script>
+  <script type="module" src="./assets/workbench.js?v=20260723d"></script>
 </head>
 <body data-mobile-view="chart">
   <a class="skip-link" href="#market-chart">跳到行情图表</a>
@@ -106,9 +109,9 @@
             <span>API 恢复后会在此显示真实 OHLCV；不会用模拟价格替代。</span>
           </div>
           <div class="chart-stack" id="chart-stack">
-            <canvas id="market-chart" tabindex="0" aria-label="K 线、均线与成交量图；滚轮缩放，拖动平移"></canvas>
-            <canvas id="macd-chart" tabindex="0" aria-label="MACD 指标窗格"></canvas>
-            <canvas id="rsi-chart" tabindex="0" aria-label="RSI 指标窗格"></canvas>
+            <div id="market-chart" class="chart-host" tabindex="0" aria-label="K 线、成交量、MACD 与 RSI 多窗格图；滚轮缩放，拖动平移"></div>
+            <span id="macd-chart" class="visually-hidden">MACD 指标窗格</span>
+            <span id="rsi-chart" class="visually-hidden">RSI 指标窗格</span>
             <div class="crosshair-readout" id="crosshair-readout" hidden></div>
           </div>
           <div class="pane-labels" aria-hidden="true"><span>PRICE / VOL</span><span>MACD 12·26·9</span><span>RSI 14</span></div>
@@ -185,11 +188,11 @@
       <section class="settings-section">
         <div class="settings-section-head"><h3>计划与频率</h3><span id="next-run">下一次 —</span></div>
         <div class="schedule-grid">
-          <label><span>美股收盘快照</span><input id="schedule-us-close" type="time"></label>
-          <label><span>盘前简报</span><input id="schedule-premarket" type="time"></label>
-          <label><span>收盘深度分析</span><input id="schedule-close" type="time"></label>
-          <label><span>上午窗口</span><span class="time-range"><input id="window-am-start" type="time"><input id="window-am-end" type="time"></span></label>
-          <label><span>下午窗口</span><span class="time-range"><input id="window-pm-start" type="time"><input id="window-pm-end" type="time"></span></label>
+          <label><span><input id="enable-us-close" type="checkbox"> 美股收盘快照</span><input id="schedule-us-close" type="time"></label>
+          <label><span><input id="enable-premarket" type="checkbox"> 盘前简报</span><input id="schedule-premarket" type="time"></label>
+          <label><span><input id="enable-close-analysis" type="checkbox"> 收盘深度分析</span><input id="schedule-close" type="time"></label>
+          <label><span><input id="enable-intraday" type="checkbox"> 上午采集窗口</span><span class="time-range"><input id="window-am-start" type="time"><input id="window-am-end" type="time"></span></label>
+          <label><span>下午采集窗口</span><span class="time-range"><input id="window-pm-start" type="time"><input id="window-pm-end" type="time"></span></label>
           <label><span>采集频率</span><select id="collection-interval"><option value="5">5 分钟</option><option value="10">10 分钟</option><option value="15">15 分钟</option></select></label>
           <label><span>信号频率</span><select id="signal-interval"><option value="15">15 分钟</option><option value="30">30 分钟</option><option value="60">60 分钟</option></select></label>
         </div>
@@ -203,6 +206,7 @@
           <label><span>静默开始</span><input id="quiet-start" type="time"></label>
           <label><span>静默结束</span><input id="quiet-end" type="time"></label>
           <label class="switch-row"><input id="alert-web" type="checkbox"><span>网页提醒</span></label>
+          <label class="switch-row"><input id="alert-pushplus" type="checkbox"><span>PushPlus 提醒</span></label>
         </div>
       </section>
 
@@ -210,6 +214,7 @@
         <h3>写操作访问码</h3>
         <div class="access-line"><input id="settings-code" type="password" autocomplete="current-password" placeholder="仅保存/运行时需要"><button id="toggle-code" type="button">显示</button></div>
         <label class="switch-row"><input id="settings-remember" type="checkbox"><span>在此设备加密记住</span></label>
+        <button class="credential-clear" id="clear-credential" type="button">清除本机访问码</button>
       </section>
 
       <div class="settings-notice" id="settings-notice" role="status" aria-live="polite"></div>
@@ -227,6 +232,12 @@
       <button class="icon-button" id="assistant-close" type="button" aria-label="关闭研究问答">×</button>
     </header>
     <div class="chat-context" id="chat-context">基于已归档研究资料回答；缺失信息会明确说明。</div>
+    <div class="thread-controls">
+      <label class="visually-hidden" for="thread-select">研究会话</label>
+      <select id="thread-select" aria-label="研究会话"></select>
+      <button id="new-thread" type="button">新会话</button>
+      <button id="delete-thread" type="button">删除</button>
+    </div>
     <div class="chat-log" id="chat-log" aria-live="polite">
       <div class="chat-empty"><b>从当前研究资料开始</b><p>例如：核心判断的反方证据是什么？</p></div>
     </div>
