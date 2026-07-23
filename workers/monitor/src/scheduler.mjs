@@ -62,7 +62,7 @@ function matchesInterval(clock, window, interval) {
   return value >= start && value <= end && (value - start) % interval === 0;
 }
 
-export function dueTasksForProfile(profile, scheduledTime, holidaySets = {}) {
+function dueTasksAtMinute(profile, scheduledTime, holidaySets) {
   if (!profile?.enabled) return [];
   const local = localDateTimeAt(
     scheduledTime,
@@ -146,6 +146,43 @@ export function dueTasksForProfile(profile, scheduledTime, holidaySets = {}) {
     ));
   }
   return tasks;
+}
+
+export function dueTasksForProfile(profile, scheduledTime, holidaySets = {}) {
+  const tick = Math.floor(scheduledTime / 60_000) * 60_000;
+  const tasks = [];
+  for (let offset = 4; offset >= 0; offset -= 1) {
+    tasks.push(...dueTasksAtMinute(
+      profile,
+      tick - offset * 60_000,
+      holidaySets,
+    ));
+  }
+  return tasks;
+}
+
+const SCHEDULE_BY_TYPE = {
+  usCloseSnapshot: "usCloseSnapshot",
+  premarketBrief: "preMarketBrief",
+  intradayCollect: "cnIntraday/collect",
+  intradaySignal: "cnIntraday/signal",
+  closeFullAnalysis: "closeDeepAnalysis",
+};
+
+export function taskFromScheduledSlot(profile, row) {
+  const schedule = SCHEDULE_BY_TYPE[row.slot_type];
+  if (!schedule) return null;
+  const scheduledTime = Date.parse(row.scheduled_for);
+  if (!Number.isFinite(scheduledTime)) return null;
+  return {
+    type: row.slot_type,
+    schedule,
+    localSlot: localDateTimeAt(
+      scheduledTime,
+      profile.timezone || "Asia/Shanghai",
+    ).key,
+    scheduledFor: new Date(scheduledTime).toISOString(),
+  };
 }
 
 export async function slotIdForTask(profileId, task) {

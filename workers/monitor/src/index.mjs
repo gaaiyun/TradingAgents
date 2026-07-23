@@ -3,14 +3,23 @@ import { collectForTask } from "./collector.mjs";
 import { dispatchFullAnalysis } from "./github-dispatch.mjs";
 import { createProviderRegistry } from "./providers/registry.mjs";
 import { writeMarketBars } from "./providers/market-bar-writer.mjs";
-import { dueTasksForProfile, slotIdForTask } from "./scheduler.mjs";
-import { claimScheduledSlot, finishScheduledSlot } from "./slots.mjs";
+import {
+  dueTasksForProfile,
+  slotIdForTask,
+  taskFromScheduledSlot,
+} from "./scheduler.mjs";
+import {
+  claimScheduledSlot,
+  finishScheduledSlot,
+  listRetryableSlots,
+} from "./slots.mjs";
 
 function emptyCounts() {
   return {
     due: 0,
     claimed: 0,
     completed: 0,
+    degraded: 0,
     deferred: 0,
     failed: 0,
     skipped: 0,
@@ -120,19 +129,33 @@ export async function runScheduled(scheduledTime, env, deps = {}) {
     us: parseHolidaySet(deps.usHolidays ?? env.US_HOLIDAY_DATES),
   };
   const due = [];
+  const profilesById = new Map();
   for (const profile of loaded.settings.profiles) {
+    profilesById.set(profile.id, profile);
     for (const task of dueTasksForProfile(profile, scheduledTime, holidaySets)) {
       due.push({ profile, task });
     }
   }
-  counts.due = due.length;
   const now = deps.now?.() ?? new Date();
+  let retryable = [];
+  try {
+    const rows = await listRetryableSlots(env.DB, now);
+    retryable = rows.flatMap((row) => {
+      const profile = profilesById.get(row.profile_id);
+      const task = profile ? taskFromScheduledSlot(profile, row) : null;
+      return profile && task ? [{ profile, task, slotId: row.id }] : [];
+    });
+  } catch {
+    counts.failed += 1;
+  }
+  const work = [...retryable, ...due];
+  counts.due = work.length;
   const registryFactory = deps.registryFactory ?? ((options) =>
     createProviderRegistry(options));
   const registry = registryFactory({ db: env.DB, env, now: () => now });
 
-  for (const { profile, task } of due) {
-    const slotId = await slotIdForTask(profile.id, task);
+  for (const { profile, task, slotId: retrySlotId } of work) {
+    const slotId = retrySlotId ?? await slotIdForTask(profile.id, task);
     let claim;
     try {
       claim = await claimScheduledSlot(env.DB, {
@@ -170,7 +193,9 @@ export async function runScheduled(scheduledTime, env, deps = {}) {
     if (Array.isArray(result.sources)) sources.push(...result.sources);
     const terminalStatus = result.status === "deferred"
       ? "deferred"
-      : result.status === "failed" ? "failed" : "completed";
+      : result.status === "failed" || result.status === "degraded"
+        ? "failed"
+        : "completed";
     try {
       await finishScheduledSlot(env.DB, {
         id: slotId,
@@ -178,14 +203,14 @@ export async function runScheduled(scheduledTime, env, deps = {}) {
         errorCode: result.errorCode,
         now,
       });
-      counts[terminalStatus] += 1;
+      counts[result.status === "degraded" ? "degraded" : terminalStatus] += 1;
     } catch {
       counts.failed += 1;
     }
   }
 
   return {
-    status: counts.failed > 0 ? "degraded" : "completed",
+    status: counts.failed > 0 || counts.degraded > 0 ? "degraded" : "completed",
     counts,
     sources,
   };

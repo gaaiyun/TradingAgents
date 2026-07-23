@@ -1,9 +1,9 @@
 name: daily-analysis
 
+run-name: >-
+  Daily analysis · ${{ inputs.profileId || 'manual' }} · ${{ inputs.slotId || github.run_id }}
+
 on:
-  schedule:
-    # 美股收盘后（21:00 UTC 冬令时 / 20:00 夏令时收盘），21:35 统一覆盖两种情况
-    - cron: "35 21 * * 1-5"
   workflow_dispatch:
     inputs:
       tickers:
@@ -42,6 +42,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     env:
       PYTHONIOENCODING: utf-8
+      TRADINGAGENTS_PROFILE_ID: ${{ inputs.profileId || '' }}
+      TRADINGAGENTS_SLOT_ID: ${{ inputs.slotId || '' }}
+      TRADINGAGENTS_SCHEDULED_FOR: ${{ inputs.scheduledFor || '' }}
       # ── LLM 后端（仓库 Variables 可覆盖）─────────────────────────
       TRADINGAGENTS_LLM_PROVIDER: ${{ vars.TRADINGAGENTS_LLM_PROVIDER || 'deepseek' }}
       TRADINGAGENTS_DEEP_THINK_LLM: ${{ vars.TRADINGAGENTS_DEEP_THINK_LLM || 'deepseek-v4-pro' }}

@@ -145,3 +145,60 @@ test("slot ids are deterministic and contain no raw punctuation-sensitive profil
   );
   assert.match(await slotIdForTask("profile / 一", task), /^slot-[a-f0-9]{64}$/);
 });
+
+test("a five-minute cron tick catches a configured minute inside its open-closed window", async () => {
+  const tasks = await dueAt("2026-07-23T00:30:00.000Z", {
+    schedules: {
+      ...monitorSettings().profiles[0].schedules,
+      preMarketBrief: { enabled: true, time: "08:27" },
+    },
+  });
+  const brief = tasks.find((task) => task.type === "premarketBrief");
+  assert.equal(brief.localSlot, "2026-07-23T08:27");
+  assert.equal(brief.scheduledFor, "2026-07-23T00:27:00.000Z");
+});
+
+test("non-five-minute intraday intervals use their theoretical sequence", async () => {
+  const schedules = monitorSettings().profiles[0].schedules;
+  const profile = {
+    schedules: {
+      ...schedules,
+      cnIntraday: {
+        enabled: true,
+        windows: [{ start: "09:30", end: "10:00" }],
+        collectionIntervalMinutes: 7,
+        signalIntervalMinutes: 14,
+      },
+    },
+  };
+  const tasks = await dueAt("2026-07-23T01:40:00.000Z", profile);
+  assert.deepEqual(
+    tasks.filter((task) => task.type === "intradayCollect")
+      .map((task) => task.localSlot),
+    ["2026-07-23T09:37"],
+  );
+  assert.equal(
+    tasks.find((task) => task.type === "intradayCollect").scheduledFor,
+    "2026-07-23T01:37:00.000Z",
+  );
+});
+
+test("intervals below five minutes emit every crossed theoretical slot", async () => {
+  const schedules = monitorSettings().profiles[0].schedules;
+  const tasks = await dueAt("2026-07-23T01:35:00.000Z", {
+    schedules: {
+      ...schedules,
+      cnIntraday: {
+        enabled: true,
+        windows: [{ start: "09:30", end: "10:00" }],
+        collectionIntervalMinutes: 2,
+        signalIntervalMinutes: 6,
+      },
+    },
+  });
+  assert.deepEqual(
+    tasks.filter((task) => task.type === "intradayCollect")
+      .map((task) => task.localSlot),
+    ["2026-07-23T09:32", "2026-07-23T09:34"],
+  );
+});

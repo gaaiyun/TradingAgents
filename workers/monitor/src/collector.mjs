@@ -85,6 +85,7 @@ export async function collectForTask({
   }
   return {
     status: failed === 0 ? "completed" : "degraded",
+    ...(failed === 0 ? {} : { errorCode: "COLLECTION_PARTIAL" }),
     written,
     counts,
     sources,

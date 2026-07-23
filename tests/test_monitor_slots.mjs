@@ -16,6 +16,10 @@ const migration3Url = new URL(
   "../migrations/0003_monitor_scheduled_slots.sql",
   import.meta.url,
 );
+const migration4Url = new URL(
+  "../migrations/0004_monitor_slot_leases.sql",
+  import.meta.url,
+);
 
 function d1(sqlite) {
   return {
@@ -35,6 +39,7 @@ function freshDatabase() {
   sqlite.exec(migration1);
   sqlite.exec(migration2);
   sqlite.exec(readFileSync(migration3Url, "utf8"));
+  sqlite.exec(readFileSync(migration4Url, "utf8"));
   return sqlite;
 }
 
@@ -51,6 +56,12 @@ test("monitor migration adds durable retry and error bookkeeping", () => {
   assert.match(sql, /ADD COLUMN attempt_count\b/i);
   assert.match(sql, /ADD COLUMN last_error_code\b/i);
   assert.match(sql, /ADD COLUMN updated_at\b/i);
+});
+
+test("lease migration adds recovery and retry timing columns", () => {
+  const sql = readFileSync(migration4Url, "utf8");
+  assert.match(sql, /ADD COLUMN lease_until\b/i);
+  assert.match(sql, /ADD COLUMN next_attempt_at\b/i);
 });
 
 test("duplicate and concurrent claims execute a new slot only once", async () => {
@@ -98,13 +109,16 @@ test("failed slots retry up to three total attempts but completed slots never re
   const db = d1(sqlite);
 
   for (let attempt = 1; attempt <= 3; attempt += 1) {
-    const claim = await claimScheduledSlot(db, claimInput);
+    const now = new Date(
+      Date.parse("2026-07-23T01:30:00.000Z") + (attempt - 1) * 5 * 60 * 1000,
+    );
+    const claim = await claimScheduledSlot(db, { ...claimInput, now });
     assert.equal(claim.attemptCount, attempt);
     await finishScheduledSlot(db, {
       id: claimInput.id,
       status: "failed",
       errorCode: `FAIL_${attempt}`,
-      now: new Date(`2026-07-23T01:3${attempt}:00.000Z`),
+      now,
     });
   }
   assert.equal(await claimScheduledSlot(db, claimInput), null);
