@@ -63,6 +63,16 @@ test("settings and analysis reject oversized request bodies", async () => {
   assert.equal(settingsResponse.status, 413);
 });
 
+test("legacy settings POST keeps its missing GitHub token response", async () => {
+  const response = await saveSettings({
+    request: post(JSON.stringify({ tickers: ["SPY"], settings: defaultSettings() })),
+    env: { ACCESS_CODE: "correct-code" },
+  });
+  const payload = await response.json();
+  assert.equal(response.status, 500);
+  assert.equal(payload.error, "服务端未配置 GITHUB_DISPATCH_TOKEN");
+});
+
 test("legacy ticker-only saves merge into the current v2 settings without losing metadata", async () => {
   const originalFetch = globalThis.fetch;
   let dispatch;
