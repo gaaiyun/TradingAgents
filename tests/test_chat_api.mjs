@@ -374,11 +374,21 @@ test("上游忽略 stream 时合成兼容 SSE", async (t) => {
   assert.match(text, /event: done/);
 });
 
-test("浏览器取消 SSE 后同步取消上游流且不再写错误事件", async (t) => {
+test("浏览器取消 SSE 后服务端继续完成上游，供同一请求恢复且不重复计费", async (t) => {
   let upstreamCancelled = false;
   t.mock.method(globalThis, "fetch", async (url) => {
     if (String(url).includes("raw.githubusercontent.com")) return jsonResponse({ ticker: "SPY" });
     const body = new ReadableStream({
+      start(controller) {
+        setTimeout(() => {
+          controller.enqueue(
+            new TextEncoder().encode(
+              'data: {"choices":[{"delta":{"content":"已完成"}}]}\n\ndata: [DONE]\n\n',
+            ),
+          );
+          controller.close();
+        }, 5);
+      },
       cancel() {
         upstreamCancelled = true;
       },
@@ -397,7 +407,8 @@ test("浏览器取消 SSE 后同步取消上游流且不再写错误事件", asy
   const first = await reader.read();
   assert.equal(new TextDecoder().decode(first.value).includes("event: meta"), true);
   await reader.cancel("test client disconnected");
-  assert.equal(upstreamCancelled, true);
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(upstreamCancelled, false);
 });
 
 test("上游状态被归一化，错误体不回显原始详情", async (t) => {

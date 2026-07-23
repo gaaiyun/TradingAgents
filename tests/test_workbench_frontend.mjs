@@ -249,6 +249,14 @@ test("chat keeps persistent local threads and streams SSE with history context",
   assert.match(script, /function loadThreads/);
   assert.match(script, /function saveThreads/);
   assert.match(script, /history:\s*historyMessages/);
+  assert.match(script, /requestId:\s*chatRequestId/);
+  assert.match(script, /sessionId:\s*thread\.id/);
+  assert.match(script, /profileId:\s*currentProfile\?\.id/);
+  assert.match(script, /symbol:\s*state\.selectedSymbol/);
+  assert.match(script, /x-request-id/);
+  assert.match(script, /function recoverThread/);
+  assert.match(script, /\/api\/chat-sessions\?sessionId=/);
+  assert.match(script, /function recoverChatRequest/);
   assert.match(script, /stream:\s*true/);
   assert.match(script, /response\.body\.getReader\(\)/);
   assert.match(script, /event\s*===\s*"delta"/);

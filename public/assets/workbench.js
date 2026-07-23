@@ -908,6 +908,7 @@ import {
   function openAssistant() {
     openDrawer("#assistant", "#assistant-backdrop");
     $("#assistant-open").setAttribute("aria-expanded", "true");
+    recoverThread(state.threadId);
   }
 
   function closeAssistant() {
@@ -988,6 +989,14 @@ import {
   }
 
   function deleteCurrentThread() {
+    const deletedId = state.threadId;
+    if (state.accessCode && deletedId) {
+      fetch("/api/chat-sessions", {
+        method: "DELETE",
+        headers: { "content-type": "application/json", "x-access-code": state.accessCode },
+        body: JSON.stringify({ sessionId: deletedId }),
+      }).catch(() => {});
+    }
     if (state.threads.length <= 1) {
       currentThread().messages = [];
       currentThread().updatedAt = new Date().toISOString();
@@ -1001,9 +1010,16 @@ import {
     renderThreads();
   }
 
-  function appendChat(role, content, error = false) {
+  function appendChat(role, content, error = false, metadata = {}) {
     const thread = currentThread() || createThread();
-    const message = { id: threadId(), role, content, error, at: new Date().toISOString() };
+    const message = {
+      id: threadId(),
+      role,
+      content,
+      error,
+      at: new Date().toISOString(),
+      ...metadata,
+    };
     thread.messages.push(message);
     thread.updatedAt = message.at;
     if (role === "user" && thread.messages.filter((item) => item.role === "user").length === 1) {
@@ -1012,6 +1028,75 @@ import {
     saveThreads();
     renderThreads();
     return $(`[data-message-id="${CSS.escape(message.id)}"]`, $("#chat-log"));
+  }
+
+  function serverMessageRequestId(message) {
+    const suffix = `:${message.role}`;
+    return String(message.id || "").endsWith(suffix)
+      ? String(message.id).slice(0, -suffix.length)
+      : "";
+  }
+
+  async function recoverThread(targetThreadId = state.threadId) {
+    if (!state.accessCode || !targetThreadId) return false;
+    try {
+      const payload = await requestJson(
+        `/api/chat-sessions?sessionId=${encodeURIComponent(targetThreadId)}`,
+        { headers: { "x-access-code": state.accessCode } },
+      );
+      const remote = payload?.data;
+      if (!Array.isArray(remote?.messages) || !remote.messages.length) return false;
+      const thread = state.threads.find(({ id }) => id === targetThreadId);
+      if (!thread) return false;
+      for (const remoteMessage of remote.messages) {
+        const recoveredRequestId = serverMessageRequestId(remoteMessage);
+        const local = thread.messages.find((message) =>
+          (recoveredRequestId
+            && message.requestId === recoveredRequestId
+            && message.role === remoteMessage.role)
+          || message.id === remoteMessage.id,
+        );
+        if (local) {
+          local.content = remoteMessage.content;
+          local.at = remoteMessage.at;
+          local.error = false;
+          if (recoveredRequestId) local.requestId = recoveredRequestId;
+        } else {
+          thread.messages.push({
+            id: remoteMessage.id,
+            role: remoteMessage.role,
+            content: remoteMessage.content,
+            at: remoteMessage.at,
+            error: false,
+            ...(recoveredRequestId ? { requestId: recoveredRequestId } : {}),
+          });
+        }
+      }
+      thread.messages.sort((left, right) => String(left.at).localeCompare(String(right.at)));
+      thread.title = remote.title || thread.title;
+      thread.updatedAt = remote.updatedAt || thread.updatedAt;
+      saveThreads();
+      if (state.threadId === targetThreadId) renderThreads();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async function recoverChatRequest(targetThreadId, targetRequestId) {
+    for (const delay of [400, 900, 1800]) {
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      await recoverThread(targetThreadId);
+      const thread = state.threads.find(({ id }) => id === targetThreadId);
+      const answer = thread?.messages.find((message) =>
+        message.requestId === targetRequestId
+        && message.role === "assistant"
+        && !message.error
+        && message.content !== "正在连接已归档研究资料…",
+      );
+      if (answer) return true;
+    }
+    return false;
   }
 
   function updateChatMessage(node, content, error = false) {
@@ -1075,17 +1160,39 @@ import {
     const question = $("#chat-question").value.trim();
     if (!question) return;
     if (!state.accessCode) { openDrawer("#settings-drawer", "#settings-overlay"); toast("研究问答需要访问码", true); return; }
-    const historyMessages = buildChatHistory(currentThread()?.messages);
+    const thread = currentThread() || createThread();
+    const historyMessages = buildChatHistory(thread.messages);
+    const currentProfile = state.settings?.profiles?.find((profile) => profile.enabled)
+      || state.settings?.profiles?.[0];
+    const chatRequestId = threadId();
     state.chatBusy = true;
     $("#chat-send").disabled = true;
     $("#chat-question").value = "";
-    appendChat("user", question);
-    const answer = appendChat("assistant", "正在连接已归档研究资料…");
+    appendChat("user", question, false, { requestId: chatRequestId });
+    const answer = appendChat(
+      "assistant",
+      "正在连接已归档研究资料…",
+      false,
+      { requestId: chatRequestId },
+    );
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
-        headers: { "content-type": "application/json", "x-access-code": state.accessCode },
-        body: JSON.stringify({ question, history: historyMessages, report: state.latestReport, stream: true }),
+        headers: {
+          "content-type": "application/json",
+          "x-access-code": state.accessCode,
+          "x-request-id": chatRequestId,
+        },
+        body: JSON.stringify({
+          requestId: chatRequestId,
+          sessionId: thread.id,
+          profileId: currentProfile?.id,
+          symbol: state.selectedSymbol,
+          question,
+          history: historyMessages,
+          report: state.latestReport,
+          stream: true,
+        }),
       });
       if (!response.ok) {
         let message = `HTTP ${response.status}`;
@@ -1099,7 +1206,8 @@ import {
         updateChatMessage(answer, payload.answer || "上游未返回内容", !payload.answer);
       }
     } catch (error) {
-      updateChatMessage(answer, error.message, true);
+      const recovered = await recoverChatRequest(thread.id, chatRequestId);
+      if (!recovered) updateChatMessage(answer, error.message, true);
     } finally {
       state.chatBusy = false;
       $("#chat-send").disabled = false;
@@ -1186,6 +1294,7 @@ import {
     $("#thread-select").addEventListener("change", (event) => {
       state.threadId = event.target.value;
       renderThread();
+      recoverThread(state.threadId);
     });
     $("#new-thread").addEventListener("click", () => createThread());
     $("#delete-thread").addEventListener("click", deleteCurrentThread);
@@ -1206,6 +1315,7 @@ import {
     setInterval(updateClock, 1000);
     await loadCredential();
     await loadSettings();
+    await recoverThread(state.threadId);
     await Promise.allSettled([loadMarket(), loadQuoteStrip(), loadFeeds(), loadMonitor(), loadLatest()]);
     setInterval(pollWorkbenchData, 60000);
   }

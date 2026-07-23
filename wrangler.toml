@@ -5,6 +5,5 @@ pages_build_output_dir = "public"
 [[d1_databases]]
 binding = "DB"
 database_name = "tradingagents-workbench"
-# 部署前替换为 Cloudflare 控制台创建的 D1 ID；不要提交 token 或真实密钥。
-database_id = "replace-with-d1-database-id"
+database_id = "0ac720b0-3779-457c-8bee-4168ae43581f"
 migrations_dir = "migrations"

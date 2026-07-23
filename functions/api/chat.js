@@ -1,4 +1,13 @@
 import { RAW_BASE, gate, json } from "./_util.js";
+import { loadWorkbenchEvidence } from "./_chat_context.mjs";
+import { d1Binding } from "./_d1_repository.mjs";
+import {
+  claimChatRequest,
+  completeChatRequest,
+  failChatRequest,
+  hashChatValue,
+  normalizeChatId,
+} from "./_chat_repository.mjs";
 import {
   chatCapabilities,
   createSseParser,
@@ -83,32 +92,62 @@ function upstreamError(id, status) {
   });
 }
 
-async function jsonChatResponse({ upstream, id, contextLabel, source, limits }) {
+async function jsonChatResponse({
+  upstream,
+  id,
+  contextLabel,
+  source,
+  limits,
+  metadata = {},
+  onComplete,
+  onFailure,
+}) {
   try {
     const data = await upstream.response.json();
     const answer = extractChatAnswer(data);
     if (!answer) {
+      await onFailure?.({
+        error: "LLM 上游返回无效内容",
+        code: "upstream_invalid_response",
+        status: 502,
+      });
       return errorJson(id, "LLM 上游返回无效内容", 502, "upstream_invalid_response");
     }
     if (answer.length > limits.outputChars) {
+      await onFailure?.({
+        error: "LLM 上游响应超过限制",
+        code: "upstream_response_too_large",
+        status: 502,
+      });
       return errorJson(id, "LLM 上游响应超过限制", 502, "upstream_response_too_large");
     }
+    const usage = safeUsage(data);
+    const payload = {
+      answer,
+      context: contextLabel,
+      requestId: id,
+      source,
+      ...metadata,
+      ...(usage ? { usage } : {}),
+    };
+    const persistence = await onComplete?.(payload, answer);
+    if (persistence) payload.persistence = persistence;
     return json(
-      {
-        answer,
-        context: contextLabel,
-        requestId: id,
-        source,
-        ...(safeUsage(data) ? { usage: safeUsage(data) } : {}),
-      },
+      payload,
       200,
       responseHeaders(id, { "cache-control": "no-store" }),
     );
   } catch (error) {
     if (upstream.timedOut() || error?.name === "AbortError") {
       const normalized = normalizeFetchError({ name: "AbortError" });
+      await onFailure?.({ ...normalized, status: normalized.status });
       return errorJson(id, normalized.error, normalized.status, normalized.code);
     }
+    await onFailure?.({
+      error: "LLM 上游返回无法解析",
+      code: "upstream_invalid_response",
+      status: 502,
+    });
     return errorJson(id, "LLM 上游返回无法解析", 502, "upstream_invalid_response");
   } finally {
     upstream.cleanup();
@@ -123,7 +162,20 @@ function streamHeaders(id) {
   });
 }
 
-function createDownstreamStream({ upstream, id, contextLabel, source, limits }) {
+function createDownstreamStream({
+  upstream,
+  id,
+  contextLabel,
+  source,
+  limits,
+  metadata = {},
+  onComplete,
+  onFailure,
+}) {
+  let resolveCompletion;
+  const completion = new Promise((resolve) => {
+    resolveCompletion = resolve;
+  });
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
   const parser = createSseParser(limits.sseEventChars);
@@ -133,20 +185,16 @@ function createDownstreamStream({ upstream, id, contextLabel, source, limits }) 
   let sawContent = false;
   let downstreamCancelled = false;
   let outputChars = 0;
+  let answer = "";
 
   function send(controller, event, data) {
+    if (downstreamCancelled) return;
     controller.enqueue(encoder.encode(formatSseEvent(event, data)));
   }
 
   function finish(controller) {
     if (finished) return;
     finished = true;
-    send(controller, "done", {
-      requestId: id,
-      context: contextLabel,
-      source,
-      ...(usage ? { usage } : {}),
-    });
   }
 
   function consumeEvents(controller, events) {
@@ -176,15 +224,21 @@ function createDownstreamStream({ upstream, id, contextLabel, source, limits }) 
           throw error;
         }
         outputChars += content.length;
+        answer += content;
         sawContent = true;
         send(controller, "delta", { content });
       }
     }
   }
 
-  return new ReadableStream({
+  const stream = new ReadableStream({
     async start(controller) {
-      send(controller, "meta", { requestId: id, context: contextLabel, source });
+      send(controller, "meta", {
+        requestId: id,
+        context: contextLabel,
+        source,
+        ...metadata,
+      });
       try {
         while (!finished) {
           const { done, value } = await reader.read();
@@ -197,6 +251,21 @@ function createDownstreamStream({ upstream, id, contextLabel, source, limits }) 
             break;
           }
           consumeEvents(controller, parser.push(decoder.decode(value, { stream: true })));
+        }
+        if (finished && sawContent) {
+          const completionPayload = {
+            answer,
+            context: contextLabel,
+            requestId: id,
+            source,
+            ...metadata,
+            ...(usage ? { usage } : {}),
+          };
+          const saved = await onComplete?.(completionPayload, answer);
+          send(controller, "done", {
+            ...completionPayload,
+            ...(saved ? { persistence: saved } : {}),
+          });
         }
       } catch (error) {
         if (!downstreamCancelled) {
@@ -223,6 +292,11 @@ function createDownstreamStream({ upstream, id, contextLabel, source, limits }) 
             requestId: id,
           });
         }
+        await onFailure?.({
+          error: "LLM 上游流式响应失败",
+          code: error?.code || "upstream_invalid_response",
+          status: 502,
+        });
       } finally {
         upstream.cleanup();
         try {
@@ -231,28 +305,49 @@ function createDownstreamStream({ upstream, id, contextLabel, source, limits }) 
           // 上游可能已经正常关闭。
         }
         if (!downstreamCancelled) controller.close();
+        resolveCompletion();
       }
     },
     cancel() {
       downstreamCancelled = true;
-      upstream.cleanup();
-      upstream.abort();
-      return reader.cancel("client disconnected");
+      // 继续消费并保存最终回答，客户端稍后可按 requestId 恢复，
+      // 同一个问题也不会因断线重试而再次调用模型。
+      return undefined;
     },
   });
+  return { stream, completion };
 }
 
-async function syntheticStreamResponse({ upstream, id, contextLabel, source, limits }) {
-  const jsonResponse = await jsonChatResponse({ upstream, id, contextLabel, source, limits });
+async function syntheticStreamResponse({
+  upstream,
+  id,
+  contextLabel,
+  source,
+  limits,
+  metadata,
+  onComplete,
+  onFailure,
+}) {
+  const jsonResponse = await jsonChatResponse({
+    upstream,
+    id,
+    contextLabel,
+    source,
+    limits,
+    metadata,
+    onComplete,
+    onFailure,
+  });
   if (!jsonResponse.ok) return jsonResponse;
   const data = await jsonResponse.json();
   const body =
-    formatSseEvent("meta", { requestId: id, context: contextLabel, source }) +
+    formatSseEvent("meta", { requestId: id, context: contextLabel, source, ...metadata }) +
     formatSseEvent("delta", { content: data.answer }) +
     formatSseEvent("done", {
       requestId: id,
       context: contextLabel,
       source,
+      ...metadata,
       ...(data.usage ? { usage: data.usage } : {}),
     });
   return new Response(body, { status: 200, headers: streamHeaders(id) });
@@ -267,8 +362,8 @@ export async function onRequestGet({ env }) {
 
 // POST /api/chat {code, question, report?, volguard?, history?, stream?}
 // 默认保持 JSON；stream=true 时返回标准化 SSE 增量。
-export async function onRequestPost({ request, env }) {
-  const id = requestId();
+export async function onRequestPost({ request, env, waitUntil }) {
+  let id = requestId();
   const config = resolveChatConfig(env);
   const headerCode = request.headers.get("x-access-code");
   if (headerCode !== null && !gate(env, headerCode)) {
@@ -296,7 +391,95 @@ export async function onRequestPost({ request, env }) {
   const normalizedQuestion = normalizeQuestion(body.question, config.limits.questionChars);
   if (!normalizedQuestion.value) return errorJson(id, "问题为空", 400, "empty_question");
 
-  const contextResult = await loadResearchContext({
+  const requestedId = request.headers.get("x-request-id") || body.requestId;
+  if (requestedId !== undefined && requestedId !== null) {
+    const normalizedId = normalizeChatId(requestedId);
+    if (!normalizedId) return errorJson(id, "请求 ID 无效", 400, "invalid_request_id");
+    id = normalizedId;
+  }
+  const sessionId = body.sessionId === undefined || body.sessionId === null
+    ? `session-${id}`
+    : normalizeChatId(body.sessionId);
+  if (!sessionId) return errorJson(id, "会话 ID 无效", 400, "invalid_session_id");
+  const profileId = typeof body.profileId === "string" && /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(body.profileId)
+    ? body.profileId
+    : null;
+  if (body.profileId && !profileId) return errorJson(id, "监控目标 ID 无效", 400, "invalid_profile_id");
+  const symbol = typeof body.symbol === "string" && /^[A-Z0-9][A-Z0-9.^_-]{0,31}$/.test(body.symbol.toUpperCase())
+    ? body.symbol.toUpperCase()
+    : null;
+  if (body.symbol && !symbol) return errorJson(id, "标的代码无效", 400, "invalid_symbol");
+
+  const db = d1Binding(env);
+  const requestHash = await hashChatValue({
+    sessionId,
+    profileId,
+    symbol,
+    question: normalizedQuestion.value,
+    report: typeof body.report === "string" ? body.report : null,
+    volguard: body.volguard === true,
+    history: Array.isArray(body.history) ? body.history : [],
+  });
+  let persistence = db ? "d1" : "unavailable";
+  if (db) {
+    try {
+      const claim = await claimChatRequest(db, {
+        requestId: id,
+        sessionId,
+        profileId,
+        requestHash,
+      });
+      if (claim.state === "conflict") {
+        return errorJson(id, "请求 ID 已用于其他问题", 409, "idempotency_conflict");
+      }
+      if (claim.state === "processing") {
+        return errorJson(id, "相同请求仍在处理中", 409, "request_in_progress", {
+          retryable: true,
+        });
+      }
+      if (claim.state === "completed") {
+        const cached = { ...claim.response, requestId: id, replayed: true, persistence: "d1" };
+        if (body.stream === true) {
+          const replayBody =
+            formatSseEvent("meta", {
+              requestId: id,
+              context: cached.context,
+              source: cached.source,
+              evidence: cached.evidence || [],
+              asOf: cached.asOf || null,
+              contextHash: cached.contextHash || claim.contextHash || null,
+              replayed: true,
+            }) +
+            formatSseEvent("delta", { content: cached.answer || "" }) +
+            formatSseEvent("done", cached);
+          return new Response(replayBody, { status: 200, headers: streamHeaders(id) });
+        }
+        return json(cached, 200, responseHeaders(id, { "cache-control": "no-store" }));
+      }
+      if (claim.state === "failed") {
+        const cached = claim.response || {};
+        return errorJson(
+          id,
+          cached.error || "相同请求此前未完成，请使用新的请求 ID 重试",
+          cached.status || 502,
+          cached.code || "cached_request_failed",
+          { replayed: true },
+        );
+      }
+    } catch {
+      persistence = "degraded";
+    }
+  }
+
+  let workbenchContext = null;
+  if (db && profileId && symbol) {
+    try {
+      workbenchContext = await loadWorkbenchEvidence(db, { profileId, symbol });
+    } catch {
+      persistence = persistence === "d1" ? "degraded" : persistence;
+    }
+  }
+  const archiveContext = await loadResearchContext({
     body,
     fetchImpl: fetch,
     rawBase: RAW_BASE,
@@ -304,19 +487,69 @@ export async function onRequestPost({ request, env }) {
     timeoutMs: config.timeouts.contextMs,
     signal: request.signal,
   });
+  const combinedContext = [workbenchContext?.context, archiveContext.context]
+    .filter(Boolean)
+    .join("\n\n【归档研究材料】\n");
+  const contextLabel = [workbenchContext?.contextLabel, archiveContext.contextLabel]
+    .filter(Boolean)
+    .join(" + ");
   const prepared = prepareChatMessages({
     question: normalizedQuestion.value,
     history: body.history,
-    context: contextResult.context,
-    contextLabel: contextResult.contextLabel,
+    context: combinedContext,
+    contextLabel,
     limits: config.limits,
   });
-  const source = { ...contextResult.source };
-  if (prepared.input.contextChars !== contextResult.source.chars) {
-    source.loadedChars = contextResult.source.chars;
+  const source = workbenchContext?.evidence?.length
+    ? {
+      type: "combined",
+      label: contextLabel,
+      chars: prepared.input.contextChars,
+      truncated: prepared.input.contextTruncated,
+      components: [workbenchContext.source, archiveContext.source],
+    }
+    : { ...archiveContext.source };
+  if (!workbenchContext?.evidence?.length && prepared.input.contextChars !== archiveContext.source.chars) {
+    source.loadedChars = archiveContext.source.chars;
     source.chars = prepared.input.contextChars;
     source.truncated = true;
   }
+  const contextHash = await hashChatValue(prepared.context);
+  const metadata = {
+    sessionId,
+    profileId,
+    symbol,
+    asOf: workbenchContext?.asOf || null,
+    evidence: workbenchContext?.evidence || [],
+    contextHash,
+    persistence,
+  };
+  const complete = async (payload, answer) => {
+    if (!db || persistence === "unavailable") return persistence;
+    try {
+      const saved = await completeChatRequest(db, {
+        requestId: id,
+        sessionId,
+        profileId,
+        title: normalizedQuestion.value,
+        question: normalizedQuestion.value,
+        answer,
+        contextHash,
+        response: payload,
+      });
+      return saved ? "d1" : "degraded";
+    } catch {
+      return "degraded";
+    }
+  };
+  const fail = async (failure) => {
+    if (!db || persistence !== "d1") return;
+    try {
+      await failChatRequest(db, { requestId: id, response: failure });
+    } catch {
+      // 问答错误仍按原错误返回，存储故障不覆盖根因。
+    }
+  };
   const wantsStream = body.stream === true;
   const payload = {
     model: config.model,
@@ -332,10 +565,13 @@ export async function onRequestPost({ request, env }) {
     upstream = await fetchLlm(config, payload, id, request.signal);
   } catch (error) {
     const normalized = normalizeFetchError(error);
+    await fail({ ...normalized, status: normalized.status });
     return errorJson(id, normalized.error, normalized.status, normalized.code);
   }
 
   if (!upstream.response.ok) {
+    const normalized = normalizeUpstreamStatus(upstream.response.status);
+    await fail({ ...normalized, status: normalized.status });
     upstream.cleanup();
     upstream.abort();
     return upstreamError(id, upstream.response.status);
@@ -344,9 +580,12 @@ export async function onRequestPost({ request, env }) {
     return jsonChatResponse({
       upstream,
       id,
-      contextLabel: contextResult.contextLabel,
+      contextLabel,
       source,
       limits: config.limits,
+      metadata,
+      onComplete: complete,
+      onFailure: fail,
     });
   }
 
@@ -355,19 +594,27 @@ export async function onRequestPost({ request, env }) {
     return syntheticStreamResponse({
       upstream,
       id,
-      contextLabel: contextResult.contextLabel,
+      contextLabel,
       source,
       limits: config.limits,
+      metadata,
+      onComplete: complete,
+      onFailure: fail,
     });
   }
-  return new Response(
-    createDownstreamStream({
-      upstream,
-      id,
-      contextLabel: contextResult.contextLabel,
-      source,
-      limits: config.limits,
-    }),
-    { status: 200, headers: streamHeaders(id) },
-  );
+  const downstream = createDownstreamStream({
+    upstream,
+    id,
+    contextLabel,
+    source,
+    limits: config.limits,
+    metadata,
+    onComplete: complete,
+    onFailure: fail,
+  });
+  if (typeof waitUntil === "function") waitUntil(downstream.completion);
+  return new Response(downstream.stream, {
+    status: 200,
+    headers: streamHeaders(id),
+  });
 }
