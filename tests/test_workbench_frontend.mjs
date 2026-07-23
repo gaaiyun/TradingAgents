@@ -134,14 +134,24 @@ test("series batch application updates every affected point or replaces all depe
   assert.deepEqual(calls, [["candles.setData", 3], ["macd.setData", 3]]);
 });
 
-test("latest market request gate aborts and rejects out-of-order symbol or timeframe responses", () => {
+test("market request gate preserves an in-flight full load from same-context polling", () => {
   const gate = createLatestRequestGate();
-  const first = gate.begin("512480.SS", "15m");
-  const second = gate.begin("NVDA", "1d");
-  assert.equal(first.signal.aborted, true);
-  assert.equal(gate.isCurrent(first, "512480.SS", "15m"), false);
-  assert.equal(gate.isCurrent(second, "NVDA", "1h"), false);
-  assert.equal(gate.isCurrent(second, "NVDA", "1d"), true);
+  const full = gate.begin("512480.SS", "15m", "full");
+  const skippedPoll = gate.begin("512480.SS", "15m", "incremental");
+  assert.equal(skippedPoll, null);
+  assert.equal(full.signal.aborted, false);
+  assert.equal(gate.isCurrent(full, "512480.SS", "15m"), true);
+
+  const switchedFull = gate.begin("NVDA", "1d", "full");
+  assert.equal(full.signal.aborted, true);
+  assert.equal(gate.isCurrent(switchedFull, "NVDA", "1d"), true);
+  gate.finish(switchedFull);
+  const poll = gate.begin("512480.SS", "15m", "incremental");
+  const nextFull = gate.begin("NVDA", "1d", "full");
+  assert.equal(poll.signal.aborted, true);
+  assert.equal(gate.isCurrent(poll, "512480.SS", "15m"), false);
+  assert.equal(gate.isCurrent(nextFull, "NVDA", "1h"), false);
+  assert.equal(gate.isCurrent(nextFull, "NVDA", "1d"), true);
 });
 
 test("feed filtering supports symbol, source hierarchy, and minimum importance", () => {
@@ -285,8 +295,9 @@ test("chat history excludes failed messages and local thread compaction enforces
 
 test("market rendering replays every changed point and storage quota failures are contained", () => {
   assert.match(dataScript, /for\s*\(let index = changedFromIndex; index < length; index \+= 1\)/);
-  assert.match(script, /marketRequestGate\.begin\(symbol,\s*timeframe\)/);
+  assert.match(script, /marketRequestGate\.begin\(symbol,\s*timeframe,\s*incremental\s*\?\s*"incremental"\s*:\s*"full"\)/);
   assert.match(script, /marketRequestGate\.isCurrent\(request,\s*state\.selectedSymbol,\s*state\.timeframe\)/);
+  assert.match(script, /state\.chart\.hydrated/);
   assert.match(script, /catch\s*\(error\)\s*\{[\s\S]*本地会话无法继续持久化/);
 });
 

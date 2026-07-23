@@ -50,7 +50,7 @@ import {
     latest: null,
     accessCode: "",
     rememberCode: false,
-    chart: { bars: [], api: null, series: null },
+    chart: { bars: [], api: null, series: null, symbol: null, timeframe: null, hydrated: false },
     indicators: { volume: true, ma20: true, ma60: true },
     chatBusy: false,
     latestReport: null,
@@ -338,7 +338,20 @@ import {
   async function loadMarket({ incremental = false } = {}) {
     const symbol = state.selectedSymbol;
     const timeframe = state.timeframe;
-    const request = marketRequestGate.begin(symbol, timeframe);
+    const contextChanged = state.chart.symbol !== symbol || state.chart.timeframe !== timeframe;
+    if (incremental && (contextChanged || !state.chart.hydrated)) return;
+    const request = marketRequestGate.begin(symbol, timeframe, incremental ? "incremental" : "full");
+    if (!request) return;
+    if (!incremental && contextChanged) {
+      state.chart.symbol = symbol;
+      state.chart.timeframe = timeframe;
+      state.chart.hydrated = false;
+      state.chart.bars = [];
+      state.market = normalizeEnvelope(null);
+      $("#chart-empty").hidden = false;
+      renderInstrument();
+      syncChartData({ strategy: "setData" });
+    }
     let chartUpdate = { changedFromIndex: 0, strategy: "setData" };
     try {
       const envelope = normalizeEnvelope(await requestJson(
@@ -353,6 +366,7 @@ import {
         state.chart.bars = chartUpdate.bars;
       } else {
         state.chart.bars = incoming;
+        state.chart.hydrated = incoming.length > 0;
       }
       const last = state.chart.bars.at(-1);
       const prior = state.chart.bars.at(-2);
@@ -361,7 +375,10 @@ import {
     } catch (error) {
       if (request.signal.aborted || !marketRequestGate.isCurrent(request, state.selectedSymbol, state.timeframe)) return;
       state.market = normalizeEnvelope(null);
-      if (!incremental) state.chart.bars = [];
+      if (!incremental) {
+        state.chart.bars = [];
+        state.chart.hydrated = false;
+      }
       updateFreshness(state.market);
     } finally {
       marketRequestGate.finish(request);
@@ -647,6 +664,10 @@ import {
     const bars = state.chart.bars;
     const series = state.chart.series;
     const indicators = computeIndicators(bars);
+    $("#market-chart").setAttribute(
+      "aria-label",
+      `K 线、成交量、MACD 与 RSI 多窗格图；已加载 ${bars.length} 根 K 线；${bars.length >= 60 ? "MA60 历史充足" : "MA60 历史不足"}`,
+    );
     series.volume.applyOptions({ visible: state.indicators.volume });
     series.ma20.applyOptions({ visible: state.indicators.ma20 });
     series.ma60.applyOptions({ visible: state.indicators.ma60 });

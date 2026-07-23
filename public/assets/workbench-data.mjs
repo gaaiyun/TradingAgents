@@ -83,20 +83,31 @@ export function applySeriesBatch(series, dataSets, { strategy, changedFromIndex 
 export function createLatestRequestGate() {
   let latestId = 0;
   let controller = null;
+  let activeRequest = null;
   return {
-    begin(symbol, timeframe) {
+    begin(symbol, timeframe, kind = "full") {
+      const sameContextFull = kind === "incremental"
+        && activeRequest?.kind === "full"
+        && activeRequest.symbol === symbol
+        && activeRequest.timeframe === timeframe
+        && !activeRequest.signal.aborted;
+      if (sameContextFull) return null;
       controller?.abort();
       controller = new AbortController();
-      return { id: ++latestId, symbol, timeframe, signal: controller.signal };
+      activeRequest = { id: ++latestId, symbol, timeframe, kind, signal: controller.signal };
+      return activeRequest;
     },
     isCurrent(request, symbol, timeframe) {
-      return request.id === latestId
+      return request?.id === latestId
         && request.symbol === symbol
         && request.timeframe === timeframe
         && !request.signal.aborted;
     },
     finish(request) {
-      if (request.id === latestId) controller = null;
+      if (request?.id === latestId) {
+        controller = null;
+        activeRequest = null;
+      }
     },
   };
 }

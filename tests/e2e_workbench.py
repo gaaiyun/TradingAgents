@@ -54,12 +54,12 @@ def envelope(data, status="ok", source="fixture-provider"):
     }
 
 
-def bars(symbol, timeframe):
+def bars(symbol, timeframe, count=150):
     start = datetime(2026, 7, 22, 1, 30, tzinfo=timezone.utc)
     base = 1.46 if symbol.endswith((".SS", ".SZ")) else 170
     step = {"5m": 5, "15m": 15, "1h": 60, "1d": 1440}.get(timeframe, 15)
     result = []
-    for index in range(150):
+    for index in range(count):
         trend = index * base * 0.00045
         wave = math.sin(index / 7) * base * 0.008
         opening = base + trend + wave
@@ -271,6 +271,67 @@ def run_browser():
         assert race.get_by_role("tab", name="1d").get_attribute("aria-selected") == "true"
         assert "12/18" in race.locator("#freshness-asof").inner_text()
         race.close()
+
+        hydration = browser.new_page(viewport={"width": 1200, "height": 800}, device_scale_factor=1)
+        capture_browser_diagnostics(hydration, "hydration")
+        hydration.add_init_script("""
+          const nativeFetch = window.fetch.bind(window);
+          const nativeSetInterval = window.setInterval.bind(window);
+          window.__marketRequests = [];
+          window.__pollWorkbench = null;
+          window.fetch = async (...args) => {
+            const url = new URL(typeof args[0] === "string" ? args[0] : args[0].url, location.href);
+            if (url.pathname === "/api/market") {
+              window.__marketRequests.push({
+                symbol: url.searchParams.get("symbol"),
+                timeframe: url.searchParams.get("timeframe"),
+                limit: url.searchParams.get("limit"),
+              });
+            }
+            const response = await nativeFetch(...args);
+            const delayedFull = url.pathname === "/api/market"
+              && url.searchParams.get("timeframe") === "1h"
+              && url.searchParams.get("limit") === "240";
+            if (delayedFull) await new Promise((resolve) => setTimeout(resolve, 350));
+            return response;
+          };
+          window.setInterval = (fn, delay, ...args) => {
+            if (delay >= 60000) {
+              window.__pollWorkbench = () => fn(...args);
+              return 60000;
+            }
+            return nativeSetInterval(fn, delay, ...args);
+          };
+        """)
+
+        def route_hydration(route):
+            parsed = urlparse(route.request.url)
+            query = parse_qs(parsed.query)
+            if parsed.path == "/api/market":
+                symbol = query.get("symbol", ["515880.SS"])[0]
+                timeframe = query.get("timeframe", ["15m"])[0]
+                limit = int(query.get("limit", ["240"])[0])
+                fulfill_json(route, envelope(bars(symbol, timeframe, 240)[-limit:]))
+                return
+            route_api(route)
+
+        hydration.route("**/api/**", route_hydration)
+        hydration.goto(BASE_URL, wait_until="domcontentloaded")
+        hydration.wait_for_function("window.__pollWorkbench !== null")
+        hydration.get_by_role("tab", name="1h").click()
+        hydration.wait_for_timeout(40)
+        hydration.evaluate("window.__pollWorkbench()")
+        hydration.wait_for_timeout(450)
+        one_hour_requests = hydration.evaluate("""
+          window.__marketRequests
+            .filter((request) => request.symbol === "515880.SS" && request.timeframe === "1h")
+            .map((request) => request.limit)
+        """)
+        assert one_hour_requests == ["240"]
+        chart_label = hydration.locator("#market-chart").get_attribute("aria-label")
+        assert "240 根" in chart_label
+        assert "MA60 历史充足" in chart_label
+        hydration.close()
 
         page.click("#settings-close")
         page.click("#assistant-open")
