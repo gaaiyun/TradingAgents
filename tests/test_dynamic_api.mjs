@@ -75,6 +75,69 @@ test("market API builds parameterized symbol/profile/timeframe/date filters and 
   assert.equal(params[6], 25);
 });
 
+test("market API aggregates stored 5m bars for a requested 15m timeframe", async () => {
+  const base = {
+    symbol: "515880.SS",
+    profile_id: "cn-etf-semiconductor",
+    timeframe: "5m",
+    source: "tencent-cn",
+    as_of: "2026-07-23T02:00:00Z",
+    fetched_at: "2026-07-23T02:00:05Z",
+    freshness: "stale",
+    adjustment: "none",
+    quality: "good",
+  };
+  const points = [
+    ["2026-07-23T01:30:00Z", 1.50, 1.52, 1.49, 1.51, 100],
+    ["2026-07-23T01:35:00Z", 1.51, 1.53, 1.50, 1.52, 200],
+    ["2026-07-23T01:40:00Z", 1.52, 1.54, 1.51, 1.53, 300],
+    ["2026-07-23T01:45:00Z", 1.53, 1.55, 1.52, 1.54, 400],
+    ["2026-07-23T01:50:00Z", 1.54, 1.56, 1.53, 1.55, 500],
+    ["2026-07-23T01:55:00Z", 1.55, 1.57, 1.54, 1.56, 600],
+  ];
+  const rows = points.map(([ts, open, high, low, close, volume]) => ({
+    ...base,
+    ts,
+    open,
+    high,
+    low,
+    close,
+    volume,
+  }));
+  const DB = new FakeD1({ rows: { market_bars: rows } });
+
+  const response = await marketApi.onRequestGet({
+    request: request("/api/market?symbol=515880.SS&profile=cn-etf-semiconductor&timeframe=15m&limit=2"),
+    env: { DB },
+  });
+  const payload = await response.json();
+
+  assert.equal(payload.status, "stale");
+  assert.equal(payload.data.length, 2);
+  assert.deepEqual(payload.data[0], {
+    ...base,
+    timeframe: "15m",
+    ts: "2026-07-23T01:45:00.000Z",
+    open: 1.53,
+    high: 1.57,
+    low: 1.52,
+    close: 1.56,
+    volume: 1500,
+  });
+  assert.deepEqual(payload.data[1], {
+    ...base,
+    timeframe: "15m",
+    ts: "2026-07-23T01:30:00.000Z",
+    open: 1.50,
+    high: 1.54,
+    low: 1.49,
+    close: 1.53,
+    volume: 600,
+  });
+  assert.equal(payload.indicators.bars, 2);
+  assert.equal(DB.calls[0].params[2], "5m");
+});
+
 test("news and events APIs support topic and importance filters without interpolating input", async () => {
   const injectedTopic = "chips' OR 1=1 --";
   const newsRow = {

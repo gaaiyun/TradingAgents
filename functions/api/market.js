@@ -18,6 +18,69 @@ const PERIODS_PER_YEAR = {
   "1d": 252,
 };
 
+const DERIVED_TIMEFRAMES = {
+  "15m": { source: "5m", milliseconds: 15 * 60 * 1000, factor: 3 },
+  "30m": { source: "5m", milliseconds: 30 * 60 * 1000, factor: 6 },
+  "1h": { source: "5m", milliseconds: 60 * 60 * 1000, factor: 12 },
+  "4h": { source: "5m", milliseconds: 4 * 60 * 60 * 1000, factor: 48 },
+};
+
+const FRESHNESS_RANK = {
+  fresh: 0,
+  stale: 1,
+  unknown: 2,
+};
+
+function laterTimestamp(left, right) {
+  return String(left || "") >= String(right || "") ? left : right;
+}
+
+function aggregateGroup(group, timeframe, bucketTimestamp) {
+  const sorted = [...group].sort((left, right) => left.ts.localeCompare(right.ts));
+  const first = sorted[0];
+  const last = sorted.at(-1);
+  const adjustments = new Set(sorted.map(({ adjustment }) => adjustment).filter(Boolean));
+  const freshness = sorted.reduce((worst, row) => (
+    (FRESHNESS_RANK[row.freshness] ?? FRESHNESS_RANK.unknown)
+      > (FRESHNESS_RANK[worst] ?? FRESHNESS_RANK.unknown)
+      ? row.freshness
+      : worst
+  ), "fresh");
+  return {
+    symbol: last.symbol,
+    profile_id: last.profile_id,
+    timeframe,
+    ts: bucketTimestamp,
+    open: Number(first.open),
+    high: Math.max(...sorted.map(({ high }) => Number(high))),
+    low: Math.min(...sorted.map(({ low }) => Number(low))),
+    close: Number(last.close),
+    volume: sorted.reduce((sum, { volume }) => sum + Number(volume || 0), 0),
+    source: last.source,
+    as_of: sorted.reduce((latest, row) => laterTimestamp(latest, row.as_of), null),
+    fetched_at: sorted.reduce((latest, row) => laterTimestamp(latest, row.fetched_at), null),
+    freshness,
+    adjustment: adjustments.size === 1 ? [...adjustments][0] : "unknown",
+    quality: sorted.every(({ quality }) => quality === "good") ? "good" : "partial",
+  };
+}
+
+export function aggregateMarketBars(rows, timeframe, milliseconds, limit) {
+  const groups = new Map();
+  for (const row of [...rows].sort((left, right) => left.ts.localeCompare(right.ts))) {
+    const parsed = Date.parse(row.ts);
+    if (!Number.isFinite(parsed)) continue;
+    const bucketTimestamp = new Date(Math.floor(parsed / milliseconds) * milliseconds).toISOString();
+    const group = groups.get(bucketTimestamp) || [];
+    group.push(row);
+    groups.set(bucketTimestamp, group);
+  }
+  return [...groups.entries()]
+    .map(([timestamp, group]) => aggregateGroup(group, timeframe, timestamp))
+    .sort((left, right) => right.ts.localeCompare(left.ts))
+    .slice(0, limit);
+}
+
 export async function onRequestGet({ request, env }) {
   let query;
   try {
@@ -35,7 +98,18 @@ export async function onRequestGet({ request, env }) {
   const db = d1Binding(env);
   if (!db) return json(unavailableEnvelope(), 200, { "cache-control": "no-store" });
   try {
-    const rows = await queryMarketBars(db, query);
+    const derived = DERIVED_TIMEFRAMES[query.timeframe];
+    const storedQuery = derived
+      ? {
+        ...query,
+        timeframe: derived.source,
+        limit: query.limit * derived.factor,
+      }
+      : query;
+    const storedRows = await queryMarketBars(db, storedQuery);
+    const rows = derived
+      ? aggregateMarketBars(storedRows, query.timeframe, derived.milliseconds, query.limit)
+      : storedRows;
     const envelope = dynamicEnvelope(rows);
     return json({
       ...envelope,
