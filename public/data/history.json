@@ -1,5 +1,30 @@
 [
   {
+    "trade_date": "2026-08-05",
+    "generated_at": "2026-08-06T06:35:52+08:00",
+    "provider": "openai_compatible",
+    "results": [
+      {
+        "ticker": "NVDA",
+        "rating": "Overweight",
+        "report": "reports/NVDA/2026-08-05/complete_report.md",
+        "error": false
+      },
+      {
+        "ticker": "SPY",
+        "rating": "Hold",
+        "report": "reports/SPY/2026-08-05/complete_report.md",
+        "error": false
+      },
+      {
+        "ticker": "600519.SS",
+        "rating": "Overweight",
+        "report": "reports/600519.SS/2026-08-05/complete_report.md",
+        "error": false
+      }
+    ]
+  },
+  {
     "trade_date": "2026-08-04",
     "generated_at": "2026-08-05T06:36:56+08:00",
     "provider": "openai_compatible",
