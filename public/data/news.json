@@ -1,113 +1,113 @@
 {
   "version": 1,
   "status": "partial",
-  "generated_at": "2026-08-06T06:35:52+08:00",
-  "trade_date": "2026-08-05",
+  "generated_at": "2026-08-07T09:04:12+08:00",
+  "trade_date": "2026-08-07",
   "global": {
     "status": "ok",
     "query_type": "global",
     "ticker": null,
-    "start_date": "2026-07-29",
-    "end_date": "2026-08-05",
-    "fetched_at": "2026-08-05T22:35:53Z",
+    "start_date": "2026-07-31",
+    "end_date": "2026-08-07",
+    "fetched_at": "2026-08-07T01:04:12Z",
     "items": [
       {
-        "title": "Murphy Oil (NYSE:MUR) Posts Better-Than-Expected Sales In Q2 CY2026",
+        "title": "2 Energy Stocks With More Hype Than Fundamentals Right Now",
         "summary": "",
-        "url": "https://finance.yahoo.com/markets/stocks/articles/murphy-oil-nyse-mur-posts-222728175.html",
-        "source": "StockStory",
-        "published_at": "2026-08-05T22:27:28Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
-        "ticker": null,
-        "source_tier": "aggregator"
-      },
-      {
-        "title": "2 Energy Dividend Stocks to Buy in August for Steady Income",
-        "summary": "",
-        "url": "https://finance.yahoo.com/m/d6e56bce-e310-36b2-9aca-4c47c79a6c0e/2-energy-dividend-stocks-to.html",
+        "url": "https://finance.yahoo.com/m/66eadab8-f25f-3aad-8a29-d160a50c13ba/2-energy-stocks-with-more.html",
         "source": "Motley Fool",
-        "published_at": "2026-08-05T22:25:00Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
+        "published_at": "2026-08-07T00:25:00Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Millennium Silver Engages Robison Engineering for Water Infrastructure Development at Silver Peak",
+        "title": "JGB Futures Fall, Tracking Declines in U.S. Treasury Market",
         "summary": "",
-        "url": "https://finance.yahoo.com/energy/articles/millennium-silver-engages-robison-engineering-222300941.html",
+        "url": "https://finance.yahoo.com/m/64a50bb4-bc6e-3013-80b9-fae0f765a86a/jgb-futures-fall%2C-tracking.html",
+        "source": "The Wall Street Journal",
+        "published_at": "2026-08-07T00:11:00Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Lower Oil Prices Lend Support For The Gold Rally",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/commodities/articles/lower-oil-prices-lend-support-000000831.html",
+        "source": "Oilprice.com",
+        "published_at": "2026-08-07T00:00:00Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Why Occidental Stock Is Up Today",
+        "summary": "",
+        "url": "https://finance.yahoo.com/m/e4db3fec-78e8-377f-9818-b2741ea4a417/why-occidental-stock-is-up.html",
+        "source": "Motley Fool",
+        "published_at": "2026-08-06T23:48:37Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "NGEx Reports Q2 2026 Results; Phase 4 drilling delivers high grades and expands Lunahuasi Deposit",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/commodities/articles/ngex-reports-q2-2026-results-233000907.html",
+        "source": "CNW Group",
+        "published_at": "2026-08-06T23:30:00Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Journey Generates $18.5 Million of Net Income in the Second Quarter of 2026",
+        "summary": "",
+        "url": "https://finance.yahoo.com/energy/articles/journey-generates-18-5-million-231200089.html",
         "source": "TMX Newsfile",
-        "published_at": "2026-08-05T22:23:00Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
+        "published_at": "2026-08-06T23:12:00Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Diversified Energy: Q2 Earnings Snapshot",
+        "title": "Permian Resources Corp (PR) (Q2 2026) Earnings Call Highlights: Record Free Cash Flow and ...",
         "summary": "",
-        "url": "https://finance.yahoo.com/energy/articles/diversified-energy-q2-earnings-snapshot-222250203.html",
-        "source": "Associated Press",
-        "published_at": "2026-08-05T22:22:50Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
+        "url": "https://finance.yahoo.com/energy/articles/permian-resources-corp-pr-q2-230434488.html",
+        "source": "GuruFocus.com",
+        "published_at": "2026-08-06T23:04:34Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "DHT Holdings (NYSE:DHT) Beats Expectations in Strong Q2 CY2026",
+        "title": "Texas Pacific Land Corp (TPL) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
         "summary": "",
-        "url": "https://finance.yahoo.com/markets/stocks/articles/dht-holdings-nyse-dht-beats-221731796.html",
-        "source": "StockStory",
-        "published_at": "2026-08-05T22:17:31Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/texas-pacific-land-corp-tpl-230415726.html",
+        "source": "GuruFocus.com",
+        "published_at": "2026-08-06T23:04:15Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Riley Exploration Permian (NYSE:REPX) Delivers Strong Q2 CY2026 Numbers, Stock Soars",
+        "title": "Coeur Mining Inc (CDE) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
         "summary": "",
-        "url": "https://finance.yahoo.com/energy/articles/riley-exploration-permian-nyse-repx-221435134.html",
-        "source": "StockStory",
-        "published_at": "2026-08-05T22:14:35Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
+        "url": "https://finance.yahoo.com/markets/commodities/articles/coeur-mining-inc-cde-q2-230349412.html",
+        "source": "GuruFocus.com",
+        "published_at": "2026-08-06T23:03:49Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Excelerate Energy’s (NYSE:EE) Q2 CY2026 Sales Top Estimates",
+        "title": "McEwen Inc (MUX) (Q2 2026) Earnings Call Highlights: Navigating Operational Headwinds at Gold ...",
         "summary": "",
-        "url": "https://finance.yahoo.com/energy/articles/excelerate-energy-nyse-ee-q2-221001632.html",
-        "source": "StockStory",
-        "published_at": "2026-08-05T22:10:01Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
-        "ticker": null,
-        "source_tier": "aggregator"
-      },
-      {
-        "title": "APA Corporation (NASDAQ:APA) Misses Q2 CY2026 Sales Expectations",
-        "summary": "",
-        "url": "https://finance.yahoo.com/markets/stocks/articles/apa-corporation-nasdaq-apa-misses-220630413.html",
-        "source": "StockStory",
-        "published_at": "2026-08-05T22:06:30Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
-        "ticker": null,
-        "source_tier": "aggregator"
-      },
-      {
-        "title": "Eos Energy Enterprises, Inc. Q2 2026 Earnings Call Summary",
-        "summary": "",
-        "url": "https://finance.yahoo.com/m/86fb3f5c-6ca1-3a0e-a88c-e98d45d301b3/eos-energy-enterprises%2C-inc..html",
-        "source": "Moby",
-        "published_at": "2026-08-05T22:03:10Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
-        "ticker": null,
-        "source_tier": "aggregator"
-      },
-      {
-        "title": "The Walt Disney Company Q3 2026 Earnings Call Summary",
-        "summary": "",
-        "url": "https://finance.yahoo.com/m/48c2354d-ec26-307f-8c10-31424943af45/the-walt-disney-company-q3.html",
-        "source": "Moby",
-        "published_at": "2026-08-05T21:44:39Z",
-        "fetched_at": "2026-08-05T22:35:53Z",
+        "url": "https://finance.yahoo.com/markets/commodities/articles/mcewen-inc-mux-q2-2026-230335152.html",
+        "source": "GuruFocus.com",
+        "published_at": "2026-08-06T23:03:35Z",
+        "fetched_at": "2026-08-07T01:04:12Z",
         "ticker": null,
         "source_tier": "aggregator"
       }
@@ -116,235 +116,34 @@
       {
         "source": "Yahoo Finance",
         "status": "ok",
-        "item_count": 42
+        "item_count": 43
       },
       {
         "source": "Federal Reserve",
         "status": "ok",
-        "item_count": 8
+        "item_count": 5
       }
     ]
   },
   "tickers": {
     "NVDA": {
-      "status": "partial",
+      "status": "partial_empty",
       "query_type": "ticker",
       "ticker": "NVDA",
-      "start_date": "2026-08-05",
-      "end_date": "2026-08-05",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "items": [
-        {
-          "title": "AI Trailblazers Nvidia, Palantir, Alphabet, and Meta Are Shaking Wall Street to Its Core With This $3.4 Billion Warning",
-          "summary": "",
-          "url": "https://finance.yahoo.com/m/33216ff2-d503-37dc-a713-01318e26fc1a/ai-trailblazers-nvidia%2C.html",
-          "source": "Motley Fool",
-          "published_at": "2026-08-05T22:26:00Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Jim Cramer: SpaceX Could Reach $1 Trillion in Revenue by 2030, but “Short Term, Forget About It”",
-          "summary": "",
-          "url": "https://finance.yahoo.com/m/114d7df5-ca32-354a-95c7-fe14bf525622/jim-cramer%3A-spacex-could.html",
-          "source": "24/7 Wall St.",
-          "published_at": "2026-08-05T22:09:58Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Iren vs. AeroVironment: A Comparison of Recent Revenue Trajectories",
-          "summary": "",
-          "url": "https://finance.yahoo.com/m/3ecfd8bb-199c-33ae-a1f3-6f9fd86e129d/iren-vs.-aerovironment%3A-a.html",
-          "source": "Motley Fool",
-          "published_at": "2026-08-05T22:09:01Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Elon Musk Announces SpaceX Deal with Nvidia, Sending NVDA Stock to $220 but Competition Threatens Rally",
-          "summary": "Elon Musk Announces SpaceX Deal with Nvidia, Sending NVDA Stock to $220 but Competition Threatens Rally FXLeaders",
-          "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOcy1qSGdsbXFVS0VaQ1lqd1dYSC1tcVpubkhDZXFWWmxyMzJKWnRNYlJGdXUtcGJnM2VPWWZHYXZMTENQOFpfTzBieXY4TlVqbUFCZll0VUVQWDh6S0lNZV9EMm9pRGVVUTg4aG1BbkhRNmlvbGJBbUhKdEkyd1pIZG5KNWcxcDVhMF9jUXVmRklRQkZFblNjS3ZhTC1sZE1tYmJiQjlNcVlEWGV6MHJ2MTJXZERtRUIyeHZobVJKdFV6Mkl5U2ZUUDNoajdlX3htRU5jU3pheFc4LWwy?oc=5",
-          "source": "Google News / FXLeaders",
-          "published_at": "2026-08-05T20:34:46Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Nvidia Stock Is A Steal Ahead Of Q2 Earnings (NASDAQ:NVDA)",
-          "summary": "Nvidia Stock Is A Steal Ahead Of Q2 Earnings (NASDAQ:NVDA) Seeking Alpha",
-          "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOUEE0N2M2ZU1LZ2ZIRFc5RDU1VFAzS2E1MDhLY2FnLVEtdnpoUHFJZjZJWG9UbVF6Umtwd2FwWk1YcW81M19PWlplUk05V3V3d3lWX3liVmpxVE5jRzFObFBUcUlHZmxneklZZG44aEVzZXNseTYzMVJ1VDdTa1VEYWZDdWk2RG5UVWpqX2RR?oc=5",
-          "source": "Google News / Seeking Alpha",
-          "published_at": "2026-08-05T19:23:22Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Dow Jones Crosses 54,500 as Nvidia (NVDA) $220 Breakout Fires Up AI Rally",
-          "summary": "Dow Jones Crosses 54,500 as Nvidia (NVDA) $220 Breakout Fires Up AI Rally FXLeaders",
-          "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPSjFkRUhtWGhtcU5DMmNxRnBRZ3RhZlNZUFNTSXdMNURBNFV0ZnlYMGhpVDVEd1hFSTJpNkw4alJOXzVScnEzR2hIREltcjU5UWNwSktXSEd0NXZyREo2clRyM2VqSW5DOFJDa2piTy1ybHN5SUhQb2I0WWdFR1pLQWpSYTY2VFdCRmZZR1hNcVZCVzMzSFFxUHBKOG1OTjVvOHlfbEFNaVpfd0FLZURqQjBR?oc=5",
-          "source": "Google News / FXLeaders",
-          "published_at": "2026-08-05T18:28:35Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Why Nvidia Stock Rallied Today",
-          "summary": "",
-          "url": "https://finance.yahoo.com/m/04735142-da8e-3a0d-8bc1-e9cece4e1d7d/why-nvidia-stock-rallied-today.html",
-          "source": "Motley Fool",
-          "published_at": "2026-08-05T18:15:09Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Fund Update: 595,887 NVIDIA (NVDA) shares added to Allen Investment Management, LLC portfolio",
-          "summary": "Fund Update: 595,887 NVIDIA (NVDA) shares added to Allen Investment Management, LLC portfolio Quiver Quantitative",
-          "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQMFZhMHh3NnNJQk43R1dmY3hyZWRFRkc3QS1mNEFHVnQyRGtLNFJ0QWZyYVRZQ0xEVDBvT1Bia1M1YjYzU0gwbU9yMVdqZHVLNEdTZ3VSc25Ta1kzU1FDMmNISlRyejJPMVlPUWZEekNLVkFsX3BsRG81b05kSk1DSHRiNl95SEl4ZVJUejF6ak14Y3RBcG9FQmVfcTVQVm4wbS1PcV9OVnQ2cGZIOFR4RWx4ckFVOUZZSGpQaWZOWi12Q09DdFdTWUdzblhucUlCYlE?oc=5",
-          "source": "Google News / Quiver Quantitative",
-          "published_at": "2026-08-05T18:11:00Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Why Nvidia (NVDA) Stock Is Up Today",
-          "summary": "Why Nvidia (NVDA) Stock Is Up Today StockStory",
-          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQd1o0T3lOLXdab2ZfaGFGZFlidzNWZHN0NE5mekRjY2tELUtqY3kwMUZkdG4xYWNZU3h3S1Rqb3RrSC1mX2lub2FETHZBTHc2Z0lnNzBLeEh6NDc4TEh1VW9WZGtKSDN0eWZYdFJBWEJtdXJ5dW5WRWRfU2pzSTRLbk1xQ3F4N1M5MGlSTmY4NWlwbTFNR1B5Z0dCSWRBZw?oc=5",
-          "source": "Google News / StockStory",
-          "published_at": "2026-08-05T17:35:06Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Nvidia: The Story Is Bigger Than GPUs Now (NASDAQ:NVDA)",
-          "summary": "Nvidia: The Story Is Bigger Than GPUs Now (NASDAQ:NVDA) Seeking Alpha",
-          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSThfdXdsZ0hNVndiZ1ptUXhHMzZhZlJkOGtlZ3BIZzFpZW95dWJhTWE4aUNLNDBZTUVOS2FkTDBIZU9JZ0x6eEVKRjd0bkM1ZHI4M3JDNGkwVC1acXczX2daWmJNbFJ2OTd1d1Jmdy1maVlFb2Y0V3NsVTl2SjBxT2dZTGRLOGpw?oc=5",
-          "source": "Google News / Seeking Alpha",
-          "published_at": "2026-08-05T17:23:06Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Micron (MU) Has More to Gain Than Nvidia (NVDA) Has to Lose From Samsung’s 2028 Warning",
-          "summary": "Micron (MU) Has More to Gain Than Nvidia (NVDA) Has to Lose From Samsung’s 2028 Warning Yahoo Finance",
-          "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNLTZZZWdBeGdxakE2dGlHYXl4a2stRWlqQTc1TThDN3Z4aXhCazhIQWttd2pNTEp2bVBGcDFpQ1ZnQUJEMEdaaGRCY2VvUi1RYkFWOHctZnJQNlJxYkNqMUMwQzQ0OUhqbjlOeHJtcnVfNDhadEdSNWtlZ0NJRTNoQS1lYjF2a0xNR2RNNHNvaS1GakNHMmc?oc=5",
-          "source": "Google News / Yahoo Finance",
-          "published_at": "2026-08-05T17:14:17Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Former Treasury Chief Warns AI Boom Shows 2008 Warning Signs",
-          "summary": "",
-          "url": "https://finance.yahoo.com/m/3f701fcf-4489-3333-b6d7-f45ca3be92b8/former-treasury-chief-warns.html",
-          "source": "24/7 Wall St.",
-          "published_at": "2026-08-05T16:18:04Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "NVIDIA to Power SpaceX AI Infrastructure: Will This Fuel NVDA's Growth?",
-          "summary": "",
-          "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-power-spacex-ai-infrastructure-160300929.html",
-          "source": "Zacks",
-          "published_at": "2026-08-05T16:03:00Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "This Is Nvidia CEO Jensen Huang's Favorite Biotech Stock -- and You've Probably Never Heard of It",
-          "summary": "",
-          "url": "https://finance.yahoo.com/m/d2bb3887-cffc-35c1-917b-4e3315bd4904/this-is-nvidia-ceo-jensen.html",
-          "source": "Motley Fool",
-          "published_at": "2026-08-05T15:50:00Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "NVIDIA Corp Stock (NVDA) Moved Up by 4.31% on Aug 5: What Investors Need To Know",
-          "summary": "NVIDIA Corp Stock (NVDA) Moved Up by 4.31% on Aug 5: What Investors Need To Know TradingKey",
-          "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQWTY4TEx4OFNZUXFtd3FKbmxndi05VERoeUxJTDJLTk8zYTRnemhSRzktN2RuQ2dkR3hnS2RXNURQbWRjdGVablJDaXh5Y3FyU1A3U3lSTlJTYmNjeUhsYXpPeG9xa2doWUNISXk0djF0VlBjTGxUbGhiMTNnWlVwRllPSG9rQmRfODZB?oc=5",
-          "source": "Google News / TradingKey",
-          "published_at": "2026-08-05T14:15:27Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "NVDA, MU, PLTR, TSLA: Michael Burry Keeps Betting Against AI Stocks, Warns of a ‘1987-Type Fall’",
-          "summary": "NVDA, MU, PLTR, TSLA: Michael Burry Keeps Betting Against AI Stocks, Warns of a ‘1987-Type Fall’ TipRanks",
-          "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOd3dxNlc2OVotZkZwOXBIUHpjSGxDRnBKMXF1T3hzeXh0MXJFMHJxZkkycHpMUWdrNE5DeEw5TUxFNElBQS1QVFhSZzBiRlVhSHhoRWNrVDJXU19leVF6UEJqejFGMDUwTURHUGN6amd6RHNULWd6eXFFRXFqUy1wT0pTWW9PbUhjd3hIZ1drQUJLLWc2UnF5TEY3ZEtEMTkyWEdNcFUxVG4tVXlpWTFvbkNJdDhqSFRfb25Z?oc=5",
-          "source": "Google News / TipRanks",
-          "published_at": "2026-08-05T12:32:54Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Nvidia Earnings: AMD's Results Point To Massive AI Demand (Preview) (NASDAQ:NVDA)",
-          "summary": "Nvidia Earnings: AMD's Results Point To Massive AI Demand (Preview) (NASDAQ:NVDA) Seeking Alpha",
-          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOV0FGMTlxZXFybGdGb0ZBX3NGWFJIcURKUUFjQkREakZWcmxKSHhPVXZwazdyLTVub0IwcUJ2ZkduX1QtNmpMOGZTLXlzNktlNXljRjZWUlV2Wm50V3I1SVp5ZDRKOWEwT2ZiM3BnOU1YYks1RUhsNmVVU19EQTBTZnpwdE1rVU0zVlVfRUoyNGt6WWVjSG0tTUVhN08zSFVkWVgyaEo4WQ?oc=5",
-          "source": "Google News / Seeking Alpha",
-          "published_at": "2026-08-05T12:04:01Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "NVIDIA Corporation $NVDA Stock Holdings Lessened by Bowen Hanes & Co. Inc.",
-          "summary": "NVIDIA Corporation $NVDA Stock Holdings Lessened by Bowen Hanes & Co. Inc. marketbeat.com",
-          "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOaDVoOERwOGh1X2xCVmZ6dEcxVDF3RGdZSmxxM3lYd0RiYjBTd1RIdmJXSU9VZC1DcW45ZjBQWlZqM3hWVERySXgySjdSNl9yMFBvNi1HNVV3N2gxS1JlSEhKSU1TM2NJWkZpRmVqbXctbVFyWnBWdmVtd1MyZVYxZ29Ta2pQNDNZSkVnZ1JzdWl1RFBwbXVqRE9aQVB2bDF4NmJRNjVZZGxhbEJwdDcwWGJkQVdFVm1wLTY4VU9MSDNNWjNvNEMtUWNB?oc=5",
-          "source": "Google News / marketbeat.com",
-          "published_at": "2026-08-05T10:56:58Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "NVDA Stock Bucks Selloff Premarket On SpaceX Boost, Foxconn’s Sales Update",
-          "summary": "NVDA Stock Bucks Selloff Premarket On SpaceX Boost, Foxconn’s Sales Update TradingView",
-          "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOSUhqUjZRM2hIQlpCck0xbUR2WHlXRzNUZzdkcHhKUlJVNmxjTkdNWFAwbHlvTF92aFZfT2l1bWZrQjhxTElQN0hzcjVjR1FNX2RPZ0VDVFNPNUdLYmljV0szZjMtX2Q5VW5ZUXhHVng0ejlYanVzTDlYMm94VmdTbWdRbkVMOUk2YUl1Yk1vRUhYaE9rRHpKc1ZrcUdLSHg5U01KOHNLbXBmNmZGYnQ2UXlwdjJmSmx4MU9oczQwcEUxZXRHa2xwMDc2b3pMMUk?oc=5",
-          "source": "Google News / TradingView",
-          "published_at": "2026-08-05T09:29:38Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Why Is NVDA Stock Rising In Premarket?",
-          "summary": "Why Is NVDA Stock Rising In Premarket? Stocktwits",
-          "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNZUxqM2ROZkpHRU9pdnppek5HcUM2QVZkT0ZDclRZRVR6OXhlX2FQYWh2WGJNNEp1ai1SNFdzZGh5aWtYS1p5UEh5ZDZ3dEV0NTMzWGptQ2cxVVF3RzBoUXB2WDhOUHU4bXh0UXNUaGlENEFIOVJlSzJDWWVRTkZqaXY0R2MwSlJzblhwUThWbksyc0JsMFQ1SWtEanYybFh4cExF?oc=5",
-          "source": "Google News / Stocktwits",
-          "published_at": "2026-08-05T08:08:51Z",
-          "fetched_at": "2026-08-05T22:35:54Z",
-          "ticker": "NVDA",
-          "source_tier": "aggregator"
-        }
-      ],
+      "start_date": "2026-08-07",
+      "end_date": "2026-08-07",
+      "fetched_at": "2026-08-07T01:04:14Z",
+      "items": [],
       "source_statuses": [
         {
           "source": "Yahoo Finance",
           "status": "ok",
-          "item_count": 9
+          "item_count": 10
         },
         {
           "source": "Google News RSS",
-          "status": "ok",
-          "item_count": 15
+          "status": "empty",
+          "item_count": 0
         },
         {
           "source": "SEC EDGAR",
@@ -354,64 +153,23 @@
       ]
     },
     "SPY": {
-      "status": "partial",
+      "status": "partial_empty",
       "query_type": "ticker",
       "ticker": "SPY",
-      "start_date": "2026-08-05",
-      "end_date": "2026-08-05",
-      "fetched_at": "2026-08-05T22:35:55Z",
-      "items": [
-        {
-          "title": "Stock Market Today: SPY, QQQ Lose Steam on AI Jitters as Trump Calls for Hormuz Deal",
-          "summary": "Stock Market Today: SPY, QQQ Lose Steam on AI Jitters as Trump Calls for Hormuz Deal TipRanks",
-          "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOHFfNFJtdU4tNG4xdXZPWGVZNzVXdUxvRS12cTNMcVJGdnJrU1B6UW4zcnVXRVBjUUdXYnBTWEJjZllvZXhYZXJCdDJ3X0pkUE9YclpVQTU5YkJGUnhmVTkyWG0tbzdKUmRYVndBaVZoeXVEcjFNSTFrcm82bjM3LVdoTkxGUi1uNjd0ZWctdDRIa21laXdiOXFGYlFXOVl2UEVza3p2dldxUUdFSlpYN3JB?oc=5",
-          "source": "Google News / TipRanks",
-          "published_at": "2026-08-05T20:31:42Z",
-          "fetched_at": "2026-08-05T22:35:55Z",
-          "ticker": "SPY",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "These mega-cap stocks have maintained bullish Quant ratings the longest (SPY:NYSEARCA)",
-          "summary": "These mega-cap stocks have maintained bullish Quant ratings the longest (SPY:NYSEARCA) Seeking Alpha",
-          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNOEM2d193Vk1ZV09pTFBVYUlvblNpajRhbTJGdEI3SE9ZNFhuVkpLSVlfOVVhQl8yWG9Wb01oRWdFZG02SWMtMlZIZVpUaDFtOXM2bGU2UmxOYmh5cUZXa0F5RTlvVExERDkyZWtWNkU0ZGpxZkxhcnd6YzZtTW4tcHRkV2VTVnFvMkc4eEg4ZVAxSzNkRUVWYXVfeVl5eWxOMlI5aEs2THg5VlhBS1E?oc=5",
-          "source": "Google News / Seeking Alpha",
-          "published_at": "2026-08-05T17:32:16Z",
-          "fetched_at": "2026-08-05T22:35:55Z",
-          "ticker": "SPY",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "Exchange-Traded Funds Higher, Equity Futures Mixed Pre-Bell Amid Corporate Earnings, Hormuz Reopening Hopes",
-          "summary": "",
-          "url": "https://finance.yahoo.com/markets/stocks/articles/exchange-traded-funds-higher-equity-131015495.html",
-          "source": "MT Newswires",
-          "published_at": "2026-08-05T13:10:15Z",
-          "fetched_at": "2026-08-05T22:35:55Z",
-          "ticker": "SPY",
-          "source_tier": "aggregator"
-        },
-        {
-          "title": "What Happens When Stock Implied Volatility Outpaces the SPY",
-          "summary": "What Happens When Stock Implied Volatility Outpaces the SPY Schaeffer's Investment Research",
-          "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNSW1DOGxxNVdkY0t6bGpXWnMtUnB4VE1UYnUwSXI1RXJpTzVjenN6eDNkcmtWVkRpMzJDYTZQWXl5RXJOLTlYQXFwclBtQVZjbmMwOFpRa1RKWXlmQ0JqMVNnR1V3VW1pRmJYa2NDYlJ2QzRRYzhXblJ0VU5Fd3JlNG93cFdGRVItNS15cmRsdl9jbHBhLXFjUEhiRElGYlRHSlpIdFU4eFNBVjRPZHRaX3YxZEd2d2VEeHhaUmpqRQ?oc=5",
-          "source": "Google News / Schaeffer's Investment Research",
-          "published_at": "2026-08-05T12:42:08Z",
-          "fetched_at": "2026-08-05T22:35:55Z",
-          "ticker": "SPY",
-          "source_tier": "aggregator"
-        }
-      ],
+      "start_date": "2026-08-07",
+      "end_date": "2026-08-07",
+      "fetched_at": "2026-08-07T01:04:14Z",
+      "items": [],
       "source_statuses": [
         {
           "source": "Yahoo Finance",
           "status": "ok",
-          "item_count": 2
+          "item_count": 4
         },
         {
           "source": "Google News RSS",
-          "status": "ok",
-          "item_count": 3
+          "status": "empty",
+          "item_count": 0
         },
         {
           "source": "SEC EDGAR",
@@ -424,9 +182,9 @@
       "status": "empty",
       "query_type": "ticker",
       "ticker": "600519.SS",
-      "start_date": "2026-08-05",
-      "end_date": "2026-08-05",
-      "fetched_at": "2026-08-05T22:35:56Z",
+      "start_date": "2026-08-07",
+      "end_date": "2026-08-07",
+      "fetched_at": "2026-08-07T01:04:15Z",
       "items": [],
       "source_statuses": [
         {
@@ -449,343 +207,103 @@
   },
   "items": [
     {
-      "title": "Murphy Oil (NYSE:MUR) Posts Better-Than-Expected Sales In Q2 CY2026",
+      "title": "2 Energy Stocks With More Hype Than Fundamentals Right Now",
       "summary": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/murphy-oil-nyse-mur-posts-222728175.html",
-      "source": "StockStory",
-      "published_at": "2026-08-05T22:27:28Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
+      "url": "https://finance.yahoo.com/m/66eadab8-f25f-3aad-8a29-d160a50c13ba/2-energy-stocks-with-more.html",
+      "source": "Motley Fool",
+      "published_at": "2026-08-07T00:25:00Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "AI Trailblazers Nvidia, Palantir, Alphabet, and Meta Are Shaking Wall Street to Its Core With This $3.4 Billion Warning",
+      "title": "JGB Futures Fall, Tracking Declines in U.S. Treasury Market",
       "summary": "",
-      "url": "https://finance.yahoo.com/m/33216ff2-d503-37dc-a713-01318e26fc1a/ai-trailblazers-nvidia%2C.html",
-      "source": "Motley Fool",
-      "published_at": "2026-08-05T22:26:00Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "2 Energy Dividend Stocks to Buy in August for Steady Income",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/d6e56bce-e310-36b2-9aca-4c47c79a6c0e/2-energy-dividend-stocks-to.html",
-      "source": "Motley Fool",
-      "published_at": "2026-08-05T22:25:00Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
+      "url": "https://finance.yahoo.com/m/64a50bb4-bc6e-3013-80b9-fae0f765a86a/jgb-futures-fall%2C-tracking.html",
+      "source": "The Wall Street Journal",
+      "published_at": "2026-08-07T00:11:00Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Millennium Silver Engages Robison Engineering for Water Infrastructure Development at Silver Peak",
+      "title": "Lower Oil Prices Lend Support For The Gold Rally",
       "summary": "",
-      "url": "https://finance.yahoo.com/energy/articles/millennium-silver-engages-robison-engineering-222300941.html",
+      "url": "https://finance.yahoo.com/markets/commodities/articles/lower-oil-prices-lend-support-000000831.html",
+      "source": "Oilprice.com",
+      "published_at": "2026-08-07T00:00:00Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Why Occidental Stock Is Up Today",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/e4db3fec-78e8-377f-9818-b2741ea4a417/why-occidental-stock-is-up.html",
+      "source": "Motley Fool",
+      "published_at": "2026-08-06T23:48:37Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NGEx Reports Q2 2026 Results; Phase 4 drilling delivers high grades and expands Lunahuasi Deposit",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/commodities/articles/ngex-reports-q2-2026-results-233000907.html",
+      "source": "CNW Group",
+      "published_at": "2026-08-06T23:30:00Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Journey Generates $18.5 Million of Net Income in the Second Quarter of 2026",
+      "summary": "",
+      "url": "https://finance.yahoo.com/energy/articles/journey-generates-18-5-million-231200089.html",
       "source": "TMX Newsfile",
-      "published_at": "2026-08-05T22:23:00Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
+      "published_at": "2026-08-06T23:12:00Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Diversified Energy: Q2 Earnings Snapshot",
+      "title": "Permian Resources Corp (PR) (Q2 2026) Earnings Call Highlights: Record Free Cash Flow and ...",
       "summary": "",
-      "url": "https://finance.yahoo.com/energy/articles/diversified-energy-q2-earnings-snapshot-222250203.html",
-      "source": "Associated Press",
-      "published_at": "2026-08-05T22:22:50Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
+      "url": "https://finance.yahoo.com/energy/articles/permian-resources-corp-pr-q2-230434488.html",
+      "source": "GuruFocus.com",
+      "published_at": "2026-08-06T23:04:34Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "DHT Holdings (NYSE:DHT) Beats Expectations in Strong Q2 CY2026",
+      "title": "Texas Pacific Land Corp (TPL) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
       "summary": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/dht-holdings-nyse-dht-beats-221731796.html",
-      "source": "StockStory",
-      "published_at": "2026-08-05T22:17:31Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/texas-pacific-land-corp-tpl-230415726.html",
+      "source": "GuruFocus.com",
+      "published_at": "2026-08-06T23:04:15Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Riley Exploration Permian (NYSE:REPX) Delivers Strong Q2 CY2026 Numbers, Stock Soars",
+      "title": "Coeur Mining Inc (CDE) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
       "summary": "",
-      "url": "https://finance.yahoo.com/energy/articles/riley-exploration-permian-nyse-repx-221435134.html",
-      "source": "StockStory",
-      "published_at": "2026-08-05T22:14:35Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
+      "url": "https://finance.yahoo.com/markets/commodities/articles/coeur-mining-inc-cde-q2-230349412.html",
+      "source": "GuruFocus.com",
+      "published_at": "2026-08-06T23:03:49Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Excelerate Energy’s (NYSE:EE) Q2 CY2026 Sales Top Estimates",
+      "title": "McEwen Inc (MUX) (Q2 2026) Earnings Call Highlights: Navigating Operational Headwinds at Gold ...",
       "summary": "",
-      "url": "https://finance.yahoo.com/energy/articles/excelerate-energy-nyse-ee-q2-221001632.html",
-      "source": "StockStory",
-      "published_at": "2026-08-05T22:10:01Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
+      "url": "https://finance.yahoo.com/markets/commodities/articles/mcewen-inc-mux-q2-2026-230335152.html",
+      "source": "GuruFocus.com",
+      "published_at": "2026-08-06T23:03:35Z",
+      "fetched_at": "2026-08-07T01:04:12Z",
       "ticker": null,
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Jim Cramer: SpaceX Could Reach $1 Trillion in Revenue by 2030, but “Short Term, Forget About It”",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/114d7df5-ca32-354a-95c7-fe14bf525622/jim-cramer%3A-spacex-could.html",
-      "source": "24/7 Wall St.",
-      "published_at": "2026-08-05T22:09:58Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Iren vs. AeroVironment: A Comparison of Recent Revenue Trajectories",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/3ecfd8bb-199c-33ae-a1f3-6f9fd86e129d/iren-vs.-aerovironment%3A-a.html",
-      "source": "Motley Fool",
-      "published_at": "2026-08-05T22:09:01Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "APA Corporation (NASDAQ:APA) Misses Q2 CY2026 Sales Expectations",
-      "summary": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/apa-corporation-nasdaq-apa-misses-220630413.html",
-      "source": "StockStory",
-      "published_at": "2026-08-05T22:06:30Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
-      "ticker": null,
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Eos Energy Enterprises, Inc. Q2 2026 Earnings Call Summary",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/86fb3f5c-6ca1-3a0e-a88c-e98d45d301b3/eos-energy-enterprises%2C-inc..html",
-      "source": "Moby",
-      "published_at": "2026-08-05T22:03:10Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
-      "ticker": null,
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "The Walt Disney Company Q3 2026 Earnings Call Summary",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/48c2354d-ec26-307f-8c10-31424943af45/the-walt-disney-company-q3.html",
-      "source": "Moby",
-      "published_at": "2026-08-05T21:44:39Z",
-      "fetched_at": "2026-08-05T22:35:53Z",
-      "ticker": null,
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Elon Musk Announces SpaceX Deal with Nvidia, Sending NVDA Stock to $220 but Competition Threatens Rally",
-      "summary": "Elon Musk Announces SpaceX Deal with Nvidia, Sending NVDA Stock to $220 but Competition Threatens Rally FXLeaders",
-      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOcy1qSGdsbXFVS0VaQ1lqd1dYSC1tcVpubkhDZXFWWmxyMzJKWnRNYlJGdXUtcGJnM2VPWWZHYXZMTENQOFpfTzBieXY4TlVqbUFCZll0VUVQWDh6S0lNZV9EMm9pRGVVUTg4aG1BbkhRNmlvbGJBbUhKdEkyd1pIZG5KNWcxcDVhMF9jUXVmRklRQkZFblNjS3ZhTC1sZE1tYmJiQjlNcVlEWGV6MHJ2MTJXZERtRUIyeHZobVJKdFV6Mkl5U2ZUUDNoajdlX3htRU5jU3pheFc4LWwy?oc=5",
-      "source": "Google News / FXLeaders",
-      "published_at": "2026-08-05T20:34:46Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Stock Market Today: SPY, QQQ Lose Steam on AI Jitters as Trump Calls for Hormuz Deal",
-      "summary": "Stock Market Today: SPY, QQQ Lose Steam on AI Jitters as Trump Calls for Hormuz Deal TipRanks",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPOHFfNFJtdU4tNG4xdXZPWGVZNzVXdUxvRS12cTNMcVJGdnJrU1B6UW4zcnVXRVBjUUdXYnBTWEJjZllvZXhYZXJCdDJ3X0pkUE9YclpVQTU5YkJGUnhmVTkyWG0tbzdKUmRYVndBaVZoeXVEcjFNSTFrcm82bjM3LVdoTkxGUi1uNjd0ZWctdDRIa21laXdiOXFGYlFXOVl2UEVza3p2dldxUUdFSlpYN3JB?oc=5",
-      "source": "Google News / TipRanks",
-      "published_at": "2026-08-05T20:31:42Z",
-      "fetched_at": "2026-08-05T22:35:55Z",
-      "ticker": "SPY",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Nvidia Stock Is A Steal Ahead Of Q2 Earnings (NASDAQ:NVDA)",
-      "summary": "Nvidia Stock Is A Steal Ahead Of Q2 Earnings (NASDAQ:NVDA) Seeking Alpha",
-      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOUEE0N2M2ZU1LZ2ZIRFc5RDU1VFAzS2E1MDhLY2FnLVEtdnpoUHFJZjZJWG9UbVF6Umtwd2FwWk1YcW81M19PWlplUk05V3V3d3lWX3liVmpxVE5jRzFObFBUcUlHZmxneklZZG44aEVzZXNseTYzMVJ1VDdTa1VEYWZDdWk2RG5UVWpqX2RR?oc=5",
-      "source": "Google News / Seeking Alpha",
-      "published_at": "2026-08-05T19:23:22Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Dow Jones Crosses 54,500 as Nvidia (NVDA) $220 Breakout Fires Up AI Rally",
-      "summary": "Dow Jones Crosses 54,500 as Nvidia (NVDA) $220 Breakout Fires Up AI Rally FXLeaders",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPSjFkRUhtWGhtcU5DMmNxRnBRZ3RhZlNZUFNTSXdMNURBNFV0ZnlYMGhpVDVEd1hFSTJpNkw4alJOXzVScnEzR2hIREltcjU5UWNwSktXSEd0NXZyREo2clRyM2VqSW5DOFJDa2piTy1ybHN5SUhQb2I0WWdFR1pLQWpSYTY2VFdCRmZZR1hNcVZCVzMzSFFxUHBKOG1OTjVvOHlfbEFNaVpfd0FLZURqQjBR?oc=5",
-      "source": "Google News / FXLeaders",
-      "published_at": "2026-08-05T18:28:35Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Why Nvidia Stock Rallied Today",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/04735142-da8e-3a0d-8bc1-e9cece4e1d7d/why-nvidia-stock-rallied-today.html",
-      "source": "Motley Fool",
-      "published_at": "2026-08-05T18:15:09Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Fund Update: 595,887 NVIDIA (NVDA) shares added to Allen Investment Management, LLC portfolio",
-      "summary": "Fund Update: 595,887 NVIDIA (NVDA) shares added to Allen Investment Management, LLC portfolio Quiver Quantitative",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQMFZhMHh3NnNJQk43R1dmY3hyZWRFRkc3QS1mNEFHVnQyRGtLNFJ0QWZyYVRZQ0xEVDBvT1Bia1M1YjYzU0gwbU9yMVdqZHVLNEdTZ3VSc25Ta1kzU1FDMmNISlRyejJPMVlPUWZEekNLVkFsX3BsRG81b05kSk1DSHRiNl95SEl4ZVJUejF6ak14Y3RBcG9FQmVfcTVQVm4wbS1PcV9OVnQ2cGZIOFR4RWx4ckFVOUZZSGpQaWZOWi12Q09DdFdTWUdzblhucUlCYlE?oc=5",
-      "source": "Google News / Quiver Quantitative",
-      "published_at": "2026-08-05T18:11:00Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Why Nvidia (NVDA) Stock Is Up Today",
-      "summary": "Why Nvidia (NVDA) Stock Is Up Today StockStory",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQd1o0T3lOLXdab2ZfaGFGZFlidzNWZHN0NE5mekRjY2tELUtqY3kwMUZkdG4xYWNZU3h3S1Rqb3RrSC1mX2lub2FETHZBTHc2Z0lnNzBLeEh6NDc4TEh1VW9WZGtKSDN0eWZYdFJBWEJtdXJ5dW5WRWRfU2pzSTRLbk1xQ3F4N1M5MGlSTmY4NWlwbTFNR1B5Z0dCSWRBZw?oc=5",
-      "source": "Google News / StockStory",
-      "published_at": "2026-08-05T17:35:06Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "These mega-cap stocks have maintained bullish Quant ratings the longest (SPY:NYSEARCA)",
-      "summary": "These mega-cap stocks have maintained bullish Quant ratings the longest (SPY:NYSEARCA) Seeking Alpha",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNOEM2d193Vk1ZV09pTFBVYUlvblNpajRhbTJGdEI3SE9ZNFhuVkpLSVlfOVVhQl8yWG9Wb01oRWdFZG02SWMtMlZIZVpUaDFtOXM2bGU2UmxOYmh5cUZXa0F5RTlvVExERDkyZWtWNkU0ZGpxZkxhcnd6YzZtTW4tcHRkV2VTVnFvMkc4eEg4ZVAxSzNkRUVWYXVfeVl5eWxOMlI5aEs2THg5VlhBS1E?oc=5",
-      "source": "Google News / Seeking Alpha",
-      "published_at": "2026-08-05T17:32:16Z",
-      "fetched_at": "2026-08-05T22:35:55Z",
-      "ticker": "SPY",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Nvidia: The Story Is Bigger Than GPUs Now (NASDAQ:NVDA)",
-      "summary": "Nvidia: The Story Is Bigger Than GPUs Now (NASDAQ:NVDA) Seeking Alpha",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQSThfdXdsZ0hNVndiZ1ptUXhHMzZhZlJkOGtlZ3BIZzFpZW95dWJhTWE4aUNLNDBZTUVOS2FkTDBIZU9JZ0x6eEVKRjd0bkM1ZHI4M3JDNGkwVC1acXczX2daWmJNbFJ2OTd1d1Jmdy1maVlFb2Y0V3NsVTl2SjBxT2dZTGRLOGpw?oc=5",
-      "source": "Google News / Seeking Alpha",
-      "published_at": "2026-08-05T17:23:06Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Micron (MU) Has More to Gain Than Nvidia (NVDA) Has to Lose From Samsung’s 2028 Warning",
-      "summary": "Micron (MU) Has More to Gain Than Nvidia (NVDA) Has to Lose From Samsung’s 2028 Warning Yahoo Finance",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNLTZZZWdBeGdxakE2dGlHYXl4a2stRWlqQTc1TThDN3Z4aXhCazhIQWttd2pNTEp2bVBGcDFpQ1ZnQUJEMEdaaGRCY2VvUi1RYkFWOHctZnJQNlJxYkNqMUMwQzQ0OUhqbjlOeHJtcnVfNDhadEdSNWtlZ0NJRTNoQS1lYjF2a0xNR2RNNHNvaS1GakNHMmc?oc=5",
-      "source": "Google News / Yahoo Finance",
-      "published_at": "2026-08-05T17:14:17Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Former Treasury Chief Warns AI Boom Shows 2008 Warning Signs",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/3f701fcf-4489-3333-b6d7-f45ca3be92b8/former-treasury-chief-warns.html",
-      "source": "24/7 Wall St.",
-      "published_at": "2026-08-05T16:18:04Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "NVIDIA to Power SpaceX AI Infrastructure: Will This Fuel NVDA's Growth?",
-      "summary": "",
-      "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-power-spacex-ai-infrastructure-160300929.html",
-      "source": "Zacks",
-      "published_at": "2026-08-05T16:03:00Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "This Is Nvidia CEO Jensen Huang's Favorite Biotech Stock -- and You've Probably Never Heard of It",
-      "summary": "",
-      "url": "https://finance.yahoo.com/m/d2bb3887-cffc-35c1-917b-4e3315bd4904/this-is-nvidia-ceo-jensen.html",
-      "source": "Motley Fool",
-      "published_at": "2026-08-05T15:50:00Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "NVIDIA Corp Stock (NVDA) Moved Up by 4.31% on Aug 5: What Investors Need To Know",
-      "summary": "NVIDIA Corp Stock (NVDA) Moved Up by 4.31% on Aug 5: What Investors Need To Know TradingKey",
-      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQWTY4TEx4OFNZUXFtd3FKbmxndi05VERoeUxJTDJLTk8zYTRnemhSRzktN2RuQ2dkR3hnS2RXNURQbWRjdGVablJDaXh5Y3FyU1A3U3lSTlJTYmNjeUhsYXpPeG9xa2doWUNISXk0djF0VlBjTGxUbGhiMTNnWlVwRllPSG9rQmRfODZB?oc=5",
-      "source": "Google News / TradingKey",
-      "published_at": "2026-08-05T14:15:27Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Exchange-Traded Funds Higher, Equity Futures Mixed Pre-Bell Amid Corporate Earnings, Hormuz Reopening Hopes",
-      "summary": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/exchange-traded-funds-higher-equity-131015495.html",
-      "source": "MT Newswires",
-      "published_at": "2026-08-05T13:10:15Z",
-      "fetched_at": "2026-08-05T22:35:55Z",
-      "ticker": "SPY",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "What Happens When Stock Implied Volatility Outpaces the SPY",
-      "summary": "What Happens When Stock Implied Volatility Outpaces the SPY Schaeffer's Investment Research",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNSW1DOGxxNVdkY0t6bGpXWnMtUnB4VE1UYnUwSXI1RXJpTzVjenN6eDNkcmtWVkRpMzJDYTZQWXl5RXJOLTlYQXFwclBtQVZjbmMwOFpRa1RKWXlmQ0JqMVNnR1V3VW1pRmJYa2NDYlJ2QzRRYzhXblJ0VU5Fd3JlNG93cFdGRVItNS15cmRsdl9jbHBhLXFjUEhiRElGYlRHSlpIdFU4eFNBVjRPZHRaX3YxZEd2d2VEeHhaUmpqRQ?oc=5",
-      "source": "Google News / Schaeffer's Investment Research",
-      "published_at": "2026-08-05T12:42:08Z",
-      "fetched_at": "2026-08-05T22:35:55Z",
-      "ticker": "SPY",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "NVDA, MU, PLTR, TSLA: Michael Burry Keeps Betting Against AI Stocks, Warns of a ‘1987-Type Fall’",
-      "summary": "NVDA, MU, PLTR, TSLA: Michael Burry Keeps Betting Against AI Stocks, Warns of a ‘1987-Type Fall’ TipRanks",
-      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOd3dxNlc2OVotZkZwOXBIUHpjSGxDRnBKMXF1T3hzeXh0MXJFMHJxZkkycHpMUWdrNE5DeEw5TUxFNElBQS1QVFhSZzBiRlVhSHhoRWNrVDJXU19leVF6UEJqejFGMDUwTURHUGN6amd6RHNULWd6eXFFRXFqUy1wT0pTWW9PbUhjd3hIZ1drQUJLLWc2UnF5TEY3ZEtEMTkyWEdNcFUxVG4tVXlpWTFvbkNJdDhqSFRfb25Z?oc=5",
-      "source": "Google News / TipRanks",
-      "published_at": "2026-08-05T12:32:54Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Nvidia Earnings: AMD's Results Point To Massive AI Demand (Preview) (NASDAQ:NVDA)",
-      "summary": "Nvidia Earnings: AMD's Results Point To Massive AI Demand (Preview) (NASDAQ:NVDA) Seeking Alpha",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOV0FGMTlxZXFybGdGb0ZBX3NGWFJIcURKUUFjQkREakZWcmxKSHhPVXZwazdyLTVub0IwcUJ2ZkduX1QtNmpMOGZTLXlzNktlNXljRjZWUlV2Wm50V3I1SVp5ZDRKOWEwT2ZiM3BnOU1YYks1RUhsNmVVU19EQTBTZnpwdE1rVU0zVlVfRUoyNGt6WWVjSG0tTUVhN08zSFVkWVgyaEo4WQ?oc=5",
-      "source": "Google News / Seeking Alpha",
-      "published_at": "2026-08-05T12:04:01Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "NVIDIA Corporation $NVDA Stock Holdings Lessened by Bowen Hanes & Co. Inc.",
-      "summary": "NVIDIA Corporation $NVDA Stock Holdings Lessened by Bowen Hanes & Co. Inc. marketbeat.com",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOaDVoOERwOGh1X2xCVmZ6dEcxVDF3RGdZSmxxM3lYd0RiYjBTd1RIdmJXSU9VZC1DcW45ZjBQWlZqM3hWVERySXgySjdSNl9yMFBvNi1HNVV3N2gxS1JlSEhKSU1TM2NJWkZpRmVqbXctbVFyWnBWdmVtd1MyZVYxZ29Ta2pQNDNZSkVnZ1JzdWl1RFBwbXVqRE9aQVB2bDF4NmJRNjVZZGxhbEJwdDcwWGJkQVdFVm1wLTY4VU9MSDNNWjNvNEMtUWNB?oc=5",
-      "source": "Google News / marketbeat.com",
-      "published_at": "2026-08-05T10:56:58Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "NVDA Stock Bucks Selloff Premarket On SpaceX Boost, Foxconn’s Sales Update",
-      "summary": "NVDA Stock Bucks Selloff Premarket On SpaceX Boost, Foxconn’s Sales Update TradingView",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOSUhqUjZRM2hIQlpCck0xbUR2WHlXRzNUZzdkcHhKUlJVNmxjTkdNWFAwbHlvTF92aFZfT2l1bWZrQjhxTElQN0hzcjVjR1FNX2RPZ0VDVFNPNUdLYmljV0szZjMtX2Q5VW5ZUXhHVng0ejlYanVzTDlYMm94VmdTbWdRbkVMOUk2YUl1Yk1vRUhYaE9rRHpKc1ZrcUdLSHg5U01KOHNLbXBmNmZGYnQ2UXlwdjJmSmx4MU9oczQwcEUxZXRHa2xwMDc2b3pMMUk?oc=5",
-      "source": "Google News / TradingView",
-      "published_at": "2026-08-05T09:29:38Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Why Is NVDA Stock Rising In Premarket?",
-      "summary": "Why Is NVDA Stock Rising In Premarket? Stocktwits",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNZUxqM2ROZkpHRU9pdnppek5HcUM2QVZkT0ZDclRZRVR6OXhlX2FQYWh2WGJNNEp1ai1SNFdzZGh5aWtYS1p5UEh5ZDZ3dEV0NTMzWGptQ2cxVVF3RzBoUXB2WDhOUHU4bXh0UXNUaGlENEFIOVJlSzJDWWVRTkZqaXY0R2MwSlJzblhwUThWbksyc0JsMFQ1SWtEanYybFh4cExF?oc=5",
-      "source": "Google News / Stocktwits",
-      "published_at": "2026-08-05T08:08:51Z",
-      "fetched_at": "2026-08-05T22:35:54Z",
-      "ticker": "NVDA",
       "source_tier": "aggregator"
     }
   ]
