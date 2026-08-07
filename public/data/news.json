@@ -1,7 +1,7 @@
 {
   "version": 1,
   "status": "partial",
-  "generated_at": "2026-08-07T09:04:12+08:00",
+  "generated_at": "2026-08-08T06:07:34+08:00",
   "trade_date": "2026-08-07",
   "global": {
     "status": "ok",
@@ -9,105 +9,105 @@
     "ticker": null,
     "start_date": "2026-07-31",
     "end_date": "2026-08-07",
-    "fetched_at": "2026-08-07T01:04:12Z",
+    "fetched_at": "2026-08-07T22:07:35Z",
     "items": [
       {
-        "title": "2 Energy Stocks With More Hype Than Fundamentals Right Now",
+        "title": "360 Energy Pulse: What mattered this week in energy",
         "summary": "",
-        "url": "https://finance.yahoo.com/m/66eadab8-f25f-3aad-8a29-d160a50c13ba/2-energy-stocks-with-more.html",
-        "source": "Motley Fool",
-        "published_at": "2026-08-07T00:25:00Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "url": "https://finance.yahoo.com/energy/articles/360-energy-pulse-mattered-week-213043744.html",
+        "source": "Oil and Gas 360",
+        "published_at": "2026-08-07T21:30:43Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "JGB Futures Fall, Tracking Declines in U.S. Treasury Market",
+        "title": "Wonder Takes a Gamble on Robots, Drones and AI-Generated Menus",
         "summary": "",
-        "url": "https://finance.yahoo.com/m/64a50bb4-bc6e-3013-80b9-fae0f765a86a/jgb-futures-fall%2C-tracking.html",
+        "url": "https://finance.yahoo.com/m/755f7acf-dc97-31e7-977b-6aef74cd5cff/wonder-takes-a-gamble-on.html",
         "source": "The Wall Street Journal",
-        "published_at": "2026-08-07T00:11:00Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "published_at": "2026-08-07T21:24:00Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Lower Oil Prices Lend Support For The Gold Rally",
+        "title": "Energy & Utilities Roundup: Market Talk",
         "summary": "",
-        "url": "https://finance.yahoo.com/markets/commodities/articles/lower-oil-prices-lend-support-000000831.html",
-        "source": "Oilprice.com",
-        "published_at": "2026-08-07T00:00:00Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "url": "https://finance.yahoo.com/m/49ea5e72-fd8d-39ae-8abc-12a500755a2e/energy-%26-utilities-roundup%3A.html",
+        "source": "The Wall Street Journal",
+        "published_at": "2026-08-07T21:11:00Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Why Occidental Stock Is Up Today",
+        "title": "Plains All American Pipeline, L.P. Q2 2026 Earnings Call Summary",
         "summary": "",
-        "url": "https://finance.yahoo.com/m/e4db3fec-78e8-377f-9818-b2741ea4a417/why-occidental-stock-is-up.html",
-        "source": "Motley Fool",
-        "published_at": "2026-08-06T23:48:37Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "url": "https://finance.yahoo.com/m/b8294622-d2e8-354a-8f0d-dcb2b5603036/plains-all-american-pipeline%2C.html",
+        "source": "Moby",
+        "published_at": "2026-08-07T21:07:33Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "NGEx Reports Q2 2026 Results; Phase 4 drilling delivers high grades and expands Lunahuasi Deposit",
+        "title": "Plains All American Pipeline LP (PAA) (Q2 2026) Earnings Call Highlights: Strong Crude ...",
         "summary": "",
-        "url": "https://finance.yahoo.com/markets/commodities/articles/ngex-reports-q2-2026-results-233000907.html",
-        "source": "CNW Group",
-        "published_at": "2026-08-06T23:30:00Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
-        "ticker": null,
-        "source_tier": "aggregator"
-      },
-      {
-        "title": "Journey Generates $18.5 Million of Net Income in the Second Quarter of 2026",
-        "summary": "",
-        "url": "https://finance.yahoo.com/energy/articles/journey-generates-18-5-million-231200089.html",
-        "source": "TMX Newsfile",
-        "published_at": "2026-08-06T23:12:00Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
-        "ticker": null,
-        "source_tier": "aggregator"
-      },
-      {
-        "title": "Permian Resources Corp (PR) (Q2 2026) Earnings Call Highlights: Record Free Cash Flow and ...",
-        "summary": "",
-        "url": "https://finance.yahoo.com/energy/articles/permian-resources-corp-pr-q2-230434488.html",
+        "url": "https://finance.yahoo.com/energy/articles/plains-american-pipeline-lp-paa-210537087.html",
         "source": "GuruFocus.com",
-        "published_at": "2026-08-06T23:04:34Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "published_at": "2026-08-07T21:05:37Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Texas Pacific Land Corp (TPL) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
+        "title": "Plains GP Holdings LP (PAGP) (Q2 2026) Earnings Call Highlights: Strong EBITDA and Strategic ...",
         "summary": "",
-        "url": "https://finance.yahoo.com/markets/stocks/articles/texas-pacific-land-corp-tpl-230415726.html",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/plains-gp-holdings-lp-pagp-210429726.html",
         "source": "GuruFocus.com",
-        "published_at": "2026-08-06T23:04:15Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "published_at": "2026-08-07T21:04:29Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "Coeur Mining Inc (CDE) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
+        "title": "Mach Natural Resources LP (MNR) (Q2 2026) Earnings Call Highlights: Strategic Capital ...",
         "summary": "",
-        "url": "https://finance.yahoo.com/markets/commodities/articles/coeur-mining-inc-cde-q2-230349412.html",
+        "url": "https://finance.yahoo.com/energy/articles/mach-natural-resources-lp-mnr-210352827.html",
         "source": "GuruFocus.com",
-        "published_at": "2026-08-06T23:03:49Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "published_at": "2026-08-07T21:03:52Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       },
       {
-        "title": "McEwen Inc (MUX) (Q2 2026) Earnings Call Highlights: Navigating Operational Headwinds at Gold ...",
+        "title": "TSX Closer: Index Extends Rally to Fresh Record High Above 36,000 on Strong Jobs Report",
         "summary": "",
-        "url": "https://finance.yahoo.com/markets/commodities/articles/mcewen-inc-mux-q2-2026-230335152.html",
-        "source": "GuruFocus.com",
-        "published_at": "2026-08-06T23:03:35Z",
-        "fetched_at": "2026-08-07T01:04:12Z",
+        "url": "https://finance.yahoo.com/markets/world-indices/articles/tsx-closer-index-extends-rally-205725158.html",
+        "source": "MT Newswires",
+        "published_at": "2026-08-07T20:57:25Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "Inflation data to test record-setting US stocks, Fed rate views",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/inflation-data-test-record-setting-100226016.html",
+        "source": "Reuters",
+        "published_at": "2026-08-07T20:40:37Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
+        "ticker": null,
+        "source_tier": "aggregator"
+      },
+      {
+        "title": "US Equity Indexes Rise This Week as Technology Mega-Caps Advance, Hormuz Reopening Deal in Works",
+        "summary": "",
+        "url": "https://finance.yahoo.com/markets/stocks/articles/us-equity-indexes-rise-week-202151681.html",
+        "source": "MT Newswires",
+        "published_at": "2026-08-07T20:21:51Z",
+        "fetched_at": "2026-08-07T22:07:35Z",
         "ticker": null,
         "source_tier": "aggregator"
       }
@@ -116,7 +116,7 @@
       {
         "source": "Yahoo Finance",
         "status": "ok",
-        "item_count": 43
+        "item_count": 42
       },
       {
         "source": "Federal Reserve",
@@ -127,13 +127,214 @@
   },
   "tickers": {
     "NVDA": {
-      "status": "partial_empty",
+      "status": "partial",
       "query_type": "ticker",
       "ticker": "NVDA",
       "start_date": "2026-08-07",
       "end_date": "2026-08-07",
-      "fetched_at": "2026-08-07T01:04:14Z",
-      "items": [],
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "items": [
+        {
+          "title": "Nvidia ends week up more than 10% as AI chip fears ease",
+          "summary": "",
+          "url": "https://finance.yahoo.com/technology/article/nvidia-ends-week-up-more-than-10-as-ai-chip-fears-ease-205751147.html",
+          "source": "Yahoo Finance",
+          "published_at": "2026-08-07T20:57:51Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Nvidia’s (NVDA) Alpamayo Launch and the Robotaxi Bet",
+          "summary": "",
+          "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-alpamayo-launch-robotaxi-200324206.html",
+          "source": "Insider Monkey",
+          "published_at": "2026-08-07T20:03:24Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Nvidia Stock Forecast: NVDA Targets Record-High After New $2 Billion AI Deal",
+          "summary": "Nvidia Stock Forecast: NVDA Targets Record-High After New $2 Billion AI Deal BeInCrypto",
+          "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5aZGVxakM1b2hiemY1R20yMURsTDUxRnltX2dVWTVDU3FNVHhtaGZmaGQtVDZPcnRNX0l5ZFM3MlBuOWhOSm1qY0F1ZW5BX25MeWtKLUM4c0cwczR6bTc1MkNHRV96MUp4U0tz?oc=5",
+          "source": "Google News / BeInCrypto",
+          "published_at": "2026-08-07T19:09:00Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Beyond NVIDIA and GPUs: The Next AI & Quantum Winners Leading 2026",
+          "summary": "",
+          "url": "https://finance.yahoo.com/technology/ai/articles/beyond-nvidia-gpus-next-ai-190000472.html",
+          "source": "Zacks",
+          "published_at": "2026-08-07T19:00:00Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "SA analyst upgrades/downgrades: TSLA, NVDA, BBBY, WDC",
+          "summary": "SA analyst upgrades/downgrades: TSLA, NVDA, BBBY, WDC Seeking Alpha",
+          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNdnBsRFkxbVFtRHgxaXFMYnl2YWZNcFY0QkU0SWVJSk1kb0cxeHd4STlvVTZJMEoycnpKUllnN3J3b3pLYVBHdl8yME1kc3BfTUJyU2Fvb0RoQUJTSGg0QjZpbC1EanNySFhVR3BaM1Rib3RucmhiZ2FacUE2VlpqZ3l4Q0Qtc2ZTX0g2ZWJDYWY?oc=5",
+          "source": "Google News / Seeking Alpha",
+          "published_at": "2026-08-07T18:31:46Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Jim Cramer Shares Reasons Behind Why NVIDIA Corporation (NASDAQ:NVDA)’s Shares Are Finally Rising",
+          "summary": "Jim Cramer Shares Reasons Behind Why NVIDIA Corporation (NASDAQ:NVDA)’s Shares Are Finally Rising Yahoo! Finance Canada",
+          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQLW8yM1dlR0pVd0ZVdEh6RlhDcG92WnZwdFZqZFZsMDJFSmVBLWRuTHFNWUtWYUtRQlA3Um5VUDFQUnd2cEZRVkhUdGpucEtPVl9fN3dheDhiM0lWTFhYNHVwbGdRZzE4anhFNU96Vk9RX3laTlN2QXRiRE9wUi0wWjBYb0pVV3Zx?oc=5",
+          "source": "Google News / Yahoo! Finance Canada",
+          "published_at": "2026-08-07T18:24:04Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Fund Update: New $12.5B $NVDA stock position opened by SG Americas Securities, LLC",
+          "summary": "Fund Update: New $12.5B $NVDA stock position opened by SG Americas Securities, LLC Quiver Quantitative",
+          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOajFHazRnMmZLeHBfVlZiSHI4bUYtd0FtWHFSLUpDU0pxcGtkcUZ1bl9IYVEwXzRFTVoyeVMzcUFmUGxQN0RzbHpCNUhVLTVyNFFhRmRnTG16MzN1UkctN3hEUWZJTzJkUUNmQVNwRGFySGRUVmJaeV80U3piemljMkF4Z3lvTzJOQ2tGS056Zy1TNXc3MEFpdTJZdXpBQjdBVG9pc3dFZFFtSUtJcC1QR1hKaE1Xem53QlZYMGRuVUk?oc=5",
+          "source": "Google News / Quiver Quantitative",
+          "published_at": "2026-08-07T18:15:00Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "How To Earn 11% On NVDA Stock And Set A 30% Safety Net",
+          "summary": "How To Earn 11% On NVDA Stock And Set A 30% Safety Net trefis.com",
+          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNSXJZWXFQUEZXWTlqaXd5R2Y2LXFoN3RGQUQtaG5RdzZfbVdnNUppdEp4M0tHc3Z5aHFDVk9Pc2ppVWk2VVZOdmNqTGlGSW1pNU9KVmd2VjQwbnFFUlZCemtUb1dLVlNjYjdNY2NjbzVCM3NsTHJ3bWM0TUdGMXVaYkV6SjlZTDhOS2JTZXlEWnBwWk5KMzdQaHhUSm1EVElMaG5Mc0NQSkM2VzlqakxVZGVJWQ?oc=5",
+          "source": "Google News / trefis.com",
+          "published_at": "2026-08-07T17:43:39Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA Stock (NVDA) Opinions on AI Market Position",
+          "summary": "NVIDIA Stock (NVDA) Opinions on AI Market Position Quiver Quantitative",
+          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQMGFwTHMtMGNoWUFoOUIyT2FMenhKWlpfVTVkTzBnSzVTRS1ZYVFPeFJsXzE4QkcybUlvSDlSSVBjTXdjWUQxZWtOWWhhVHBUaWRhN1Nseko5M0h2ZUZNRWEwalNka2hzeC1XM2xHRjB6ZXlWV0pTMkM0RThlZmZXNGVHaUZzdDhGaWlCSzRYd1Y?oc=5",
+          "source": "Google News / Quiver Quantitative",
+          "published_at": "2026-08-07T17:38:00Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Time to Buy Nvidia or SpaceX Stock After Their AI Partnership?",
+          "summary": "",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/time-buy-nvidia-spacex-stock-164800866.html",
+          "source": "Zacks",
+          "published_at": "2026-08-07T16:48:00Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Should You Buy NVIDIA Stock After Its 11% Rally in a Month?",
+          "summary": "",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/buy-nvidia-stock-11-rally-153800151.html",
+          "source": "Zacks",
+          "published_at": "2026-08-07T15:38:00Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA (NVDA) Is Evolving Beyond GPUs Into a Full AI Infrastructure Platform",
+          "summary": "NVIDIA (NVDA) Is Evolving Beyond GPUs Into a Full AI Infrastructure Platform Yahoo Finance",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPUUd0U3p6RWVSVzVJMzhOeGJnMjg5LXdSSVlkeW8yVXlDLVZuNG9hR3lZSC04QjVISldtbjYtaktYQW1kc0RhVVhEN2tRakhQWFBvdWRYbUc0c3B6bWJWVmRNaUZCOEs5WUJtUzVhallVVlNDb1BoYnVQYzBEWmtmNG13MDZiQnNJVXpkRmYxWkkxdktNNV9kcnQzalE?oc=5",
+          "source": "Google News / Yahoo Finance",
+          "published_at": "2026-08-07T15:26:46Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Nvidia (NVDA) Stock Price Enters Consolidation After Hitting New High",
+          "summary": "Nvidia (NVDA) Stock Price Enters Consolidation After Hitting New High Coinpedia",
+          "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQbDE0NXYwRnhSVkxCQkhpX0I5NVR2TWgxUzBvNHZ1RE90RGNVYUlkcHowZUF1SzNsTTg1VGJnZ0FLSHc0SWk3S21CaUZ0NS1DWjFQNS1waGJMdExDVVluNmtmX093X0owWjdkbGdYaDZXNzN4LVdrUEV2MG1Oay1BdmI3ZTRUb1FIdWNaTF9lbm4ycC1Idi1ranpOSXU0MnJoRm9CVlM4YkVvSk3SAbABQVVfeXFMUExWSnVzZEhWaDhEZFhYQmpfRkhwTG1ubmp1Q29tZ2pfWUczeWhUa19jaDNzeXUwOXJyV3o2LUp6LW0tUG5UcjViNGU1d0IwLV9tVzJjZm9FVUlFZlk1ajlUQXpycFI2b0R0U21SaWJvRlpGT2c1SVBCNy13UTN2QV9KUk1CT2lNN01SZEZYQUdCd2xWNFBhRF81MUhlVDVEazRIc1NMUThCV2R6clA0eDk?oc=5",
+          "source": "Google News / Coinpedia",
+          "published_at": "2026-08-07T14:34:17Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "While everyone chases Nvidia, Caterpillar just showed where AI money goes next",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/155e36e0-25e1-3c45-88f5-9c862f3afd0d/while-everyone-chases-nvidia%2C.html",
+          "source": "TheStreet",
+          "published_at": "2026-08-07T14:07:00Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVDA Stock Eyes Worst First Half Since 2022: Retail Patience Wears Thin As Board Member Trims Stake For Third Time This Year",
+          "summary": "NVDA Stock Eyes Worst First Half Since 2022: Retail Patience Wears Thin As Board Member Trims Stake For Third Time This Year Stocktwits",
+          "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxORzhNMG5sbTZPeXlsLUFWb0xrc05MRGNQcW9aS3VrOTF5RFRYdFRuQkZvRFFFdkdyNzNiaGNodWdJdjJHZE9oYUNnUWxoclN6LTU4YTRIRnR6NnZKRDV5ZVVSWWJPdGNsdFZZM01rZ1V2ajlPcTFHczdBUElKSUtJbEptTFc5V1JKQXZMbHpkeWxDazRpZGc3eHhDVkxuSXN0OE51QmI3bU1FN2pWMEFVODlFT2Q5SVVrXzNQQktFSjR1dkRFWlBpRlF4V2JuZW1rSFZtSU9sWnU5bXBRaDJxbjVGN3M2cGg4dG5SVWY4d2h6SENzbGlkdGk2dUVvWmtDRmZudmVhOHlmeTNGU0F0S2NWNFdSZw?oc=5",
+          "source": "Google News / Stocktwits",
+          "published_at": "2026-08-07T10:56:24Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVDA Stock Extends Fall Overnight Despite Handy Q1 Beat — AI Darling Still Sees Untapped $200B Opportunity",
+          "summary": "NVDA Stock Extends Fall Overnight Despite Handy Q1 Beat — AI Darling Still Sees Untapped $200B Opportunity Stocktwits",
+          "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQTnh5c0JUX2Z1V2xLRVpHREFOdkw4aW1nRk5IaXlOaXNobUV2eFNxclFJcWpWT0xIOTRHVkhzdlhVWHRSOU5YQXRIaXR0TTdINHI5bVE5akVsQl9YLTBEczZyVGVPVGplYjhxY0pnN1QzWUJsX2puU0VZMU5xYldzZmk5UVhEN0FwV1NKd0syb2FQa0dpTUZyNzVjY05KVmJWTUVSWVNYSGs0WDkxOUppajFpZTVzWVJjS09JdmRRVUVnZGNlTFRUOG1Va2lya0ZoclNjbUhFWlZrTnFraUxsMFl6dDcwZ2lrd0IyUHd0dUhjb2FPSW04cjYwaGs?oc=5",
+          "source": "Google News / Stocktwits",
+          "published_at": "2026-08-07T09:58:08Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Why Is NVDA Stock Rising In Premarket?",
+          "summary": "Why Is NVDA Stock Rising In Premarket? Stocktwits",
+          "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNZUxqM2ROZkpHRU9pdnppek5HcUM2QVZkT0ZDclRZRVR6OXhlX2FQYWh2WGJNNEp1ai1SNFdzZGh5aWtYS1p5UEh5ZDZ3dEV0NTMzWGptQ2cxVVF3RzBoUXB2WDhOUHU4bXh0UXNUaGlENEFIOVJlSzJDWWVRTkZqaXY0R2MwSlJzblhwUThWbksyc0JsMFQ1SWtEanYybFh4cExF?oc=5",
+          "source": "Google News / Stocktwits",
+          "published_at": "2026-08-07T09:09:45Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Everest Financial Group LLC Has $27.54 Million Position in NVIDIA Corporation $NVDA",
+          "summary": "Everest Financial Group LLC Has $27.54 Million Position in NVIDIA Corporation $NVDA MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQY0pPVGpLcmhQRGhfbXZYT0Z0WkFleVJvRVltVm92YnM3anR6c1ZNTTBRMWw4bEhGbUNoQnZTbW43UkdoR2lTbDBpbms4d2E3UnZHNWIwYTV2N29EdkhyS1JDZFJfRU1VVTdOcnh2VVdlYnZpZk1lM0dQdHcwNU4wX3R2dVVrb0cxRDV4WElVQVdnMjRCczZ1SmFRd29qXzgtYzlpU29JRDBBRTM0Y0oxYkl3eDk2SFhZblNQZG5JREdzV2NESlZ5TWYtNUw5OGE1b09rVmJrcWQ?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-08-07T08:56:44Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA Corporation $NVDA Shares Purchased by Tiger Global Management LLC",
+          "summary": "NVIDIA Corporation $NVDA Shares Purchased by Tiger Global Management LLC MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQNWpXVHVUNGNOeWNHV19ydWpvSnJBeWZwSmhfa0NCU3lDU3RTVEowTlRtUUlDS2JnNnM1OFdib1RyQ1dWYmF2bklnSVBpMzlOUlEyYlNSV3VrMlRReDJLZDJ0NTZoOEIzTUVtOE1YTjlaOS10ZGdmNEwwM3dlSkxSZjE0ZC1XcGV4WUF0ZW1BdUpPLTlqUzJIQ08xRHB3MzBqYldTeG5oUXFwbmVTVlV2aFJRQU5uc0d5WUNKdW1WZTZqcVRkenBtZWZnNm4?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-08-07T08:56:44Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "NVIDIA Corporation $NVDA Shares Acquired by Gateway Wealth Partners LLC",
+          "summary": "NVIDIA Corporation $NVDA Shares Acquired by Gateway Wealth Partners LLC MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOSTBKQVZZYndzN2hQSVV4SFlxQVR5YUcwZUdFOEg1Y05aa21tOTVlb2ktcjVTczRwZ29uRUtoUDhTWDNvaDloSjlqbUgyNUVXUVc4NmZveWNZQTZZLTZRQTY1MHpBaWRsUWtTM3MxRlVtTWh3VXhLc2d6ZVVOaVYybElIY0luVzl6dEhaMk56Y01QZjI3MmE2eU9NYjhnTUFDZ3dIVkRNTGx4WEpZeWxLTXdxZEpSUGxDR05WdlgyVHNKcU5nNk94dmF3Yw?oc=5",
+          "source": "Google News / MarketBeat",
+          "published_at": "2026-08-07T08:56:44Z",
+          "fetched_at": "2026-08-07T22:07:37Z",
+          "ticker": "NVDA",
+          "source_tier": "aggregator"
+        }
+      ],
       "source_statuses": [
         {
           "source": "Yahoo Finance",
@@ -142,8 +343,8 @@
         },
         {
           "source": "Google News RSS",
-          "status": "empty",
-          "item_count": 0
+          "status": "ok",
+          "item_count": 20
         },
         {
           "source": "SEC EDGAR",
@@ -153,23 +354,84 @@
       ]
     },
     "SPY": {
-      "status": "partial_empty",
+      "status": "partial",
       "query_type": "ticker",
       "ticker": "SPY",
       "start_date": "2026-08-07",
       "end_date": "2026-08-07",
-      "fetched_at": "2026-08-07T01:04:14Z",
-      "items": [],
+      "fetched_at": "2026-08-07T22:07:38Z",
+      "items": [
+        {
+          "title": "S&P 500 Ends At Record High, Clocks Strongest Week Since April As Poor Jobs Data Calms Rate Hike Fear — SEZL, SPCX, RDW, PLTR, TTD In Focus",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/04cc5747-afdc-303f-ab37-0dac48eba0d4/s%26p-500-ends-at-record-high%2C.html",
+          "source": "Stocktwits",
+          "published_at": "2026-08-07T21:24:45Z",
+          "fetched_at": "2026-08-07T22:07:38Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "The 20 Most Actively Traded ETFs",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/95cbe037-b73a-3c05-8fa3-06cd0e988ac9/the-20-most-actively-traded.html",
+          "source": "etf.com",
+          "published_at": "2026-08-07T19:46:09Z",
+          "fetched_at": "2026-08-07T22:07:38Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "QUICK SPARK: SPY, GLD Among Biggest Winners as $15.3 Billion Floods Into ETFs in One Day",
+          "summary": "QUICK SPARK: SPY, GLD Among Biggest Winners as $15.3 Billion Floods Into ETFs in One Day benzinga.com",
+          "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNbV82VmpSWTlJU29XTlF5Mm5Oak1pRnhhTjZ1aDRwLVpScHBJVGN4S2ROczFNQnZPNDJvdFR1Y1d5R0lOQnFZRi00WTZnY3pCdWxndnBtTkZBZGIxUUh5X1hMVS15ejJ4eUw5SUtwNHp1bldHWDl0cmxQQnJsenhTWlJSb2lmMzFnSmZTM1dRaVNxVHJISkVKY2pvSWd6UGhtTkdWNGdLUllUZVZ0UDNmTTRSTjRqOTRycDZmWUxHMkpNaUY2aGhqUEkxYl9YVkU1RlpQQlJMWTNwdDFGbmVSdUROQ1I0anc?oc=5",
+          "source": "Google News / benzinga.com",
+          "published_at": "2026-08-07T19:43:29Z",
+          "fetched_at": "2026-08-07T22:07:38Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "The Economy Lost Jobs, Wall Street Threw a Party: What Moved Markets This Week",
+          "summary": "",
+          "url": "https://finance.yahoo.com/economy/articles/economy-lost-jobs-wall-street-194002543.html",
+          "source": "Benzinga",
+          "published_at": "2026-08-07T19:40:02Z",
+          "fetched_at": "2026-08-07T22:07:38Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Want $2,000 a Month From SPYI? Here’s the Exact Investment It Takes, and the Catch at That Size",
+          "summary": "",
+          "url": "https://finance.yahoo.com/m/82993edf-529b-38d7-9a5b-191154673252/want-%242%2C000-a-month-from.html",
+          "source": "24/7 Wall St.",
+          "published_at": "2026-08-07T13:53:44Z",
+          "fetched_at": "2026-08-07T22:07:38Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        },
+        {
+          "title": "Exchange-Traded Funds, Equity Futures Higher Pre-Bell Friday Amid Strong Tech Results",
+          "summary": "",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/exchange-traded-funds-equity-futures-131928036.html",
+          "source": "MT Newswires",
+          "published_at": "2026-08-07T13:19:28Z",
+          "fetched_at": "2026-08-07T22:07:38Z",
+          "ticker": "SPY",
+          "source_tier": "aggregator"
+        }
+      ],
       "source_statuses": [
         {
           "source": "Yahoo Finance",
           "status": "ok",
-          "item_count": 4
+          "item_count": 5
         },
         {
           "source": "Google News RSS",
-          "status": "empty",
-          "item_count": 0
+          "status": "ok",
+          "item_count": 1
         },
         {
           "source": "SEC EDGAR",
@@ -184,7 +446,7 @@
       "ticker": "600519.SS",
       "start_date": "2026-08-07",
       "end_date": "2026-08-07",
-      "fetched_at": "2026-08-07T01:04:15Z",
+      "fetched_at": "2026-08-07T22:07:38Z",
       "items": [],
       "source_statuses": [
         {
@@ -207,103 +469,363 @@
   },
   "items": [
     {
-      "title": "2 Energy Stocks With More Hype Than Fundamentals Right Now",
+      "title": "360 Energy Pulse: What mattered this week in energy",
       "summary": "",
-      "url": "https://finance.yahoo.com/m/66eadab8-f25f-3aad-8a29-d160a50c13ba/2-energy-stocks-with-more.html",
-      "source": "Motley Fool",
-      "published_at": "2026-08-07T00:25:00Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "url": "https://finance.yahoo.com/energy/articles/360-energy-pulse-mattered-week-213043744.html",
+      "source": "Oil and Gas 360",
+      "published_at": "2026-08-07T21:30:43Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "JGB Futures Fall, Tracking Declines in U.S. Treasury Market",
+      "title": "S&P 500 Ends At Record High, Clocks Strongest Week Since April As Poor Jobs Data Calms Rate Hike Fear — SEZL, SPCX, RDW, PLTR, TTD In Focus",
       "summary": "",
-      "url": "https://finance.yahoo.com/m/64a50bb4-bc6e-3013-80b9-fae0f765a86a/jgb-futures-fall%2C-tracking.html",
+      "url": "https://finance.yahoo.com/m/04cc5747-afdc-303f-ab37-0dac48eba0d4/s%26p-500-ends-at-record-high%2C.html",
+      "source": "Stocktwits",
+      "published_at": "2026-08-07T21:24:45Z",
+      "fetched_at": "2026-08-07T22:07:38Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Wonder Takes a Gamble on Robots, Drones and AI-Generated Menus",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/755f7acf-dc97-31e7-977b-6aef74cd5cff/wonder-takes-a-gamble-on.html",
       "source": "The Wall Street Journal",
-      "published_at": "2026-08-07T00:11:00Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "published_at": "2026-08-07T21:24:00Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Lower Oil Prices Lend Support For The Gold Rally",
+      "title": "Energy & Utilities Roundup: Market Talk",
       "summary": "",
-      "url": "https://finance.yahoo.com/markets/commodities/articles/lower-oil-prices-lend-support-000000831.html",
-      "source": "Oilprice.com",
-      "published_at": "2026-08-07T00:00:00Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "url": "https://finance.yahoo.com/m/49ea5e72-fd8d-39ae-8abc-12a500755a2e/energy-%26-utilities-roundup%3A.html",
+      "source": "The Wall Street Journal",
+      "published_at": "2026-08-07T21:11:00Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Why Occidental Stock Is Up Today",
+      "title": "Plains All American Pipeline, L.P. Q2 2026 Earnings Call Summary",
       "summary": "",
-      "url": "https://finance.yahoo.com/m/e4db3fec-78e8-377f-9818-b2741ea4a417/why-occidental-stock-is-up.html",
-      "source": "Motley Fool",
-      "published_at": "2026-08-06T23:48:37Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "url": "https://finance.yahoo.com/m/b8294622-d2e8-354a-8f0d-dcb2b5603036/plains-all-american-pipeline%2C.html",
+      "source": "Moby",
+      "published_at": "2026-08-07T21:07:33Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "NGEx Reports Q2 2026 Results; Phase 4 drilling delivers high grades and expands Lunahuasi Deposit",
+      "title": "Plains All American Pipeline LP (PAA) (Q2 2026) Earnings Call Highlights: Strong Crude ...",
       "summary": "",
-      "url": "https://finance.yahoo.com/markets/commodities/articles/ngex-reports-q2-2026-results-233000907.html",
-      "source": "CNW Group",
-      "published_at": "2026-08-06T23:30:00Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
-      "ticker": null,
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Journey Generates $18.5 Million of Net Income in the Second Quarter of 2026",
-      "summary": "",
-      "url": "https://finance.yahoo.com/energy/articles/journey-generates-18-5-million-231200089.html",
-      "source": "TMX Newsfile",
-      "published_at": "2026-08-06T23:12:00Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
-      "ticker": null,
-      "source_tier": "aggregator"
-    },
-    {
-      "title": "Permian Resources Corp (PR) (Q2 2026) Earnings Call Highlights: Record Free Cash Flow and ...",
-      "summary": "",
-      "url": "https://finance.yahoo.com/energy/articles/permian-resources-corp-pr-q2-230434488.html",
+      "url": "https://finance.yahoo.com/energy/articles/plains-american-pipeline-lp-paa-210537087.html",
       "source": "GuruFocus.com",
-      "published_at": "2026-08-06T23:04:34Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "published_at": "2026-08-07T21:05:37Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Texas Pacific Land Corp (TPL) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
+      "title": "Plains GP Holdings LP (PAGP) (Q2 2026) Earnings Call Highlights: Strong EBITDA and Strategic ...",
       "summary": "",
-      "url": "https://finance.yahoo.com/markets/stocks/articles/texas-pacific-land-corp-tpl-230415726.html",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/plains-gp-holdings-lp-pagp-210429726.html",
       "source": "GuruFocus.com",
-      "published_at": "2026-08-06T23:04:15Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "published_at": "2026-08-07T21:04:29Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "Coeur Mining Inc (CDE) (Q2 2026) Earnings Call Highlights: Record Revenue and Strategic ...",
+      "title": "Mach Natural Resources LP (MNR) (Q2 2026) Earnings Call Highlights: Strategic Capital ...",
       "summary": "",
-      "url": "https://finance.yahoo.com/markets/commodities/articles/coeur-mining-inc-cde-q2-230349412.html",
+      "url": "https://finance.yahoo.com/energy/articles/mach-natural-resources-lp-mnr-210352827.html",
       "source": "GuruFocus.com",
-      "published_at": "2026-08-06T23:03:49Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "published_at": "2026-08-07T21:03:52Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
       "source_tier": "aggregator"
     },
     {
-      "title": "McEwen Inc (MUX) (Q2 2026) Earnings Call Highlights: Navigating Operational Headwinds at Gold ...",
+      "title": "Nvidia ends week up more than 10% as AI chip fears ease",
       "summary": "",
-      "url": "https://finance.yahoo.com/markets/commodities/articles/mcewen-inc-mux-q2-2026-230335152.html",
-      "source": "GuruFocus.com",
-      "published_at": "2026-08-06T23:03:35Z",
-      "fetched_at": "2026-08-07T01:04:12Z",
+      "url": "https://finance.yahoo.com/technology/article/nvidia-ends-week-up-more-than-10-as-ai-chip-fears-ease-205751147.html",
+      "source": "Yahoo Finance",
+      "published_at": "2026-08-07T20:57:51Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "TSX Closer: Index Extends Rally to Fresh Record High Above 36,000 on Strong Jobs Report",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/world-indices/articles/tsx-closer-index-extends-rally-205725158.html",
+      "source": "MT Newswires",
+      "published_at": "2026-08-07T20:57:25Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
       "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Inflation data to test record-setting US stocks, Fed rate views",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/inflation-data-test-record-setting-100226016.html",
+      "source": "Reuters",
+      "published_at": "2026-08-07T20:40:37Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "US Equity Indexes Rise This Week as Technology Mega-Caps Advance, Hormuz Reopening Deal in Works",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/us-equity-indexes-rise-week-202151681.html",
+      "source": "MT Newswires",
+      "published_at": "2026-08-07T20:21:51Z",
+      "fetched_at": "2026-08-07T22:07:35Z",
+      "ticker": null,
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Nvidia’s (NVDA) Alpamayo Launch and the Robotaxi Bet",
+      "summary": "",
+      "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-alpamayo-launch-robotaxi-200324206.html",
+      "source": "Insider Monkey",
+      "published_at": "2026-08-07T20:03:24Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "The 20 Most Actively Traded ETFs",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/95cbe037-b73a-3c05-8fa3-06cd0e988ac9/the-20-most-actively-traded.html",
+      "source": "etf.com",
+      "published_at": "2026-08-07T19:46:09Z",
+      "fetched_at": "2026-08-07T22:07:38Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "QUICK SPARK: SPY, GLD Among Biggest Winners as $15.3 Billion Floods Into ETFs in One Day",
+      "summary": "QUICK SPARK: SPY, GLD Among Biggest Winners as $15.3 Billion Floods Into ETFs in One Day benzinga.com",
+      "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNbV82VmpSWTlJU29XTlF5Mm5Oak1pRnhhTjZ1aDRwLVpScHBJVGN4S2ROczFNQnZPNDJvdFR1Y1d5R0lOQnFZRi00WTZnY3pCdWxndnBtTkZBZGIxUUh5X1hMVS15ejJ4eUw5SUtwNHp1bldHWDl0cmxQQnJsenhTWlJSb2lmMzFnSmZTM1dRaVNxVHJISkVKY2pvSWd6UGhtTkdWNGdLUllUZVZ0UDNmTTRSTjRqOTRycDZmWUxHMkpNaUY2aGhqUEkxYl9YVkU1RlpQQlJMWTNwdDFGbmVSdUROQ1I0anc?oc=5",
+      "source": "Google News / benzinga.com",
+      "published_at": "2026-08-07T19:43:29Z",
+      "fetched_at": "2026-08-07T22:07:38Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "The Economy Lost Jobs, Wall Street Threw a Party: What Moved Markets This Week",
+      "summary": "",
+      "url": "https://finance.yahoo.com/economy/articles/economy-lost-jobs-wall-street-194002543.html",
+      "source": "Benzinga",
+      "published_at": "2026-08-07T19:40:02Z",
+      "fetched_at": "2026-08-07T22:07:38Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Nvidia Stock Forecast: NVDA Targets Record-High After New $2 Billion AI Deal",
+      "summary": "Nvidia Stock Forecast: NVDA Targets Record-High After New $2 Billion AI Deal BeInCrypto",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5aZGVxakM1b2hiemY1R20yMURsTDUxRnltX2dVWTVDU3FNVHhtaGZmaGQtVDZPcnRNX0l5ZFM3MlBuOWhOSm1qY0F1ZW5BX25MeWtKLUM4c0cwczR6bTc1MkNHRV96MUp4U0tz?oc=5",
+      "source": "Google News / BeInCrypto",
+      "published_at": "2026-08-07T19:09:00Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Beyond NVIDIA and GPUs: The Next AI & Quantum Winners Leading 2026",
+      "summary": "",
+      "url": "https://finance.yahoo.com/technology/ai/articles/beyond-nvidia-gpus-next-ai-190000472.html",
+      "source": "Zacks",
+      "published_at": "2026-08-07T19:00:00Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "SA analyst upgrades/downgrades: TSLA, NVDA, BBBY, WDC",
+      "summary": "SA analyst upgrades/downgrades: TSLA, NVDA, BBBY, WDC Seeking Alpha",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNdnBsRFkxbVFtRHgxaXFMYnl2YWZNcFY0QkU0SWVJSk1kb0cxeHd4STlvVTZJMEoycnpKUllnN3J3b3pLYVBHdl8yME1kc3BfTUJyU2Fvb0RoQUJTSGg0QjZpbC1EanNySFhVR3BaM1Rib3RucmhiZ2FacUE2VlpqZ3l4Q0Qtc2ZTX0g2ZWJDYWY?oc=5",
+      "source": "Google News / Seeking Alpha",
+      "published_at": "2026-08-07T18:31:46Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Jim Cramer Shares Reasons Behind Why NVIDIA Corporation (NASDAQ:NVDA)’s Shares Are Finally Rising",
+      "summary": "Jim Cramer Shares Reasons Behind Why NVIDIA Corporation (NASDAQ:NVDA)’s Shares Are Finally Rising Yahoo! Finance Canada",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQLW8yM1dlR0pVd0ZVdEh6RlhDcG92WnZwdFZqZFZsMDJFSmVBLWRuTHFNWUtWYUtRQlA3Um5VUDFQUnd2cEZRVkhUdGpucEtPVl9fN3dheDhiM0lWTFhYNHVwbGdRZzE4anhFNU96Vk9RX3laTlN2QXRiRE9wUi0wWjBYb0pVV3Zx?oc=5",
+      "source": "Google News / Yahoo! Finance Canada",
+      "published_at": "2026-08-07T18:24:04Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Fund Update: New $12.5B $NVDA stock position opened by SG Americas Securities, LLC",
+      "summary": "Fund Update: New $12.5B $NVDA stock position opened by SG Americas Securities, LLC Quiver Quantitative",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOajFHazRnMmZLeHBfVlZiSHI4bUYtd0FtWHFSLUpDU0pxcGtkcUZ1bl9IYVEwXzRFTVoyeVMzcUFmUGxQN0RzbHpCNUhVLTVyNFFhRmRnTG16MzN1UkctN3hEUWZJTzJkUUNmQVNwRGFySGRUVmJaeV80U3piemljMkF4Z3lvTzJOQ2tGS056Zy1TNXc3MEFpdTJZdXpBQjdBVG9pc3dFZFFtSUtJcC1QR1hKaE1Xem53QlZYMGRuVUk?oc=5",
+      "source": "Google News / Quiver Quantitative",
+      "published_at": "2026-08-07T18:15:00Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "How To Earn 11% On NVDA Stock And Set A 30% Safety Net",
+      "summary": "How To Earn 11% On NVDA Stock And Set A 30% Safety Net trefis.com",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNSXJZWXFQUEZXWTlqaXd5R2Y2LXFoN3RGQUQtaG5RdzZfbVdnNUppdEp4M0tHc3Z5aHFDVk9Pc2ppVWk2VVZOdmNqTGlGSW1pNU9KVmd2VjQwbnFFUlZCemtUb1dLVlNjYjdNY2NjbzVCM3NsTHJ3bWM0TUdGMXVaYkV6SjlZTDhOS2JTZXlEWnBwWk5KMzdQaHhUSm1EVElMaG5Mc0NQSkM2VzlqakxVZGVJWQ?oc=5",
+      "source": "Google News / trefis.com",
+      "published_at": "2026-08-07T17:43:39Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA Stock (NVDA) Opinions on AI Market Position",
+      "summary": "NVIDIA Stock (NVDA) Opinions on AI Market Position Quiver Quantitative",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQMGFwTHMtMGNoWUFoOUIyT2FMenhKWlpfVTVkTzBnSzVTRS1ZYVFPeFJsXzE4QkcybUlvSDlSSVBjTXdjWUQxZWtOWWhhVHBUaWRhN1Nseko5M0h2ZUZNRWEwalNka2hzeC1XM2xHRjB6ZXlWV0pTMkM0RThlZmZXNGVHaUZzdDhGaWlCSzRYd1Y?oc=5",
+      "source": "Google News / Quiver Quantitative",
+      "published_at": "2026-08-07T17:38:00Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Time to Buy Nvidia or SpaceX Stock After Their AI Partnership?",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/time-buy-nvidia-spacex-stock-164800866.html",
+      "source": "Zacks",
+      "published_at": "2026-08-07T16:48:00Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Should You Buy NVIDIA Stock After Its 11% Rally in a Month?",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/buy-nvidia-stock-11-rally-153800151.html",
+      "source": "Zacks",
+      "published_at": "2026-08-07T15:38:00Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA (NVDA) Is Evolving Beyond GPUs Into a Full AI Infrastructure Platform",
+      "summary": "NVIDIA (NVDA) Is Evolving Beyond GPUs Into a Full AI Infrastructure Platform Yahoo Finance",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPUUd0U3p6RWVSVzVJMzhOeGJnMjg5LXdSSVlkeW8yVXlDLVZuNG9hR3lZSC04QjVISldtbjYtaktYQW1kc0RhVVhEN2tRakhQWFBvdWRYbUc0c3B6bWJWVmRNaUZCOEs5WUJtUzVhallVVlNDb1BoYnVQYzBEWmtmNG13MDZiQnNJVXpkRmYxWkkxdktNNV9kcnQzalE?oc=5",
+      "source": "Google News / Yahoo Finance",
+      "published_at": "2026-08-07T15:26:46Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Nvidia (NVDA) Stock Price Enters Consolidation After Hitting New High",
+      "summary": "Nvidia (NVDA) Stock Price Enters Consolidation After Hitting New High Coinpedia",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQbDE0NXYwRnhSVkxCQkhpX0I5NVR2TWgxUzBvNHZ1RE90RGNVYUlkcHowZUF1SzNsTTg1VGJnZ0FLSHc0SWk3S21CaUZ0NS1DWjFQNS1waGJMdExDVVluNmtmX093X0owWjdkbGdYaDZXNzN4LVdrUEV2MG1Oay1BdmI3ZTRUb1FIdWNaTF9lbm4ycC1Idi1ranpOSXU0MnJoRm9CVlM4YkVvSk3SAbABQVVfeXFMUExWSnVzZEhWaDhEZFhYQmpfRkhwTG1ubmp1Q29tZ2pfWUczeWhUa19jaDNzeXUwOXJyV3o2LUp6LW0tUG5UcjViNGU1d0IwLV9tVzJjZm9FVUlFZlk1ajlUQXpycFI2b0R0U21SaWJvRlpGT2c1SVBCNy13UTN2QV9KUk1CT2lNN01SZEZYQUdCd2xWNFBhRF81MUhlVDVEazRIc1NMUThCV2R6clA0eDk?oc=5",
+      "source": "Google News / Coinpedia",
+      "published_at": "2026-08-07T14:34:17Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "While everyone chases Nvidia, Caterpillar just showed where AI money goes next",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/155e36e0-25e1-3c45-88f5-9c862f3afd0d/while-everyone-chases-nvidia%2C.html",
+      "source": "TheStreet",
+      "published_at": "2026-08-07T14:07:00Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Want $2,000 a Month From SPYI? Here’s the Exact Investment It Takes, and the Catch at That Size",
+      "summary": "",
+      "url": "https://finance.yahoo.com/m/82993edf-529b-38d7-9a5b-191154673252/want-%242%2C000-a-month-from.html",
+      "source": "24/7 Wall St.",
+      "published_at": "2026-08-07T13:53:44Z",
+      "fetched_at": "2026-08-07T22:07:38Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Exchange-Traded Funds, Equity Futures Higher Pre-Bell Friday Amid Strong Tech Results",
+      "summary": "",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/exchange-traded-funds-equity-futures-131928036.html",
+      "source": "MT Newswires",
+      "published_at": "2026-08-07T13:19:28Z",
+      "fetched_at": "2026-08-07T22:07:38Z",
+      "ticker": "SPY",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVDA Stock Eyes Worst First Half Since 2022: Retail Patience Wears Thin As Board Member Trims Stake For Third Time This Year",
+      "summary": "NVDA Stock Eyes Worst First Half Since 2022: Retail Patience Wears Thin As Board Member Trims Stake For Third Time This Year Stocktwits",
+      "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxORzhNMG5sbTZPeXlsLUFWb0xrc05MRGNQcW9aS3VrOTF5RFRYdFRuQkZvRFFFdkdyNzNiaGNodWdJdjJHZE9oYUNnUWxoclN6LTU4YTRIRnR6NnZKRDV5ZVVSWWJPdGNsdFZZM01rZ1V2ajlPcTFHczdBUElKSUtJbEptTFc5V1JKQXZMbHpkeWxDazRpZGc3eHhDVkxuSXN0OE51QmI3bU1FN2pWMEFVODlFT2Q5SVVrXzNQQktFSjR1dkRFWlBpRlF4V2JuZW1rSFZtSU9sWnU5bXBRaDJxbjVGN3M2cGg4dG5SVWY4d2h6SENzbGlkdGk2dUVvWmtDRmZudmVhOHlmeTNGU0F0S2NWNFdSZw?oc=5",
+      "source": "Google News / Stocktwits",
+      "published_at": "2026-08-07T10:56:24Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVDA Stock Extends Fall Overnight Despite Handy Q1 Beat — AI Darling Still Sees Untapped $200B Opportunity",
+      "summary": "NVDA Stock Extends Fall Overnight Despite Handy Q1 Beat — AI Darling Still Sees Untapped $200B Opportunity Stocktwits",
+      "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQTnh5c0JUX2Z1V2xLRVpHREFOdkw4aW1nRk5IaXlOaXNobUV2eFNxclFJcWpWT0xIOTRHVkhzdlhVWHRSOU5YQXRIaXR0TTdINHI5bVE5akVsQl9YLTBEczZyVGVPVGplYjhxY0pnN1QzWUJsX2puU0VZMU5xYldzZmk5UVhEN0FwV1NKd0syb2FQa0dpTUZyNzVjY05KVmJWTUVSWVNYSGs0WDkxOUppajFpZTVzWVJjS09JdmRRVUVnZGNlTFRUOG1Va2lya0ZoclNjbUhFWlZrTnFraUxsMFl6dDcwZ2lrd0IyUHd0dUhjb2FPSW04cjYwaGs?oc=5",
+      "source": "Google News / Stocktwits",
+      "published_at": "2026-08-07T09:58:08Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Why Is NVDA Stock Rising In Premarket?",
+      "summary": "Why Is NVDA Stock Rising In Premarket? Stocktwits",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNZUxqM2ROZkpHRU9pdnppek5HcUM2QVZkT0ZDclRZRVR6OXhlX2FQYWh2WGJNNEp1ai1SNFdzZGh5aWtYS1p5UEh5ZDZ3dEV0NTMzWGptQ2cxVVF3RzBoUXB2WDhOUHU4bXh0UXNUaGlENEFIOVJlSzJDWWVRTkZqaXY0R2MwSlJzblhwUThWbksyc0JsMFQ1SWtEanYybFh4cExF?oc=5",
+      "source": "Google News / Stocktwits",
+      "published_at": "2026-08-07T09:09:45Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "Everest Financial Group LLC Has $27.54 Million Position in NVIDIA Corporation $NVDA",
+      "summary": "Everest Financial Group LLC Has $27.54 Million Position in NVIDIA Corporation $NVDA MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQY0pPVGpLcmhQRGhfbXZYT0Z0WkFleVJvRVltVm92YnM3anR6c1ZNTTBRMWw4bEhGbUNoQnZTbW43UkdoR2lTbDBpbms4d2E3UnZHNWIwYTV2N29EdkhyS1JDZFJfRU1VVTdOcnh2VVdlYnZpZk1lM0dQdHcwNU4wX3R2dVVrb0cxRDV4WElVQVdnMjRCczZ1SmFRd29qXzgtYzlpU29JRDBBRTM0Y0oxYkl3eDk2SFhZblNQZG5JREdzV2NESlZ5TWYtNUw5OGE1b09rVmJrcWQ?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-08-07T08:56:44Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA Corporation $NVDA Shares Purchased by Tiger Global Management LLC",
+      "summary": "NVIDIA Corporation $NVDA Shares Purchased by Tiger Global Management LLC MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQNWpXVHVUNGNOeWNHV19ydWpvSnJBeWZwSmhfa0NCU3lDU3RTVEowTlRtUUlDS2JnNnM1OFdib1RyQ1dWYmF2bklnSVBpMzlOUlEyYlNSV3VrMlRReDJLZDJ0NTZoOEIzTUVtOE1YTjlaOS10ZGdmNEwwM3dlSkxSZjE0ZC1XcGV4WUF0ZW1BdUpPLTlqUzJIQ08xRHB3MzBqYldTeG5oUXFwbmVTVlV2aFJRQU5uc0d5WUNKdW1WZTZqcVRkenBtZWZnNm4?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-08-07T08:56:44Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
+      "source_tier": "aggregator"
+    },
+    {
+      "title": "NVIDIA Corporation $NVDA Shares Acquired by Gateway Wealth Partners LLC",
+      "summary": "NVIDIA Corporation $NVDA Shares Acquired by Gateway Wealth Partners LLC MarketBeat",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOSTBKQVZZYndzN2hQSVV4SFlxQVR5YUcwZUdFOEg1Y05aa21tOTVlb2ktcjVTczRwZ29uRUtoUDhTWDNvaDloSjlqbUgyNUVXUVc4NmZveWNZQTZZLTZRQTY1MHpBaWRsUWtTM3MxRlVtTWh3VXhLc2d6ZVVOaVYybElIY0luVzl6dEhaMk56Y01QZjI3MmE2eU9NYjhnTUFDZ3dIVkRNTGx4WEpZeWxLTXdxZEpSUGxDR05WdlgyVHNKcU5nNk94dmF3Yw?oc=5",
+      "source": "Google News / MarketBeat",
+      "published_at": "2026-08-07T08:56:44Z",
+      "fetched_at": "2026-08-07T22:07:37Z",
+      "ticker": "NVDA",
       "source_tier": "aggregator"
     }
   ]

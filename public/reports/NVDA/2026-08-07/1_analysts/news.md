@@ -1,80 +1,142 @@
-现在我已收集到所有可用数据，下面撰写综合分析报告。
+---
+
+# NVDA（英伟达）综合新闻与宏观研究报告
+
+**分析日期：** 2026年8月7日 | **标的：** NVDA（NVIDIA Corporation，纳斯达克NMS）
 
 ---
 
-# NVDA（英伟达）综合新闻与宏观分析报告
+## 一、NVDA公司层面新闻综述
 
-**分析日期：2026年8月7日**
+### 1. 本周核心动态：AI芯片担忧缓解，股价周涨超10%
+
+NVDA本周表现强劲，周涨幅超过10%，主要驱动力为AI芯片出口限制及供应链担忧的显著缓解。
+
+> **"Nvidia ends week up more than 10% as AI chip fears ease"**
+> 来源：Yahoo Finance | 发布时间：2026-08-07T20:57:51Z
+> URL: https://finance.yahoo.com/technology/article/nvidia-ends-week-up-more-than-10-as-ai-chip-fears-ease-205751147.html
+
+### 2. Alpamayo产品发布与Robotaxi战略布局
+
+英伟达发布了新一代"Alpamayo"产品，并积极布局自动驾驶出租车（Robotaxi）领域，标志着公司从纯GPU供应商向全栈AI基础设施平台转型。
+
+> **"Nvidia's (NVDA) Alpamayo Launch and the Robotaxi Bet"**
+> 来源：Insider Monkey (via Yahoo Finance) | 发布时间：2026-08-07T20:03:24Z
+> URL: https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-alpamayo-launch-robotaxi-200324206.html
+
+> **"NVIDIA (NVDA) Is Evolving Beyond GPUs Into a Full AI Infrastructure Platform"**
+> 来源：Yahoo Finance | 发布时间：2026-08-07T15:26:46Z
+> URL: https://news.google.com/rss/articles/CBMinAFBVV95cUxPUUd0U3p6RWVSVzVJMzhOeGJnMjg5LXdSSVlkeW8yVXlDLVZuNG9hR3lZSC04QjVISldtbjYtaktYQW1kc0RhVVhEN2tRakhQWFBvdWRYbUc0c3B6bWJWVmRNaUZCOEs5WUJtUzVhallVVlNDb1BoYnVQYzBEWmtmNG13MDZiQnNJVVpkRmYxWkkxdktNNV9kcnQzalE?oc=5
+
+### 3. 新增20亿美元AI大单
+
+NVDA达成一项新的20亿美元AI交易，市场预期股价有望冲击历史新高。
+
+> **"Nvidia Stock Forecast: NVDA Targets Record-High After New $2 Billion AI Deal"**
+> 来源：BeInCrypto (via Google News) | 发布时间：2026-08-07T19:09:00Z
+> URL: https://news.google.com/rss/articles/CBMia0FVX3lxTE5aZGVxakM1b2hiemY1R20yMURsTDUxRnltX2dVWTVDU3FNVHhtaGZmaGQtVDZPcnRNX0l5ZFM3MlBuOWhOSm1qY0F1ZW5BX25MeWtKLUM4c0cwczR6bTc1MkNHRV96MUp4U0tz?oc=5
+
+### 4. 机构持仓动态：大额买入与部分减持并存
+
+- **SG Americas Securities新开仓125亿美元NVDA仓位**——这是一个非常重大的机构买入信号。
+- **Insight Holdings Group LLC增持NVDA仓位**。
+- **Delta Global Management LP减持NVDA股份**。
+- **公司董事会成员年内第三次减持**——这是一个值得关注的内部人卖出信号。
+
+> **"Fund Update: New $12.5B $NVDA stock position opened by SG Americas Securities, LLC"**
+> 来源：Quiver Quantitative (via Google News) | 发布时间：2026-08-07T18:15:00Z
+> URL: https://news.google.com/rss/articles/CBMiwAFBVV95cUxOajFHazRnMmZLeHBfVlZiSHI4bUYtd0FtWHFSLUpDU0pxcGtkcUZ1bl9IYVEwXzRFTVoyeVMzcUFmUGxQN0RzbHpCNUhVLTVyNFFhRmRnTG16MzN1UkctN3hEUWZJTzJkUUNmQVNwRGFySGRUVmJaeV80U3piemljMkF4Z3lvTzJOQ2tGS056Zy1TNXc3MEFpdTJZdXpBQjdBVG9pc3dFZFFtSUtJcC1QR1hKaE1Xem53QlZYMGRuVUk?oc=5
+
+> **"NVDA Stock Eyes Worst First Half Since 2022: Retail Patience Wears Thin As Board Member Trims Stake For Third Time This Year"**
+> 来源：Stocktwits (via Google News) | 发布时间：2026-08-07T10:56:24Z
+> URL: https://news.google.com/rss/articles/CBMilgJBVV95cUxORzhNMG5sbTZPeXlsLUFWb0xrc05MRGNQcW9aS3VrOTF5RFRYdFRuQkZvRFFFdkdyNzNiaGNodWdJdjJHZE9oYUNnUWxoclN6LTU4YTRIRnR6NnZKRDV5ZVVSWWJPdGNsdFZZM01rZ1V2ajlPcTFHczdBUElKSUtJbEptTFc5V1JKQXZMbHpkeWxDazRpZGc3eHhDVkxuSXN0OE51QmI3bU1FN2pWMEFVODlFT2Q5SVVrXzNQQktFSjR1dkRFWlBpRlF4V2JuZW1rSFZtSU9sWnU5bXBRaDJxbjVGN3M2cGg4dG5SVWY4d2h6SENzbGlkdGk2dUVvWmtDRmZudmVhOHlmeTNGU0F0S2NWNFdSZw?oc=5
+
+### 5. 财报预期：Morgan Stanley看好"超预期并上调指引"模式
+
+摩根士丹利认为NVDA即将到来的财报大概率延续"超预期并上调指引"（beat and raise）的历史模式。此前NVDA一季度财报虽然超出预期，但股价盘后一度回落，公司强调仍有2000亿美元的未开发市场机会。
+
+> **"All Eyes On NVDA Stock As Q1 Report Looms: Morgan Stanley Believes 'Typical Beat And Raise Pattern Is A Likely Outcome' For Nvidia"**
+> 来源：Stocktwits (via Google News) | 发布时间：2026-08-07T03:12:56Z
+> URL: https://news.google.com/rss/articles/CBMimwJBVV95cUxPS0FTdk80a3V0MUFicjFCT0twTlltWXZlajhfRjVZakNjdTdlaTY4cUE0N2NRbmxRbkQyZURGSVNSeU1aeEJOcHowT21yelpka2xnTjk1NW9ZRWxQeEdJQklMYnZ6VmxkLUFKVVZaZWlJR3hCTE4yMGtnS0VUZzgxS2dPMTRnOHNpd2Jad00ycjZvbUVTTDRFOVdkaDRJaVNNVlF1MHVublRmVGRtRkQ2RDJrU2hyMlphd2dheXYtUHNheERTaVAyWlZUcmFzZ1FtaDdfYnl2c1Jab3MxclQtbnR2WE5uSU9OQ1VwVklaSFYwRFJfQXR3bmhjVFNiR3ZwcndKZ2daZVJHUzFJRGxzMlBTcFJpQmpMUjUw?oc=5
+
+> **"NVDA Stock Extends Fall Overnight Despite Handy Q1 Beat - AI Darling Still Sees Untapped $200B Opportunity"**
+> 来源：Stocktwits (via Google News) | 发布时间：2026-08-07T09:58:08Z
+> URL: https://news.google.com/rss/articles/CBMi_AFBVV95cUxQTnh5c0JUX2Z1V2xLRVpHREFOdkw4aW1nRk5IaXlOaXNobUV2eFNxclFJcWpWT0xIOTRHVkhzdlhVWHRSOU5YQXRIaXR0TTdINHI5bVE5akVsQl9YLTBEczZyVGVPVGplYjhxY0pnN1QzWUJsX2puU0VZMU5xYldzZmk5UVhEN0FwV1NKd0syb2FQa0dpTUZyNzVjY05KVmJWTUVSWVNYSGs0WDkxOUppajFpZTVzWVJjS09JdmRRVUVnZGNlTFRUOG1Va2lya0ZoclNjbUhFWlZrTnFraUxsMFl6dDcwZ2lrd0IyUHd0dUhjb2FPSW04cjYwaGs?oc=5
+
+### 6. SpaceX AI合作伙伴关系
+
+有分析文章讨论NVDA与SpaceX的AI合作伙伴关系，以及是否是买入时机。
+
+> **"Time to Buy Nvidia or SpaceX Stock After Their AI Partnership?"**
+> 来源：Zacks (via Yahoo Finance) | 发布时间：2026-08-07T16:48:00Z
+> URL: https://finance.yahoo.com/markets/stocks/articles/time-buy-nvidia-spacex-stock-164800866.html
+
+### 7. 技术面：股价创新高后进入盘整
+
+NVDA股价在触及新高后进入盘整阶段，Coinpedia的分析指出当前处于整理状态。
+
+> **"Nvidia (NVDA) Stock Price Enters Consolidation After Hitting New High"**
+> 来源：Coinpedia (via Google News) | 发布时间：2026-08-07T14:34:17Z
+> URL: https://news.google.com/rss/articles/CBMiqwFBVV95cUxQbDE0NXYwRnhSVkxCQkhpX0I5NVR2TWgxUzBvNHZ1RE90RGNVYUlkcHowZUF1SzNsTTg1VGJnZ0FLSHc0SWk3S21CaUZ0NS1DWjFQNS1waGJMdExDVVluNmtmX093X0owWjdkbGdYaDZXNzN4LVdrUEV2MG1Oay1BdmI3ZTRUb1FIdWNaTF9lbm4ycC1Idi1ranpOSXU0MnJoRm9CVlM4YkVvSk3SAbABQVVfeXFMUExWSnVzZEhWaDhEZFhYQmpfRkhwTG1ubmp1Q29tZ2pfWUczeWhUa19jaDNzeXUwOXJyV3o2LUp6LW0tUG5UcjViNGU1d0IwLV9tVzJjZm9FVUlFZlk1ajlUQXpycFI2b0R0U21SaWJvRlpGT2c1SVBCNy13UTN2QV9KUk1CT2lNN01SZEZYQUdCd2xWNFBhRF81MUhlVDVEazRIc1NMUThCV2R6clA0eDk?oc=5
+
+### 8. 新闻检索状态说明
+
+⚠️ **部分覆盖披露：** NVDA新闻检索状态为PARTIAL。Yahoo Finance（10篇）和Google News RSS（20篇）均正常返回数据，但**SEC EDGAR源检索失败**（HTTPError），未能获取SEC文件层面的信息。这意味着可能遗漏了来自SEC申报的重要信息（如10-Q、8-K等），投资者应自行查阅SEC EDGAR确认。
 
 ---
 
-## 一、NVDA 公司层面重大新闻（2026年7月31日 – 8月7日）
+## 二、全球宏观与市场环境
 
-> ⚠️ **数据覆盖说明**：NVDA新闻检索状态为 **PARTIAL**。Yahoo Finance（10条）和 Google News RSS（20条）均正常返回；但 **SEC EDGAR 源失败**（HTTPError），无法获取监管文件层面的信息。以下分析基于已成功获取的30条新闻。
+### 1. 美国就业数据强劲，提振利率暂停预期
 
-### 1. Q2财报临近，多空分歧加剧
+本周公布的美国就业数据表现强劲，直接提振了市场对美联储维持利率不变的预期。美股主要指数本周收高，科技巨头领涨。
 
-英伟达即将发布Q2财报，市场对此存在显著分歧：
+> **"US Equity Markets End Higher After Jobs Data Lifts Odds for Rate Pause"**
+> 来源：MT Newswires (via Yahoo Finance) | 发布时间：2026-08-07T20:20:06Z
+> URL: https://finance.yahoo.com/markets/stocks/articles/us-equity-markets-end-higher-202006098.html
 
-- **看多声音**：Seeking Alpha 发文称"Nvidia Stock Is A Steal Ahead Of Q2 Earnings"，认为当前股价被低估，是财报前的买入机会。
-  - 来源：Seeking Alpha | 发布时间：2026-08-05T19:23:22Z | [链接](https://news.google.com/rss/articles/CBMijgFBVV95cUxOUEE0N2M2ZU1LZ2ZIRFc5RDU1VFAzS2E1MDhLY2FnLVEtdnpoUHFJZjZJWG9UbVF6Umtwd2FwWk1YcW81M19PWlplUk05V3d3d3lWX3liVmpxVE5jRzFObFBUcUlHZmxneklZZG44aEVzZXNseTYzMVJ1VDdTa1VEYWZDdWk2RG5UVWpqX2RR?oc=5)
+> **"US Equity Indexes Rise This Week as Technology Mega-Caps Advance, Hormuz Reopening Deal in Works"**
+> 来源：MT Newswires (via Yahoo Finance) | 发布时间：2026-08-07T20:21:51Z
+> URL: https://finance.yahoo.com/markets/stocks/articles/us-equity-indexes-rise-week-202151681.html
 
-- **看空声音**：Seeking Alpha 另一篇题为"Nvidia: Upside Is Starting To Fade"的文章则认为上行空间正在消退。
-  - 来源：Seeking Alpha | 发布时间：2026-08-06T21:03:41Z | [链接](https://news.google.com/rss/articles/CBMif0FVX3lxTFB5T09nYXVIN2NSR0VBS2ROeGZxTm5DWFpCbGFUVkJwVXNLVHk4cEw5by05MGxsRlUxNGpZMzFkeG5HU2NoWXlJemVoMlFNSkJZZzNkb19QNkdFSmdXOEVRTklzZDhzakhRY3NhV3p3OERNNktpNi1tcFhRUlMtQWM?oc=5)
+### 2. 通胀数据即将成为下一个考验
 
-- **Simply Wall St** 也指出"NVDA Stock Trades Below Fair Value as AI Risks Cap Upside"，认为AI风险限制了上行。
-  - 来源：simplywall.st | 发布时间：2026-08-06T12:39:40Z | [链接](https://news.google.com/rss/articles/CBMiywFBVV95cUxNV19uX2c3bDNITGJfUlNPQjI4UjBUa2M0a1REelRZakFnSVNHTE9jS3dHbjA1U2FlSXF6MmI4QlVEamhpYlRVY2tKZWI2anlPNzltaE9pSXVOejlva2pqWDBfZk82RURpQUlHUmU2S1RFdEhlbms3cEVpdHVmNTBBejhmRUI3bHBnakE1Vkh0LTd6TW9hQmlSQVljWmk4YVZKeFJ5Mkw0eS1tQlFJT0ZFd0dQOHdwYWtpNFdiY21sQlBKMU01WWZmN2Mzd9IB0AFBVV95cUxPOHdneUJ0cldmeC1JYVpCTTZ6VFdKa050OUVjMDlybWxtX3BhaGJnOEs5V2NqeVhuYnQ5M2c1Z3JXWnFES2xOOTZTTGtTRDFvOExpMjNCR1JVWmJRNzFVLXpsUDFNd0dfTllCRFJXTTY5OHdyMllJcld5WXZFSGZOUENBOW5xZHV0U3ZwVmhIYy02OEp3ZHB6MGJSMnJmMGZ3UVBPZko4RUR2bWJkdU44V1hzcEt5UnFmU1NLUEpZc0l0T3pvRFFKMUl4MnF0NUVD?oc=5)
+路透社报道指出，即将公布的通胀数据将成为对创纪录高位美股和美联储利率预期的下一个关键测试点。
 
-### 2. 产品战略动态：Rubin Ultra GPU 设计调整
+> **"Inflation data to test record-setting US stocks, Fed rate views"**
+> 来源：Reuters (via Yahoo Finance) | 发布时间：2026-08-07T20:40:37Z
+> URL: https://finance.yahoo.com/markets/stocks/articles/inflation-data-test-record-setting-100226016.html
 
-- **核心新闻**：英伟达据报正在考虑为下一代 **Rubin Ultra GPU** 采用较低内存的设计方案，以缓解 **HBM（高带宽内存）瓶颈**问题。这直接关系到Micron等HBM供应商的供应链前景。
-  - 来源：Stocktwits | 发布时间：2026-08-06T17:18:07Z | [链接](https://news.google.com/rss/articles/CBMiigJBVV95cUxQUTZJX1J1SjZlTERCX2tUWmZQNmNRVjR0Sm5hSjZoVTREUGJQQ2tXZm4zekhpV0Q1aTJyWjVjS05lbmhGWHl6aThwUkd1MjZMUHItQVlWamJUV19wd3JtVUFUU0FQa1B4OGJHYzZ3ODdLLWI4Q2VDSEdtZDMxWFdteXNJTTJDaFlRN2ZMX1BtbU1LSWlaUVhISlF5Vmp5Z0Q2M2VraGtoODUtUWk0MVNoVTQ5bXNPNHRQcEFBWXBiaXFJTDRWMU9yUU5XSVBtRW80SDRreHdjajlSTGRXTFBGTENFakRkR2E5clVVemUzOExLODMtRGFIMU1ncFhlWF85emRmVHhKVjFlUQ?oc=5)
-  - 来源：MT Newswires | 发布时间：2026-08-06T16:34:58Z | [链接](https://finance.yahoo.com/markets/stocks/articles/market-chatter-nvidia-considers-less-163458974.html)
+### 3. 地缘政治：霍尔木兹海峡重开协议酝酿中
 
-### 3. 竞争格局：AMD正在缩小差距
+全球新闻提及霍尔木兹海峡（Hormuz）重开协议正在酝酿中，若达成将显著缓解中东地缘政治紧张局势，可能降低能源价格和风险溢价。
 
-- **美银（BofA）观点**：虽然英伟达仍然主导AI芯片市场，但BofA认为AMD正在缩小差距。这一观点可能对NVDA的估值溢价构成压力。
-  - 来源：TheStreet | 发布时间：2026-08-06T22:33:00Z | [链接](https://finance.yahoo.com/m/ddf2a10e-e848-3113-8441-00f8202dda92/nvidia-dominates-ai-chips%2C.html)
+> 来源：MT Newswires (via Yahoo Finance) | 发布时间：2026-08-07T20:21:51Z
+> URL: https://finance.yahoo.com/markets/stocks/articles/us-equity-indexes-rise-week-202151681.html
 
-- **战略差异化**：Insider Monkey 分析称，NVDA正在押注设计工具，而AMD则在硬件堆栈上扩展，两家公司选择了不同的竞争路径。
-  - 来源：Insider Monkey | 发布时间：2026-08-06T21:17:28Z | [链接](https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-bets-design-tools-211728491.html)
+### 4. 加拿大TSX指数创历史新高
 
-### 4. 机构资金流向
+加拿大TSX指数在强劲就业数据推动下突破36,000点，创下历史新高，反映全球风险偏好积极。
 
-机构投资者对NVDA的操作方向不一，呈现明显的多空博弈：
+> **"TSX Closer: Index Extends Rally to Fresh Record High Above 36,000 on Strong Jobs Report"**
+> 来源：MT Newswires (via Yahoo Finance) | 发布时间：2026-08-07T20:57:25Z
+> URL: https://finance.yahoo.com/markets/world-indices/articles/tsx-closer-index-extends-rally-205725158.html
 
-| 机构 | 操作 | 金额/细节 | 时间 |
-|------|------|-----------|------|
-| Alberta Investment Management Corp | **新开仓** | $9,500万 | 2026-08-06 |
-| ARK Invest (Cathie Wood) | **买入抄底** | NVDA、CRCL、SPCX | 2026-08-06 |
-| Boreal Capital Management LLC | **增持** | 未披露金额 | 2026-08-06 |
-| Aristotle Atlantic Partners LLC | **减持** | 未披露金额 | 2026-08-06 |
+### 5. 美联储动态
 
-- Alberta Investment 新仓来源：Quiver Quantitative | 发布时间：2026-08-06T21:22:00Z | [链接](https://news.google.com/rss/articles/CBMixwFBVV95cUxNU3dfMU9ZTkJadm55bkg4UnhfLXFLTWhEUXl1MjRVT0FQU01uUzNPTWQ3T0xSYk1KSjNZUlV4dWpnQkdsWWpuTGYzT1p5RGJXT1g2cUJpbWd0Q2RpQXB3Uzk1blh1YklPcW15anlEanpZWUpUcS1yUGZrUW1HZDBQUkxYUlVoNDU1b3pNYlltdkdyUkhJdHB6bk9LcFlaOHFjSXNva2dxcm9CbF9MSlRSdG9HeV9sbndJOEg0UVZ4LXhPVkltcGFR?oc=5)
-- ARK买入来源：Yahoo Finance | 发布时间：2026-08-06T10:28:48Z | [链接](https://news.google.com/rss/articles/CBMikwFBVV95cUxOZkNLSUFrZ25nYVFsOFdyUVlVeDJOb2p2UlJickJ0QzNMZ2NoUEJZLTg0cTJCdlJaQ21Zc09UeTZETHZESVNaY0tacmYtdEpOckcyZjV5TVlROFl5dkYyaUNXS2JfbVR1U1RhU3R3OEYtVGg5TzFMV3ZJM0lSdEJVem03M1NYVEc1aHlsbmJkSlVHZWM?oc=5)
-- Boreal Capital来源：MarketBeat | 发布时间：2026-08-06T07:45:21Z | [链接](https://news.google.com/rss/articles/CBMi1AFBVV95cUxOUzFnay1LWG1BTTRaWkhtU1JRUm9CWFBsZXpYTEpHNzBWOUZiemp5WGUwM0IzZlpkQ3gtRnJVclVxZmZYVjdfeXVadFBmY19WQjVwSkhyNURVYzFYTGp6eEFoOThiQnc5dS15dG1tSEFRRFk3OW8wM1NKNEkxQm5oend4UEVNem5LUGoyczAtTDBQczl6ZS1BQnBaWE5nMS1vd0FjRS1uaU9UM1o5ZzZBQlM3MkJmT3cwRGkxYnBJZ0lHVXkzYk0tWEVsRTNwYU1WU1A3UA?oc=5)
-- Aristotle Atlantic来源：MarketBeat | 发布时间：2026-08-06T07:23:52Z | [链接](https://news.google.com/rss/articles/CBMi2gFBVV95cUxQMWtxQTZUdVI4eWtub1ZUSEpiU2x0NVlMcEluU0x3cnhIREZtOWZGNHAwdEx5SmtOQTRGNDZNTktDRHlPWUlJSWhfUENoTTJ3NThqdVBISzl2MGRqeHBqQ2pfalJRTGRtb0w2aWpfOFZ0VWFsczNudTlkMDk5Q2s1eXdVeFUyNWp3QXdSR0E0bTJ6cl94WTNSSDhDM2NzYmpWTVNib2xsVGs5XzZKZGZIVVhpdUY4bjFpMUtEbGZVUTZQTmpDa0IxdlRrcWNyNHFPV09QODNfTDRHQQ?oc=5)
+美联储本周批准了多项银行并购申请（Banco Santander、Coastal Bend Bancshares、FS Bancorp），并提出关于银行"内部人"贷款规则和互助银行组织规则现代化的征求意见提案。这些属于监管层面动作，对市场直接影响有限。
 
-### 5. 战略合作与新业务拓展
+> 来源：Federal Reserve（primary）| 发布时间：2026-08-04T20:30:00Z
+> URL: https://www.federalreserve.gov/newsevents/pressreleases/orders20260804a.htm
 
-- **Amkor封装合作**：英伟达与Amkor（AMKR）达成交易，在财报前增强封装能力。先进封装是AI芯片供应链的关键环节。
-  - 来源：Insider Monkey | 发布时间：2026-08-06T10:46:31Z | [链接](https://finance.yahoo.com/markets/stocks/articles/nvidia-nvda-amkor-amkr-deal-104631781.html)
+---
 
-- **太空AI领域**：英伟达在100亿美元太空扩建项目中获得独家AI角色，拓展了新的应用场景。
-  - 来源：Simply Wall St. | 发布时间：2026-08-06T08:10:52Z | [链接](https://finance.yahoo.com/technology/ai/articles/nvidia-nvda-secures-exclusive-space-081052931.html)
+## 三、宏观经济指标（FRED数据）
 
-- **HPE联盟**：HPE与NVDA的联盟可能帮助其挑战SMCI和DELL。
-  - 来源：Zacks | 发布时间：2026-08-06T16:01:00Z | [链接](https://finance.yahoo.com/technology/ai/articles/hpes-nvda-alliance-help-challenge-160100215.html)
+⚠️ **数据不可用：** 所有FRED宏观经济指标（CPI、Core PCE、失业率、联邦基金利率、10年期国债收益率、收益率曲线、VIX）均因FRED_API_KEY环境变量未设置而无法检索。
 
-### 6. 大佬观点碰撞
+**影响说明：** 无法提供基于FRED的精确通胀、就业和利率数据。以下分析中的宏观判断基于新闻和预测市场数据，而非一手FRED数据。建议交易员自行查阅FRED确认最新宏观数据。
 
-- **Jamie Dimon（摩根大通CEO）**：对AI和美国经济做出重大看多判断。
-  - 来源：TheStreet | 发布时间：2026-08-07T00:37:00Z | [链接](https://finance.yahoo.com/m/e884154b-a6a7-33dc-b072-fca45ed6a8bd/jamie-dimon-makes-huge-call.html)
-
-- **Michael Burry（"大空头"）**：警告AI投资可能制造未来"鬼城"（Ghost Towns），对NVDA、PLTR、CAT等AI概念股持谨慎态度。
-  - 来源：Stocktwits | 发布时间：2026-08-06T08:20:37Z | [链接](https://news.google.com/rss/articles/CBMitwFBVV95cUxPZXN5VWF0dE52LXRJQlJoMmRYN0Z1UTEtS2JzakVsZzZYNmprczlfaE9iTDQzWTNRNThPOWpfUDJhSmFjN19Bdkh0bXlOa3hXLXQxTGx5cVdZTEN5VFhZdXkwTWZfQ3NieDVnRGdoOFJpaVpsaGFwYWQ0VnQ0Ul82MEM0SEFzY29HY2htYy1obVlad1d2TjZzX2UyMWZ6X0w0eFVscXozSXlwSDJ3Zi1HU2g0RXRoSEE?oc=5)
-
-### 7. "三大变革性更新"
-
-Seeking Alpha总结了英伟达近期获得的三个关键更新（涉及产品、合作伙伴和市场动态），被视为短期催化剂。
-- 来源：Seeking Alpha | 发布时间：2026-08-06T16:15:51Z | [链接](https://news.google.com/rss/articles/CBMihwFBVV95cUxNaE9hR0huRVZQUGFkVjRwRTR1NEVWeTlabGhDS
+从新闻中可间接推断：
+- 就业数据"强劲"（多个来源提及）
+- 市场预期美联储倾向于"暂停"降息
